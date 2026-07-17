@@ -101,6 +101,8 @@ flowchart LR
 
 ## License
 
+原始編纂與授權者：[Alex0158](https://github.com/Alex0158)。
+
 文字、圖表與模板採 [Creative Commons Attribution 4.0 International](LICENSE) 授權。你可以分享與改作，但請保留適當署名與授權連結。
 
 參與前請看 [Contributing](CONTRIBUTING.md)；內容裁決見 [Governance](GOVERNANCE.md)；敏感資料請依 [Security and privacy](SECURITY.md) 私下回報。
