@@ -1,5 +1,9 @@
 .DS_Store
 *.log
+.astro/
+.playwright-cli/
+dist/
+node_modules/
 .env
 .env.*
 !.env.example

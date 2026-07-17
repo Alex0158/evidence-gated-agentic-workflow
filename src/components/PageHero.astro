@@ -1,0 +1,27 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  description: string;
+  meta?: Array<{ label: string; value: string }>;
+}
+
+const { eyebrow, title, accent, description, meta = [] } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="container page-hero__grid">
+    <div data-reveal>
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 class="display-title">{title}{accent && <><br /><em>{accent}</em></>}</h1>
+      <p class="lead">{description}</p>
+      <slot name="actions" />
+    </div>
+    {meta.length > 0 && (
+      <div class="page-hero__meta" data-reveal>
+        {meta.map((item) => <div><small>{item.label}</small><strong>{item.value}</strong></div>)}
+      </div>
+    )}
+  </div>
+</section>

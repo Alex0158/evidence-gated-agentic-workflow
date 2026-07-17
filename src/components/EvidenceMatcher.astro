@@ -1,0 +1,81 @@
+---
+import { evidenceLevels } from '../data/content';
+---
+
+<div class="evidence-matcher" data-evidence-matcher>
+  <div class="evidence-matcher__controls">
+    <label class="field">
+      <span>我已完成的 evidence surface</span>
+      <select data-evidence-level>
+        {evidenceLevels.map((level) => <option value={level.value}>L{level.value} — {level.name}</option>)}
+      </select>
+    </label>
+    <label class="field">
+      <span>我想提出的 completion claim</span>
+      <select data-claim-level>
+        {evidenceLevels.map((level) => <option value={level.value}>L{level.value} — {level.claim}</option>)}
+      </select>
+    </label>
+    <div class="evidence-matcher__ladder" aria-hidden="true">
+      {evidenceLevels.map((level) => <i data-ladder-step={level.value}><span>L{level.value}</span></i>)}
+    </div>
+  </div>
+
+  <aside class="result-panel" aria-live="polite">
+    <span class="result-panel__label" data-fit-label>CLAIM-SPECIFIC MATCH</span>
+    <h2 data-fit-title>證據與 claim 同粒度</h2>
+    <p data-fit-body>這個 evidence surface 支持對應 claim；它不會自動證明其他 verification surface。</p>
+    <div class="evidence-matcher__proof">
+      <div><small>Evidence proves</small><strong data-proof>變更存在，結構符合預期</strong></div>
+      <div><small>It does not prove</small><strong data-not>Runtime 或業務成功</strong></div>
+    </div>
+  </aside>
+</div>
+
+<script is:inline type="application/json" data-evidence-data set:html={JSON.stringify(evidenceLevels).replace(/</g, '\\u003c')}></script>
+<script is:inline>
+  document.querySelectorAll('[data-evidence-matcher]').forEach((root) => {
+    const dataNode = root.nextElementSibling?.matches('[data-evidence-data]') ? root.nextElementSibling : document.querySelector('[data-evidence-data]');
+    const levels = JSON.parse(dataNode?.textContent || '[]');
+    const evidenceSelect = root.querySelector('[data-evidence-level]');
+    const claimSelect = root.querySelector('[data-claim-level]');
+    const render = () => {
+      const evidence = levels[Number(evidenceSelect.value) - 1];
+      const claim = levels[Number(claimSelect.value) - 1];
+      const fits = evidence.value === claim.value;
+      root.querySelector('[data-fit-label]').textContent = fits ? 'CLAIM-SPECIFIC MATCH' : 'CLAIM-SPECIFIC PROOF REQUIRED';
+      root.querySelector('[data-fit-title]').textContent = fits ? claim.claim : `L${evidence.value} 不能代替 L${claim.value}`;
+      root.querySelector('[data-fit-body]').textContent = fits
+        ? `可以使用精確狀態：「${claim.claim}」。仍須保留「${claim.not}」的邊界。`
+        : `目前 evidence 支持：「${evidence.claim}」。要提出另一種 claim，必須另外取得它自己的證據：${claim.proof}。較高編號不會自動證明較低編號。`;
+      root.querySelector('[data-proof]').textContent = evidence.claim;
+      root.querySelector('[data-not]').textContent = evidence.not;
+      root.querySelectorAll('[data-ladder-step]').forEach((step) => step.toggleAttribute('data-active', Number(step.dataset.ladderStep) === evidence.value));
+      root.querySelector('.result-panel').toggleAttribute('data-overclaim', !fits);
+    };
+    root.addEventListener('change', render);
+    render();
+  });
+</script>
+
+<style>
+  .evidence-matcher { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 5vw, 5rem); align-items: stretch; }
+  .evidence-matcher__controls { display: grid; align-content: start; gap: 1.5rem; }
+  .evidence-matcher__ladder { display: grid; margin-top: 1rem; grid-template-columns: repeat(7, 1fr); }
+  .evidence-matcher__ladder i { position: relative; height: 3rem; border-top: 1px dashed var(--line-dark); color: var(--muted-on-dark); font-style: normal; }
+  .evidence-matcher__ladder i::before { position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border: 1px solid currentColor; background: var(--ink); content: ''; }
+  .evidence-matcher__ladder i[data-active] { border-top-style: solid; border-color: var(--mint); color: var(--mint); }
+  .evidence-matcher__ladder span { position: absolute; top: 0.7rem; left: 0; font-family: var(--font-mono); font-size: 0.6rem; }
+  .result-panel[data-overclaim] { border-color: rgba(255, 123, 110, 0.55); }
+  .result-panel[data-overclaim] .result-panel__label { color: var(--coral); }
+  .evidence-matcher__proof { display: grid; margin-top: 2rem; border-top: 1px solid var(--line-dark); grid-template-columns: 1fr 1fr; }
+  .evidence-matcher__proof div { padding: 1rem 1rem 0 0; }
+  .evidence-matcher__proof div + div { padding-left: 1rem; border-left: 1px solid var(--line-dark); }
+  .evidence-matcher__proof small { display: block; margin-bottom: 0.55rem; color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .evidence-matcher__proof strong { font-size: 0.86rem; }
+  @media (max-width: 760px) {
+    .evidence-matcher { grid-template-columns: 1fr; }
+    .evidence-matcher__proof { grid-template-columns: 1fr; }
+    .evidence-matcher__proof div + div { padding-left: 0; border-left: 0; }
+  }
+</style>

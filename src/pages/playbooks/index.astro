@@ -1,0 +1,54 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { modes } from '../../data/content';
+import { pathFor } from '../../lib/paths';
+---
+
+<SiteLayout title="Playbooks" description="Fast、Standard、Assured 三種風險適應的執行 playbooks。">
+  <PageHero
+    eyebrow="Risk-adaptive playbooks"
+    title="流程強度，"
+    accent="應該隨風險改變。"
+    description="一律保守會拖慢低風險工作；一律自主會放大高風險 crossing。用三個 profile 配置不同 gate、evidence 與 closure target。"
+    meta={[{ label: 'Profiles', value: '03' }, { label: 'Shared loop', value: '13 stages' }, { label: 'Variable', value: 'Assurance' }, { label: 'KPI', value: 'Time-to-verified' }]}
+  />
+  <section class="section control-zone">
+    <div class="container playbook-list">
+      {modes.map((mode) => (
+        <a href={pathFor(`/playbooks/${mode.slug}/`)} class={`playbook-row playbook-row--${mode.color}`}>
+          <span>{mode.index}</span>
+          <div><small>{mode.promise}</small><h2>{mode.name}</h2><p>{mode.description}</p></div>
+          <ol>{mode.minimum.map((item) => <li>{item}</li>)}</ol>
+          <i>↗</i>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="section paper-zone">
+    <div class="container profile-rule">
+      <p class="eyebrow">Routing rule</p>
+      <h2 class="section-title">不要讓所有工作都進 Assured；<br /><em>也不要讓高風險偽裝成 Fast。</em></h2>
+      <a class="button button--paper" href={pathFor('/start/')}>Classify my task <span>↗</span></a>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .playbook-list { display: grid; }
+  .playbook-row { display: grid; min-height: 20rem; border-top: 1px solid var(--line-dark); grid-template-columns: 4rem 1.4fr 1fr 3rem; }
+  .playbook-row:last-child { border-bottom: 1px solid var(--line-dark); }
+  .playbook-row > span { padding-top: 1.5rem; color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.65rem; }
+  .playbook-row > div { display: grid; align-content: center; padding: 1.5rem; border-left: 1px solid var(--line-dark); }
+  .playbook-row small { color: var(--mint); font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; }
+  .playbook-row h2 { margin: 0.7rem 0; font-family: var(--font-display); font-size: clamp(3.5rem, 7vw, 7rem); font-weight: 420; line-height: 0.8; letter-spacing: -0.06em; }
+  .playbook-row p { max-width: 32rem; margin: 0; color: var(--muted-on-dark); }
+  .playbook-row ol { display: grid; align-content: center; gap: 1rem; margin: 0; padding: 1.5rem 1.5rem 1.5rem 3rem; border-left: 1px solid var(--line-dark); color: var(--muted-on-dark); font-size: 0.82rem; }
+  .playbook-row > i { display: grid; place-items: center; border-left: 1px solid var(--line-dark); font-style: normal; }
+  .playbook-row:hover { background: var(--ink-2); }
+  .playbook-row--amber small { color: var(--amber); }
+  .playbook-row--coral small { color: var(--coral); }
+  .profile-rule { display: grid; justify-items: start; }
+  .profile-rule .button { margin-top: 2rem; }
+  @media (max-width: 760px) { .playbook-row { grid-template-columns: 2.5rem 1fr 2.5rem; } .playbook-row ol { grid-column: 2; border-top: 1px solid var(--line-dark); } .playbook-row > i { grid-column: 3; grid-row: 1 / span 2; } }
+</style>

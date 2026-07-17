@@ -2,11 +2,32 @@
 
 一套以「可信真相、清楚邊界、可驗證閉環」為核心的人類 × AI 工作系統。
 
-狀態：`v0.1 reference model`。`Evidence-Gated Agentic Workflow` 是本 repository 自定義的描述性名稱，不是正式標準、安全認證、formal assurance case，也尚未以 benchmark 證明 operational effectiveness。
+狀態：`v0.2 public reference + interactive site`。`Evidence-Gated Agentic Workflow` 是本 repository 自定義的描述性名稱，不是正式標準、安全認證、formal assurance case，也尚未以 benchmark 證明 operational effectiveness。
 
 這不是一組萬能 prompts，也不是要求 AI 無限制自治。它是一個可落地的 operating model：先決定真正目標與權限邊界，讓 AI 在正確 context、tools 與 safeguards 中執行，再以 tests、live evidence、正式記錄和 human verdict 收口。
 
 > Public edition：本 repository 只保留可分享的方法、流程、模板與概念定位。它刻意排除原始對話、Memory、審計底稿、推理過程、個人路徑、帳號狀態、客戶與專案識別資料。
+
+## 互動網站
+
+[開啟 Evidence-Gated Workflow Observatory](https://alex0158.github.io/evidence-gated-agentic-workflow/)
+
+網站不是 Markdown 的換皮版，而是把方法轉成可操作的 system map、risk classifier、claim–evidence matcher、Codex capability ladder 與 task brief workbench。完整方法仍由本 repository 的 Markdown 裁決；網站直接從那些 canonical files 建置，避免建立第二份內容真相。
+
+本機開發：
+
+```bash
+npm ci
+npm run dev
+```
+
+Production gate：
+
+```bash
+npm run build
+```
+
+Build 會依序執行 Astro type/content checks、static generation、內部 routes/assets 驗證、canonical source coverage 與 private-path leakage scan。
 
 ## 一句話版本
 
@@ -103,6 +124,6 @@ flowchart LR
 
 原始編纂與授權者：[Alex0158](https://github.com/Alex0158)。
 
-文字、圖表與模板採 [Creative Commons Attribution 4.0 International](LICENSE) 授權。你可以分享與改作，但請保留適當署名與授權連結。
+文字、圖表與模板採 [Creative Commons Attribution 4.0 International](LICENSE) 授權。網站 source code 採 [MIT License](LICENSE-CODE)。你可以分享與改作，但請保留相應的署名與授權聲明；bundled fonts 與 dependencies 見 [Third-party notices](THIRD_PARTY_NOTICES.md)。
 
 參與前請看 [Contributing](CONTRIBUTING.md)；內容裁決見 [Governance](GOVERNANCE.md)；敏感資料請依 [Security and privacy](SECURITY.md) 私下回報。

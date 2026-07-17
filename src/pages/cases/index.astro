@@ -1,0 +1,40 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { cases } from '../../data/content';
+import { pathFor } from '../../lib/paths';
+---
+
+<SiteLayout title="Decision cases" description="三個 fictional cases，展示 Fast investigation、Standard bugfix 與 Assured remote write。">
+  <PageHero
+    eyebrow="Fictional cases / Decision rehearsal"
+    title="不要背規則，"
+    accent="看見選擇的後果。"
+    description="三個完全虛構的案例，分別展示 capability 誤判、claim 過度，以及 remote timeout 後的 outcome reconciliation。"
+    meta={[{ label: 'Cases', value: '03' }, { label: 'Profiles', value: 'F / S / A' }, { label: 'Real data', value: 'None' }, { label: 'Purpose', value: 'Rehearsal' }]}
+  />
+  <section class="section bone-zone">
+    <div class="container cases-grid">
+      {cases.map((item, index) => (
+        <a href={pathFor(`/cases/${item.slug}/`)}>
+          <div><span>{String(index + 1).padStart(2, '0')}</span><small>{item.eyebrow}</small></div>
+          <h2>{item.title}</h2>
+          <p>{item.description}</p>
+          <blockquote>{item.lesson}</blockquote>
+          <i>Replay case ↗</i>
+        </a>
+      ))}
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); }
+  .cases-grid a { display: grid; min-height: 34rem; padding: 1.7rem; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); color: var(--text-on-light); grid-template-rows: auto 1fr auto auto auto; }
+  .cases-grid a > div { display: flex; justify-content: space-between; color: var(--muted-on-light); font-family: var(--font-mono); font-size: 0.62rem; }
+  .cases-grid h2 { align-self: center; margin: 4rem 0 2rem; font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 430; line-height: 0.93; letter-spacing: -0.04em; }
+  .cases-grid p { color: var(--muted-on-light); font-size: 0.88rem; }
+  .cases-grid blockquote { margin: 2rem 0; padding-top: 1rem; border-top: 1px solid var(--line-light); color: var(--mint-dark); font-family: var(--font-mono); font-size: 0.7rem; }
+  .cases-grid i { font-family: var(--font-mono); font-size: 0.62rem; font-style: normal; text-transform: uppercase; }
+  @media (max-width: 900px) { .cases-grid { grid-template-columns: 1fr; } .cases-grid a { min-height: 25rem; } }
+</style>

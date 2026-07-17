@@ -1,0 +1,81 @@
+---
+import { capabilityLayers } from '../data/content';
+---
+
+<div class="capability-ladder" data-capability-ladder>
+  <div class="capability-ladder__steps">
+    {capabilityLayers.map((layer, index) => (
+      <label>
+        <input type="checkbox" value={index} />
+        <span><i>{String(index + 1).padStart(2, '0')}</i><strong>{layer.name}</strong><small>{layer.note}</small></span>
+      </label>
+    ))}
+  </div>
+  <aside class="result-panel" aria-live="polite">
+    <span class="result-panel__label">SELF-ATTESTED CAPABILITY CHECKLIST</span>
+    <h3 data-capability-title>尚未驗證</h3>
+    <p data-capability-note>由第一層開始，以 read-only smoke 和 exact readback 逐步確認。不要跳級。</p>
+    <div class="notice notice--warning">
+      <span class="status-dot status-dot--inferred"></span>
+      <p>上一層成功不會自動證明下一層；read capability 也不能推導 write authority。</p>
+    </div>
+  </aside>
+</div>
+
+<script is:inline type="application/json" data-capability-data set:html={JSON.stringify(capabilityLayers).replace(/</g, '\\u003c')}></script>
+<script is:inline>
+  document.querySelectorAll('[data-capability-ladder]').forEach((root) => {
+    const dataNode = root.nextElementSibling?.matches('[data-capability-data]') ? root.nextElementSibling : document.querySelector('[data-capability-data]');
+    const layers = JSON.parse(dataNode?.textContent || '[]');
+    const checks = [...root.querySelectorAll('input[type="checkbox"]')];
+    const render = () => {
+      let contiguous = -1;
+      for (let index = 0; index < checks.length && checks[index].checked; index += 1) contiguous = index;
+      const hasSelected = checks.some((check) => check.checked);
+      const hasGap = checks.some((check, index) => check.checked && index > contiguous);
+      const panel = root.querySelector('.result-panel');
+      panel.toggleAttribute('data-overclaim', hasGap);
+
+      if (!hasSelected) {
+        root.querySelector('[data-capability-title]').textContent = '尚未驗證';
+        root.querySelector('[data-capability-note]').textContent = '由第一層開始，以 read-only smoke 和 exact readback 逐步確認。不要跳級。';
+      } else if (hasGap) {
+        const nextRequired = layers[contiguous + 1];
+        root.querySelector('[data-capability-title]').textContent = '驗證序列有缺口';
+        root.querySelector('[data-capability-note]').textContent = `較後層的勾選只是你的 self-attestation，不能補上缺失的 ${nextRequired.name} evidence。請逐層取得並保存 readback。`;
+      } else {
+        root.querySelector('[data-capability-title]').textContent = `${layers[contiguous].name} · self-attested`;
+        root.querySelector('[data-capability-note]').textContent = contiguous < layers.length - 1
+          ? `你表示已逐層確認至：${layers[contiguous].note} 下一步仍需獨立驗證 ${layers[contiguous + 1].name}。`
+          : '你表示所有能力層均已有獨立 evidence；網站不會替你驗證真實身份、target 或 authority，請保存 receipts。';
+      }
+    };
+    checks.forEach((check) => check.addEventListener('change', render));
+    render();
+  });
+</script>
+
+<style>
+  .capability-ladder { display: grid; grid-template-columns: 1fr 0.9fr; gap: clamp(2rem, 5vw, 5rem); }
+  .capability-ladder__steps { display: grid; }
+  .capability-ladder__steps label { position: relative; cursor: pointer; }
+  .capability-ladder__steps input { position: absolute; opacity: 0; }
+  .capability-ladder__steps span { display: grid; min-height: 6rem; align-items: center; padding: 1rem; border: 1px solid var(--line-dark); border-bottom: 0; grid-template-columns: 3rem 1fr 2fr; gap: 1rem; }
+  .capability-ladder__steps label:last-child span { border-bottom: 1px solid var(--line-dark); }
+  .capability-ladder__steps i { color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.65rem; font-style: normal; }
+  .capability-ladder__steps strong { font-size: 0.9rem; }
+  .capability-ladder__steps small { color: var(--muted-on-dark); font-size: 0.75rem; }
+  .capability-ladder__steps input:checked + span { border-color: var(--mint); background: rgba(110, 231, 213, 0.06); }
+  .capability-ladder__steps input:focus-visible + span { outline: 2px solid var(--mint); outline-offset: 3px; }
+  .capability-ladder__steps input:checked + span i,
+  .capability-ladder__steps input:checked + span strong { color: var(--mint); }
+  .capability-ladder .notice { margin-top: 2rem; }
+  .capability-ladder .notice p { margin: 0; }
+  .capability-ladder .result-panel[data-overclaim] { border-color: rgba(255, 123, 110, 0.55); }
+  .capability-ladder .result-panel[data-overclaim] .result-panel__label { color: var(--coral); }
+  @media (max-width: 760px) {
+    .capability-ladder { grid-template-columns: 1fr; }
+    .capability-ladder__steps span { grid-template-columns: 2rem 1fr; }
+    .capability-ladder__steps small { grid-column: 2; }
+  }
+</style>

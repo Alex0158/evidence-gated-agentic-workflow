@@ -1,0 +1,28 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ContentShell from '../../components/ContentShell.astro';
+import { cases } from '../../data/content';
+
+export function getStaticPaths() {
+  return cases.map((item) => ({ params: { slug: item.slug } }));
+}
+
+const item = cases.find((entry) => entry.slug === Astro.params.slug)!;
+const index = cases.indexOf(item) + 1;
+const headings = item.module.getHeadings();
+const Content = item.module.Content;
+---
+
+<SiteLayout title={item.title} description={item.description} surface="paper">
+  <PageHero
+    eyebrow={`Case ${String(index).padStart(2, '0')} / ${item.eyebrow}`}
+    title={item.title}
+    accent={item.lesson}
+    description={item.description}
+    meta={[{ label: 'Case', value: `0${index}` }, { label: 'Data', value: 'Fictional' }, { label: 'Profile', value: item.eyebrow.split(' / ')[0] }, { label: 'Source', value: 'Markdown' }]}
+  />
+  <ContentShell index={`C${index}`} signal={item.eyebrow} readTime="4 min" headings={headings} sourcePath={item.sourcePath}>
+    <Content />
+  </ContentShell>
+</SiteLayout>

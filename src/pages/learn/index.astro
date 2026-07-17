@@ -1,0 +1,27 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { lessons } from '../../data/content';
+import { pathFor } from '../../lib/paths';
+---
+
+<SiteLayout title="Reference library" description="完整查閱 Evidence-Gated Agentic Workflow 的八章 canonical reference。" surface="paper">
+  <PageHero
+    eyebrow="Canonical reference / 8 chapters"
+    title="深度內容留在 source，"
+    accent="閱讀體驗交給網站。"
+    description="每章直接由 repository 中的 canonical Markdown 生成。網站沒有複製第二份正文，因此 GitHub、build 與閱讀頁保持同一個 source of truth。"
+    meta={[{ label: 'Chapters', value: '08' }, { label: 'Canonical', value: 'Markdown' }, { label: 'License', value: 'CC BY 4.0' }, { label: 'Status', value: 'v0.1' }]}
+  />
+  <section class="section paper-zone">
+    <div class="container reference-grid">
+      {lessons.map((lesson) => (
+        <a class="reference-card" href={pathFor(`/learn/${lesson.slug}/`)}>
+          <div class="reference-card__top"><span>{lesson.order}</span><span>{lesson.signal} · {lesson.readTime}</span></div>
+          <h2>{lesson.title}</h2>
+          <div class="reference-card__foot"><p>{lesson.description}</p><span>↗</span></div>
+        </a>
+      ))}
+    </div>
+  </section>
+</SiteLayout>

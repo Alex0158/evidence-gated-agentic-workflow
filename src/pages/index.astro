@@ -1,0 +1,230 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import LoopExplorer from '../components/LoopExplorer.astro';
+import { cases, lessons, modes } from '../data/content';
+import { pathFor } from '../lib/paths';
+---
+
+<SiteLayout>
+  <section class="home-hero">
+    <div class="container home-hero__grid">
+      <div class="home-hero__copy" data-reveal>
+        <p class="eyebrow">A human × AI operating system</p>
+        <h1 class="display-title">Trust is not<br />a prompt.<br /><em>It is a system.</em></h1>
+        <p class="lead">把模糊要求轉化成有邊界、有證據、可驗證的完成狀態——不是更多規則，而是更精準的 control loop。</p>
+        <div class="button-row">
+          <a class="button button--signal" href={pathFor('/start/')}>Route my task <span>↗</span></a>
+          <a class="button" href={pathFor('/system/')}>Explore the system <span>↓</span></a>
+        </div>
+      </div>
+
+      <div class="calibration-console" data-reveal aria-label="Evidence calibration preview">
+        <div class="console-head"><span class="status-dot status-dot--verified"></span><strong>CALIBRATION / LIVE</strong><small>REF · 00–12</small></div>
+        <div class="console-scope">
+          <span>CLAIM</span>
+          <p>“The task is complete.”</p>
+        </div>
+        <div class="console-trace" aria-hidden="true">
+          <div><i></i><span>Objective</span></div>
+          <div><i></i><span>Boundary</span></div>
+          <div><i></i><span>Evidence</span></div>
+          <div data-warning><i></i><span>Verify</span></div>
+          <div data-muted><i></i><span>Close</span></div>
+        </div>
+        <div class="console-verdict">
+          <div><small>Evidence level</small><strong>L2 / TARGETED</strong></div>
+          <div><small>Maximum claim</small><strong>Contract passed</strong></div>
+        </div>
+        <div class="console-alert"><span>!</span><p>Runtime and adoption remain <strong>UNKNOWN</strong>.</p></div>
+      </div>
+    </div>
+    <div class="home-hero__ticker" aria-hidden="true">
+      <span>OBJECTIVE</span><i></i><span>BOUNDARY</span><i></i><span>EVIDENCE</span><i></i><span>CHALLENGE</span><i></i><span>ACTION</span><i></i><span>VERIFY</span><i></i><span>CLOSE</span>
+    </div>
+  </section>
+
+  <section class="section bone-zone entry-section">
+    <div class="container">
+      <div class="entry-section__intro" data-reveal>
+        <div>
+          <p class="eyebrow">Choose your entry</p>
+          <h2 class="section-title">不是由第一章開始，<br /><em>而是由你的需要開始。</em></h2>
+        </div>
+        <p class="lead">第一次接觸先理解 system；正在工作就直接生成 task brief；需要精確定義時再進 reference。</p>
+      </div>
+      <div class="entry-rows">
+        <a href={pathFor('/system/')} data-reveal><span>01</span><strong>Understand</strong><p>用互動圖譜看懂 truth、boundary、evidence 與 closure。</p><i>↗</i></a>
+        <a href={pathFor('/start/')} data-reveal><span>02</span><strong>Apply</strong><p>回答五個問題，取得 Fast／Standard／Assured workflow。</p><i>↗</i></a>
+        <a href={pathFor('/learn/')} data-reveal><span>03</span><strong>Reference</strong><p>查閱完整章節、方法論定位、模板與 source text。</p><i>↗</i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section control-zone">
+    <div class="container">
+      <LoopExplorer />
+    </div>
+  </section>
+
+  <section class="section paper-zone modes-section">
+    <div class="container">
+      <div class="modes-section__head" data-reveal>
+        <div><p class="eyebrow">Risk-adaptive execution</p><h2 class="section-title">一個系統，<br /><em>三種速度。</em></h2></div>
+        <p class="lead">Autonomy 不應固定。Blast radius、recoverability 與 evidence quality 決定流程強度。</p>
+      </div>
+      <div class="mode-lanes">
+        {modes.map((mode) => (
+          <a href={pathFor(`/playbooks/${mode.slug}/`)} class={`mode-lane mode-lane--${mode.color}`} data-reveal>
+            <span>{mode.index}</span>
+            <div><small>{mode.promise}</small><h3>{mode.name}</h3><p>{mode.description}</p></div>
+            <ul>{mode.minimum.map((item) => <li>{item}</li>)}</ul>
+            <i>↗</i>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section control-zone proof-section">
+    <div class="container proof-section__grid">
+      <div data-reveal>
+        <p class="eyebrow">Claim–evidence fit</p>
+        <h2 class="section-title">Evidence 不夠時，<br /><em>縮小 claim。</em></h2>
+        <p class="lead">Unknown 可以被保留；虛構的 certainty 不可以。用七層 verification ladder 檢查你最多能說到哪裡。</p>
+        <a class="button button--signal" href={pathFor('/system/evidence/')}>Calibrate a claim <span>↗</span></a>
+      </div>
+      <div class="proof-meter" data-reveal>
+        {['Static', 'Targeted', 'Suite', 'Runtime', 'True-chain', 'Artifact', 'External'].map((label, index) => (
+          <div data-active={index < 2 ? '' : undefined}><span>L{index + 1}</span><i></i><strong>{label}</strong></div>
+        ))}
+        <p><span class="status-dot status-dot--inferred"></span> CURRENT CLAIM LIMIT · TARGETED CONTRACT ONLY</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bone-zone cases-section">
+    <div class="container">
+      <div class="cases-section__head" data-reveal>
+        <div><p class="eyebrow">Fictional decision cases</p><h2 class="section-title">在錯誤發生前，<br /><em>看見下一步。</em></h2></div>
+        <a class="button button--paper" href={pathFor('/cases/')}>All cases <span>↗</span></a>
+      </div>
+      <div class="case-list">
+        {cases.map((item, index) => (
+          <a href={pathFor(`/cases/${item.slug}/`)} data-reveal>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <small>{item.eyebrow}</small>
+            <h3>{item.title}</h3>
+            <p>{item.lesson}</p>
+            <i>↗</i>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section paper-zone reference-section">
+    <div class="container reference-section__head" data-reveal>
+      <div><p class="eyebrow">Canonical reference</p><h2 class="section-title">完整方法，<br /><em>保留在 source。</em></h2></div>
+      <p class="lead">網站負責理解與操作；原始 Markdown 繼續裁決完整內容，避免建立第二份漂移的真相。</p>
+    </div>
+    <div class="container reference-grid">
+      {lessons.slice(0, 4).map((lesson) => (
+        <a class="reference-card" href={pathFor(`/learn/${lesson.slug}/`)} data-reveal>
+          <div class="reference-card__top"><span>{lesson.order}</span><span>{lesson.signal}</span></div>
+          <h3>{lesson.title}</h3>
+          <div class="reference-card__foot"><p>{lesson.description}</p><span>↗</span></div>
+        </a>
+      ))}
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .home-hero { position: relative; min-height: calc(100vh - 4.85rem); overflow: hidden; border-bottom: 1px solid var(--line-dark); }
+  .home-hero__grid { display: grid; min-height: calc(100vh - 8.5rem); align-items: center; padding-block: clamp(4rem, 8vw, 7rem); grid-template-columns: 5fr 6fr; gap: clamp(3rem, 7vw, 8rem); }
+  .home-hero__copy .lead { max-width: 37rem; margin-bottom: 2.2rem; }
+  .calibration-console { border: 1px solid var(--line-dark); background: var(--ink-2); box-shadow: 2rem 2rem 0 rgba(110, 231, 213, 0.025); }
+  .console-head { display: flex; align-items: center; gap: 0.65rem; min-height: 3rem; padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--line-dark); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.07em; }
+  .console-head small { margin-left: auto; color: var(--muted-on-dark); }
+  .console-scope { padding: clamp(1.5rem, 4vw, 3rem); border-bottom: 1px solid var(--line-dark); }
+  .console-scope span { color: var(--mint); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; }
+  .console-scope p { max-width: 31rem; margin: 1rem 0 0; font-family: var(--font-display); font-size: clamp(2.3rem, 4.5vw, 4.8rem); line-height: 0.98; letter-spacing: -0.04em; }
+  .console-trace { display: grid; padding: 1.2rem; border-bottom: 1px solid var(--line-dark); grid-template-columns: repeat(5, 1fr); }
+  .console-trace div { position: relative; display: grid; min-width: 0; gap: 0.7rem; color: var(--mint); }
+  .console-trace div::after { position: absolute; top: 4px; right: 0; left: 7px; height: 1px; background: currentColor; content: ''; }
+  .console-trace i { position: relative; z-index: 1; width: 9px; height: 9px; border: 1px solid currentColor; background: currentColor; }
+  .console-trace span { overflow: hidden; font-family: var(--font-mono); font-size: 0.55rem; text-overflow: ellipsis; }
+  .console-trace [data-warning] { color: var(--amber); }
+  .console-trace [data-muted] { color: var(--line-dark); }
+  .console-verdict { display: grid; grid-template-columns: 1fr 1fr; }
+  .console-verdict div { min-height: 7rem; padding: 1rem; border-right: 1px solid var(--line-dark); }
+  .console-verdict div:last-child { border: 0; }
+  .console-verdict small { display: block; margin-bottom: 1.8rem; color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.58rem; text-transform: uppercase; }
+  .console-verdict strong { font-size: 0.85rem; }
+  .console-alert { display: flex; align-items: center; gap: 0.9rem; padding: 0.8rem 1rem; border-top: 1px solid rgba(255, 123, 110, 0.45); background: rgba(255, 123, 110, 0.06); color: var(--muted-on-dark); font-size: 0.75rem; }
+  .console-alert > span { display: grid; width: 1.35rem; height: 1.35rem; place-items: center; border: 1px solid var(--coral); color: var(--coral); font-family: var(--font-mono); }
+  .console-alert p { margin: 0; }
+  .console-alert strong { color: var(--coral); }
+  .home-hero__ticker { display: flex; align-items: center; height: 3.5rem; padding-inline: var(--pad); border-top: 1px solid var(--line-dark); color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; }
+  .home-hero__ticker i { flex: 1; height: 1px; margin-inline: 0.8rem; background: var(--line-dark); }
+  .home-hero__ticker i::after { display: block; width: 5px; height: 5px; margin: -2px auto; background: var(--mint); content: ''; }
+  .entry-section__intro, .modes-section__head, .cases-section__head, .reference-section__head { display: grid; align-items: end; margin-bottom: 4rem; grid-template-columns: 1.15fr 0.85fr; gap: 4rem; }
+  .entry-rows { border-top: 1px solid var(--line-light); }
+  .entry-rows a { display: grid; min-height: 8rem; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--line-light); color: var(--text-on-light); grid-template-columns: 4rem 1.1fr 2fr auto; gap: 2rem; transition: padding 180ms ease, background 180ms ease; }
+  .entry-rows a:hover { padding-inline: 1rem; background: rgba(8, 122, 114, 0.055); }
+  .entry-rows span { color: var(--mint-dark); font-family: var(--font-mono); font-size: 0.68rem; }
+  .entry-rows strong { font-family: var(--font-display); font-size: 2.2rem; font-weight: 430; }
+  .entry-rows p { margin: 0; color: var(--muted-on-light); }
+  .entry-rows i { font-style: normal; }
+  .mode-lanes { border-top: 1px solid var(--line-light); }
+  .mode-lane { display: grid; min-height: 13rem; align-items: stretch; border-bottom: 1px solid var(--line-light); color: var(--text-on-light); grid-template-columns: 4rem 1.6fr 1fr 3rem; transition: background 180ms ease; }
+  .mode-lane:hover { background: var(--bone); }
+  .mode-lane > span { padding-top: 1.4rem; color: var(--muted-on-light); font-family: var(--font-mono); font-size: 0.65rem; }
+  .mode-lane > div { display: grid; align-content: center; padding: 1.4rem; border-left: 1px solid var(--line-light); }
+  .mode-lane small { color: var(--mint-dark); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .mode-lane h3 { margin: 0.55rem 0; font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 5.4rem); font-weight: 430; line-height: 0.9; letter-spacing: -0.05em; }
+  .mode-lane p { margin: 0; color: var(--muted-on-light); font-size: 0.88rem; }
+  .mode-lane ul { display: grid; align-content: center; margin: 0; padding: 1.4rem 1.4rem 1.4rem 2.7rem; border-left: 1px solid var(--line-light); color: var(--muted-on-light); font-size: 0.78rem; }
+  .mode-lane > i { display: grid; place-items: center; border-left: 1px solid var(--line-light); font-style: normal; }
+  .mode-lane--amber small { color: var(--amber-dark); }
+  .mode-lane--coral small { color: var(--coral-dark); }
+  .proof-section__grid { display: grid; align-items: center; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 8rem); }
+  .proof-section .lead { margin-bottom: 2rem; }
+  .proof-meter { display: grid; border: 1px solid var(--line-dark); }
+  .proof-meter > div { display: grid; min-height: 4.2rem; align-items: center; padding-inline: 1rem; border-bottom: 1px solid var(--line-dark); color: var(--muted-on-dark); grid-template-columns: 3rem 1fr 8rem; }
+  .proof-meter span, .proof-meter strong { font-family: var(--font-mono); font-size: 0.64rem; text-transform: uppercase; }
+  .proof-meter i { height: 1px; background: var(--line-dark); }
+  .proof-meter div[data-active] { color: var(--mint); }
+  .proof-meter div[data-active] i { background: var(--mint); }
+  .proof-meter > p { display: flex; align-items: center; gap: 0.7rem; margin: 0; padding: 0.85rem 1rem; color: var(--amber); font-family: var(--font-mono); font-size: 0.6rem; }
+  .cases-section__head { align-items: end; }
+  .cases-section__head .button { justify-self: end; }
+  .case-list { border-top: 1px solid var(--line-light); }
+  .case-list a { display: grid; min-height: 8rem; align-items: center; border-bottom: 1px solid var(--line-light); color: var(--text-on-light); grid-template-columns: 3rem 9rem 1.4fr 1fr auto; gap: 1.5rem; }
+  .case-list span, .case-list small { color: var(--muted-on-light); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.05em; }
+  .case-list h3 { margin: 0; font-family: var(--font-display); font-size: 2rem; font-weight: 440; }
+  .case-list p { margin: 0; color: var(--muted-on-light); font-size: 0.82rem; }
+  .case-list i { font-style: normal; }
+  .reference-section__head { padding-top: 0; }
+  @media (max-width: 900px) {
+    .home-hero__grid, .entry-section__intro, .modes-section__head, .proof-section__grid, .cases-section__head, .reference-section__head { grid-template-columns: 1fr; }
+    .home-hero__grid { min-height: auto; }
+    .entry-rows a { grid-template-columns: 3rem 1fr auto; gap: 1rem; }
+    .entry-rows p { grid-column: 2 / -1; }
+    .mode-lane { grid-template-columns: 3rem 1fr 2.5rem; }
+    .mode-lane ul { grid-column: 2; border-left: 1px solid var(--line-light); border-top: 1px solid var(--line-light); }
+    .mode-lane > i { grid-column: 3; grid-row: 1 / span 2; }
+    .case-list a { grid-template-columns: 2rem 1fr auto; padding-block: 1rem; }
+    .case-list small { grid-column: 2; }
+    .case-list h3 { grid-column: 2; }
+    .case-list p { grid-column: 2; }
+    .case-list i { grid-column: 3; grid-row: 1 / span 4; }
+  }
+  @media (max-width: 600px) {
+    .home-hero__ticker span:nth-of-type(even), .home-hero__ticker i:nth-of-type(even) { display: none; }
+    .console-verdict { grid-template-columns: 1fr; }
+    .console-verdict div { border-right: 0; border-bottom: 1px solid var(--line-dark); }
+    .mode-lane { grid-template-columns: 2.4rem 1fr 2.2rem; }
+    .mode-lane > div { padding-inline: 1rem; }
+  }
+</style>

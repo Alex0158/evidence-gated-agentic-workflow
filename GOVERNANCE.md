@@ -37,3 +37,10 @@ rule documented → gate executed → error intercepted → outcome improved
 - 新 control、task profile 或 terminology claim 應附 problem、source、trigger、non-trigger、cost 與 verification。
 - Breaking workflow change 應更新 CHANGELOG，並說明 migration。
 - Privacy/security incident 不應在 public issue 貼出 sensitive detail；依 SECURITY.md 處理。
+
+## Content source of truth
+
+- `docs/`、`templates/`、`examples/` 與 `integrations/` 中已收錄的 Markdown 裁決完整方法論正文與可複製 source。
+- 網站 components、navigation metadata 與 interactive synthesis 負責教學與操作，不得暗中重定義 canonical claim、gate 或 evidence boundary。
+- 需要結構化視覺資料時，應保留對應 source path，並以 build-time consistency checks 防止遺漏或漂移。
+- 若 UI 與 canonical Markdown 衝突，先視為 release blocker；修正兩者並重新驗證後才可發布。

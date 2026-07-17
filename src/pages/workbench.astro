@@ -1,0 +1,16 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import TaskWorkbench from '../components/TaskWorkbench.astro';
+---
+
+<SiteLayout title="Task Workbench" description="在 browser 本地生成可複製、可下載的 Evidence-Gated task brief。">
+  <PageHero
+    eyebrow="Composable task envelope"
+    title="不要由空白 prompt 開始，"
+    accent="由 objective 與 boundary 開始。"
+    description="建立一份可以交給人或 AI 執行的 self-contained task brief。所有內容只保存在你的 browser，本網站不接收資料。"
+    meta={[{ label: 'Schema', value: 'Canonical' }, { label: 'Storage', value: 'Local only' }, { label: 'Export', value: '.md' }, { label: 'Account', value: 'Not required' }]}
+  />
+  <section class="section control-zone"><div class="container"><TaskWorkbench /></div></section>
+</SiteLayout>

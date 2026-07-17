@@ -20,3 +20,5 @@
 ## Scope
 
 本 project 提供 workflow guidance，不保證使用者系統的 security、safety 或 regulatory compliance。實際 deployment 仍需相應專業審查與技術控制。
+
+互動網站的 Workbench 使用瀏覽器 origin-level `localStorage` 保存草稿，不會把表單內容送到本 repository 或自建 backend。`localStorage` 不是 secure credential store；請勿輸入 token、password、private key、受管制資料或敏感客戶內容。可隨時使用 Workbench 的 Clear 按鈕移除該 origin 內的草稿。

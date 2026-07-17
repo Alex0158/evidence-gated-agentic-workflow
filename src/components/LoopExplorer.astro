@@ -1,0 +1,129 @@
+---
+import { loopStages } from '../data/content';
+---
+
+<section class="loop-explorer" data-loop-explorer>
+  <div class="loop-explorer__head">
+    <div>
+      <p class="eyebrow">Operating loop / 00—12</p>
+      <h2 class="section-title">由模糊要求，走到<br /><em>可驗證的完成狀態。</em></h2>
+    </div>
+    <div class="receipt-stamp">
+      <strong>ACTIVE TRACE</strong>
+      <span data-loop-count>STAGE 00 / 12</span>
+      <span>Keyboard ← →</span>
+    </div>
+  </div>
+
+  <div class="loop-explorer__rail" role="tablist" aria-label="Operating Loop stages">
+    {loopStages.map((stage, index) => (
+      <button
+        type="button"
+        id={`loop-tab-${index}`}
+        role="tab"
+        aria-controls="loop-panel"
+        aria-selected={index === 0 ? 'true' : 'false'}
+        tabindex={index === 0 ? '0' : '-1'}
+        data-loop-tab={index}
+      >
+        <span>{stage.id}</span>
+        <strong>{stage.name}</strong>
+        <i aria-hidden="true"></i>
+      </button>
+    ))}
+  </div>
+
+  <div class="loop-explorer__detail" id="loop-panel" role="tabpanel" aria-labelledby="loop-tab-0" aria-live="polite">
+    <div class="loop-explorer__verb"><span data-loop-id>00</span><strong data-loop-verb>Frame</strong></div>
+    <div>
+      <small>Decision question</small>
+      <h3 data-loop-question>{loopStages[0].question}</h3>
+    </div>
+    <div class="loop-explorer__facts">
+      <div><small>Minimum output</small><p data-loop-output>{loopStages[0].output}</p></div>
+      <div><small>Stop when</small><p data-loop-stop>{loopStages[0].stop}</p></div>
+    </div>
+  </div>
+
+  <p class="loop-explorer__fallback">Objective → Boundary → Evidence → Challenge → Decision → Action → Verify → Record → Deliver → Evolve → Close</p>
+</section>
+
+<script is:inline type="application/json" data-loop-data set:html={JSON.stringify(loopStages).replace(/</g, '\\u003c')}></script>
+<script is:inline>
+  document.querySelectorAll('[data-loop-explorer]').forEach((root) => {
+    const dataNode = root.nextElementSibling?.matches('[data-loop-data]') ? root.nextElementSibling : document.querySelector('[data-loop-data]');
+    const stages = JSON.parse(dataNode?.textContent || '[]');
+    const tabs = [...root.querySelectorAll('[data-loop-tab]')];
+    let active = 0;
+    const render = (index, focus = false) => {
+      active = index;
+      const stage = stages[index];
+      if (!stage) return;
+      tabs.forEach((tab, tabIndex) => {
+        tab.setAttribute('aria-selected', String(tabIndex === index));
+        tab.setAttribute('tabindex', tabIndex === index ? '0' : '-1');
+      });
+      const fields = { id: stage.id, verb: stage.verb, question: stage.question, output: stage.output, stop: stage.stop };
+      Object.entries(fields).forEach(([key, value]) => {
+        const node = root.querySelector(`[data-loop-${key}]`);
+        if (node) node.textContent = value;
+      });
+      const count = root.querySelector('[data-loop-count]');
+      if (count) count.textContent = `STAGE ${stage.id} / 12`;
+      root.querySelector('[role="tabpanel"]')?.setAttribute('aria-labelledby', `loop-tab-${index}`);
+      if (focus) tabs[index]?.focus();
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => render(index));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        if (event.key === 'Home') return render(0, true);
+        if (event.key === 'End') return render(tabs.length - 1, true);
+        const delta = ['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : -1;
+        render((active + delta + tabs.length) % tabs.length, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .loop-explorer { padding: clamp(2rem, 5vw, 4rem); border: 1px solid var(--line-dark); background: var(--ink-2); }
+  .loop-explorer__head { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
+  .loop-explorer__head .section-title { max-width: 55rem; margin-bottom: 3rem; }
+  .loop-explorer__rail { display: grid; grid-template-columns: repeat(13, minmax(3.3rem, 1fr)); overflow-x: auto; scrollbar-width: thin; }
+  .loop-explorer__rail button { position: relative; display: grid; min-width: 3.3rem; min-height: 8.2rem; align-content: space-between; padding: 0.7rem 0.45rem 0; border: 0; border-top: 1px solid var(--line-dark); border-right: 1px solid var(--line-dark); background: transparent; color: var(--muted-on-dark); cursor: pointer; text-align: left; transition: background 180ms ease, color 180ms ease; }
+  .loop-explorer__rail button:first-child { border-left: 1px solid var(--line-dark); }
+  .loop-explorer__rail button span { font-family: var(--font-mono); font-size: 0.58rem; }
+  .loop-explorer__rail button strong { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.04em; }
+  .loop-explorer__rail button i { width: 100%; height: 3px; background: transparent; }
+  .loop-explorer__rail button:hover { background: var(--ink-3); color: var(--text-on-dark); }
+  .loop-explorer__rail button[aria-selected='true'] { background: rgba(110, 231, 213, 0.08); color: var(--mint); }
+  .loop-explorer__rail button[aria-selected='true'] i { background: var(--mint); }
+  .loop-explorer__detail { display: grid; min-height: 22rem; align-items: stretch; border: 1px solid var(--line-dark); border-top: 0; grid-template-columns: 1.3fr 4.5fr 3fr; }
+  .loop-explorer__detail > * { padding: clamp(1.25rem, 3vw, 2.5rem); border-right: 1px solid var(--line-dark); }
+  .loop-explorer__detail > *:last-child { border-right: 0; }
+  .loop-explorer__verb { display: grid; align-content: space-between; }
+  .loop-explorer__verb span { color: var(--mint); font-family: var(--font-mono); font-size: 4rem; line-height: 1; letter-spacing: -0.08em; }
+  .loop-explorer__verb strong { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.5rem); font-weight: 400; line-height: 0.9; writing-mode: vertical-rl; transform: rotate(180deg); }
+  .loop-explorer__detail small { display: block; margin-bottom: 1.2rem; color: var(--mint); font-family: var(--font-mono); font-size: 0.61rem; letter-spacing: 0.09em; text-transform: uppercase; }
+  .loop-explorer__detail h3 { max-width: 42rem; margin: 0; font-family: var(--font-display); font-size: clamp(2.1rem, 4vw, 4.2rem); font-weight: 420; line-height: 1; letter-spacing: -0.04em; }
+  .loop-explorer__facts { display: grid; grid-template-rows: 1fr 1fr; }
+  .loop-explorer__facts div + div { padding-top: 1.4rem; border-top: 1px solid var(--line-dark); }
+  .loop-explorer__facts p { margin: 0; color: var(--muted-on-dark); font-size: 0.9rem; }
+  .loop-explorer__fallback { margin: 1rem 0 0; color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em; }
+  @media (max-width: 760px) {
+    .loop-explorer { padding: 1rem; }
+    .loop-explorer__head { grid-template-columns: 1fr; }
+    .loop-explorer__head .receipt-stamp { display: none; }
+    .loop-explorer__rail { grid-template-columns: repeat(13, 4.4rem); }
+    .loop-explorer__rail button { min-height: 5.5rem; }
+    .loop-explorer__rail button strong { writing-mode: initial; transform: none; overflow: hidden; text-overflow: ellipsis; }
+    .loop-explorer__detail { min-height: auto; grid-template-columns: 1fr; }
+    .loop-explorer__detail > * { border-right: 0; border-bottom: 1px solid var(--line-dark); }
+    .loop-explorer__detail > *:last-child { border-bottom: 0; }
+    .loop-explorer__verb { grid-template-columns: auto 1fr; align-items: end; gap: 1rem; }
+    .loop-explorer__verb strong { writing-mode: initial; transform: none; }
+    .loop-explorer__facts { grid-template-rows: auto; gap: 1.25rem; }
+  }
+</style>

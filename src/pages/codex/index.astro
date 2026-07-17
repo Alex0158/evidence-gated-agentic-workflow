@@ -1,0 +1,64 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ContentShell from '../../components/ContentShell.astro';
+import CapabilityLadder from '../../components/CapabilityLadder.astro';
+import { codexContent } from '../../data/content';
+import { pathFor } from '../../lib/paths';
+
+const headings = codexContent.module.getHeadings();
+const Content = codexContent.module.Content;
+const stack = [
+  ['Instructions', 'Durable rules、source routing、safety boundaries'],
+  ['Context / Memory', '最小充分、最新、可追溯的 decision context'],
+  ['Skills / Runbooks', '可觸發、可重跑的 procedural workflow'],
+  ['Plugins', 'Skills、MCP、apps 的 distribution layer'],
+  ['Connectors / Browser', 'Live system 與 rendered session access'],
+  ['Helpers / Tests / Evals', 'Machine checks、behavior proof、agent quality'],
+  ['Git / Formal records', 'Versioned current truth 與 operation receipts'],
+  ['Human outer loop', 'Objective、risk、taste、verdict、accountability'],
+];
+---
+
+<SiteLayout title="Codex collaboration stack" description="理解 Instructions、Memory、Skills、Plugins、Connectors、Browser、tests 與 human outer loop 的責任邊界。">
+  <PageHero
+    eyebrow="AI / Codex collaboration stack"
+    title="AI 不是一個 chat box，"
+    accent="而是一組能力層。"
+    description="每一層回答不同問題。Skill 不會擴大 connector authority；authenticated 也不代表指定 target 可寫。"
+    meta={[{ label: 'Layers', value: '08' }, { label: 'Capability gate', value: '06 steps' }, { label: 'Outer loop', value: 'Human' }, { label: 'Default', value: 'Least authority' }]}
+  >
+    <div slot="actions" class="button-row"><a class="button button--signal" href={pathFor('/toolkit/connector-capability-gate/')}>Open capability gate <span>↗</span></a></div>
+  </PageHero>
+  <section class="section control-zone">
+    <div class="container">
+      <div class="stack-map">
+        {stack.map((layer, index) => (
+          <div><span>{String(index + 1).padStart(2, '0')}</span><h2>{layer[0]}</h2><p>{layer[1]}</p><i>{index < stack.length - 1 ? '↓' : 'VERDICT'}</i></div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section control-zone capability-section">
+    <div class="container">
+      <div class="capability-section__head"><p class="eyebrow">Connector capability ladder</p><h2 class="section-title">每一層都要獨立<br /><em>read back。</em></h2><p class="lead">由 configured 到 authorized，任何成功都不能自動推導下一層。</p></div>
+      <CapabilityLadder />
+    </div>
+  </section>
+  <ContentShell index="CX" signal="CODEX ADAPTER" readTime="8 min" headings={headings} sourcePath={codexContent.sourcePath}>
+    <Content />
+  </ContentShell>
+</SiteLayout>
+
+<style>
+  .stack-map { display: grid; border-top: 1px solid var(--line-dark); border-left: 1px solid var(--line-dark); grid-template-columns: repeat(4, 1fr); }
+  .stack-map > div { display: grid; min-height: 18rem; padding: 1.4rem; border-right: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); grid-template-rows: auto 1fr auto auto; }
+  .stack-map span, .stack-map i { color: var(--mint); font-family: var(--font-mono); font-size: 0.61rem; font-style: normal; }
+  .stack-map h2 { align-self: center; margin: 2rem 0 1rem; font-family: var(--font-display); font-size: clamp(2rem, 3vw, 3rem); font-weight: 430; line-height: 0.95; }
+  .stack-map p { color: var(--muted-on-dark); font-size: 0.78rem; }
+  .stack-map i { margin-top: 1.2rem; }
+  .capability-section { border-top: 1px solid var(--line-dark); background: var(--ink-2); }
+  .capability-section__head { max-width: 62rem; margin-bottom: 4rem; }
+  @media (max-width: 900px) { .stack-map { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .stack-map { grid-template-columns: 1fr; } }
+</style>

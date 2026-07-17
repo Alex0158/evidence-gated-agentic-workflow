@@ -1,0 +1,79 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { modes } from '../../data/content';
+import { pathFor } from '../../lib/paths';
+
+export function getStaticPaths() {
+  return modes.map((mode) => ({ params: { mode: mode.slug } }));
+}
+
+const mode = modes.find((item) => item.slug === Astro.params.mode)!;
+const detailsByMode = {
+  fast: {
+    triggers: ['Read-only investigation', 'Local diagnostic', 'Single-target reversible edit', 'Quick current-state answer'],
+    gates: ['Confirm exact target', 'Use current source, not memory', 'Smallest action', 'Immediate readback'],
+    avoid: ['Broad repo scan without decision value', 'Formal spec for trivial work', 'Claiming runtime from static evidence'],
+    verify: 'Static/readback or focused live smoke',
+    closure: 'Answered / Diagnosed / static-verified',
+  },
+  standard: {
+    triggers: ['General implementation', 'Formal documentation', 'Controlled data operation', 'Cross-file contract change'],
+    gates: ['Task brief + non-goals', 'Evidence map and challenge', 'Smallest reversible plan', 'Targeted tests + current-truth record'],
+    avoid: ['Unrelated refactor', 'Treating targeted pass as full suite', 'Leaving docs and behavior divergent'],
+    verify: 'Targeted contract, relevant suite, optional runtime smoke',
+    closure: 'Implemented / Integrated / runtime-verified',
+  },
+  assured: {
+    triggers: ['Production or customer', 'Auth / permissions', 'Destructive operation', 'External publication or payment'],
+    gates: ['Challenge / spec decision', 'Exact identity and authority', 'Recovery / remediation', 'Multi-layer proof + external readback'],
+    avoid: ['Blind retry after timeout', 'Inferring write from read access', 'Calling delivered closed before adoption evidence'],
+    verify: 'Runtime, true-chain, artifact freshness, external closure',
+    closure: 'Delivered / externally closed with residual-risk owner',
+  },
+};
+const details = detailsByMode[mode.slug as keyof typeof detailsByMode]!;
+---
+
+<SiteLayout title={`${mode.name} playbook`} description={mode.description}>
+  <PageHero
+    eyebrow={`Playbook ${mode.index} / ${mode.name}`}
+    title={mode.name}
+    accent="EXECUTION PROFILE"
+    description={`${mode.description} ${mode.promise}`}
+    meta={[{ label: 'Profile', value: mode.name }, { label: 'Verification', value: details.verify }, { label: 'Closure', value: details.closure }, { label: 'Autonomy', value: mode.slug === 'assured' ? 'Bounded' : 'Active' }]}
+  >
+    <div slot="actions" class="button-row"><a class="button button--signal" href={pathFor(`/workbench/?mode=${mode.slug}`)}>Use this playbook <span>↗</span></a></div>
+  </PageHero>
+  <section class="section control-zone">
+    <div class="container playbook-detail">
+      <div class="playbook-detail__index"><span>{mode.index}</span><p>{mode.name.toUpperCase()} / ACTIVE PROFILE</p></div>
+      <div class="playbook-block"><small>Use when</small><ul>{details.triggers.map((item) => <li>{item}</li>)}</ul></div>
+      <div class="playbook-block" data-gate><small>Required gates</small><ol>{details.gates.map((item) => <li>{item}</li>)}</ol></div>
+      <div class="playbook-block"><small>Do not</small><ul>{details.avoid.map((item) => <li>{item}</li>)}</ul></div>
+    </div>
+  </section>
+  <section class="section bone-zone">
+    <div class="container closure-band">
+      <div><p class="eyebrow">Verification target</p><h2>{details.verify}</h2></div>
+      <div><p class="eyebrow">Precise closure</p><h2>{details.closure}</h2></div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .playbook-detail { display: grid; border-top: 1px solid var(--line-dark); border-left: 1px solid var(--line-dark); grid-template-columns: 0.7fr repeat(3, 1fr); }
+  .playbook-detail > div { min-height: 28rem; padding: 1.5rem; border-right: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); }
+  .playbook-detail__index { display: grid; align-content: space-between; }
+  .playbook-detail__index span { color: var(--mint); font-family: var(--font-mono); font-size: clamp(4rem, 8vw, 8rem); letter-spacing: -0.09em; line-height: 0.8; }
+  .playbook-detail__index p { margin: 0; color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.62rem; writing-mode: vertical-rl; transform: rotate(180deg); }
+  .playbook-block { position: relative; display: grid; align-content: start; }
+  .playbook-block[data-gate] { clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%); }
+  .playbook-block small { color: var(--mint); font-family: var(--font-mono); font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .playbook-block ul, .playbook-block ol { display: grid; gap: 1.3rem; margin-top: 4rem; padding-left: 1.2rem; color: var(--muted-on-dark); font-size: 0.88rem; }
+  .closure-band { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); }
+  .closure-band > div { min-height: 18rem; padding: 2rem; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); }
+  .closure-band h2 { max-width: 32rem; margin-top: 4rem; font-family: var(--font-display); font-size: clamp(2.1rem, 4vw, 4rem); font-weight: 430; line-height: 0.98; }
+  @media (max-width: 900px) { .playbook-detail { grid-template-columns: 1fr 1fr; } .playbook-detail__index p { writing-mode: initial; transform: none; } }
+  @media (max-width: 600px) { .playbook-detail, .closure-band { grid-template-columns: 1fr; } .playbook-detail > div { min-height: 19rem; } }
+</style>

@@ -1,0 +1,53 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import LoopExplorer from '../../components/LoopExplorer.astro';
+import { pathFor } from '../../lib/paths';
+---
+
+<SiteLayout title="System map" description="探索 Evidence-Gated Agentic Workflow 的 operating loop、truth routing、evidence 與 closure。">
+  <PageHero
+    eyebrow="System map / Objective to closure"
+    title="一條可以重跑、"
+    accent="回流與收斂的路徑。"
+    description="它不是瀑布式 checklist。Evidence 不足會回到 observation；reusable gap 會回到 boundary 與 system evolution。"
+    meta={[{ label: 'Stages', value: '13' }, { label: 'Profiles', value: '03' }, { label: 'Feedback', value: '2 loops' }, { label: 'Owner', value: 'Human outer loop' }]}
+  >
+    <div slot="actions" class="button-row"><a class="button button--signal" href={pathFor('/start/')}>Route a task <span>↗</span></a></div>
+  </PageHero>
+  <section class="section control-zone"><div class="container"><LoopExplorer /></div></section>
+  <section class="section bone-zone">
+    <div class="container system-primitives">
+      <div class="system-primitives__intro"><p class="eyebrow">Four control primitives</p><h2 class="section-title">流程可靠性，來自<br /><em>四個彼此咬合的控制面。</em></h2></div>
+      <div class="primitive-grid">
+        <a href={pathFor('/learn/core-principles/')}><span>01</span><h3>Truth</h3><p>Current code、live data、runtime 與 formal docs 按 question 和 time 路由。</p></a>
+        <a href={pathFor('/learn/risk-and-authority/')}><span>02</span><h3>Boundary</h3><p>Target、identity、mutation class、lifetime 與 recovery 不互相推導。</p></a>
+        <a href={pathFor('/system/evidence/')}><span>03</span><h3>Evidence</h3><p>Verified、Inferred、Unknown 保留 provenance，也限制 completion claim。</p></a>
+        <a href={pathFor('/learn/verification-and-closure/')}><span>04</span><h3>Closure</h3><p>Ready、delivered、adopted、verified 與 closed 是不同狀態。</p></a>
+      </div>
+    </div>
+  </section>
+  <section class="section paper-zone">
+    <div class="container boundary-equations">
+      <p class="eyebrow">Boundary equations</p>
+      <div><span>CONFIGURED</span><i>≠</i><strong>CONNECTED</strong></div>
+      <div><span>CODE FIXED</span><i>≠</i><strong>RUNTIME VERIFIED</strong></div>
+      <div><span>DELIVERED</span><i>≠</i><strong>ADOPTED</strong></div>
+      <div><span>GIT PUSHED</span><i>≠</i><strong>CLOSED</strong></div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .system-primitives__intro { max-width: 62rem; margin-bottom: 4rem; }
+  .primitive-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); }
+  .primitive-grid a { min-height: 19rem; padding: 2rem; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); color: var(--text-on-light); }
+  .primitive-grid span { color: var(--mint-dark); font-family: var(--font-mono); font-size: 0.64rem; }
+  .primitive-grid h3 { margin: 4rem 0 1rem; font-family: var(--font-display); font-size: 3.5rem; font-weight: 430; line-height: 0.9; }
+  .primitive-grid p { max-width: 30rem; margin: 0; color: var(--muted-on-light); }
+  .boundary-equations { display: grid; }
+  .boundary-equations > div { display: grid; min-height: 7rem; align-items: center; border-bottom: 1px solid var(--line-light); grid-template-columns: 1fr 5rem 1fr; }
+  .boundary-equations span, .boundary-equations strong { font-family: var(--font-mono); font-size: clamp(1rem, 2.5vw, 2rem); letter-spacing: -0.03em; }
+  .boundary-equations i { color: var(--coral-dark); font-family: var(--font-display); font-size: 3rem; font-style: normal; text-align: center; }
+  @media (max-width: 700px) { .primitive-grid { grid-template-columns: 1fr; } .boundary-equations > div { grid-template-columns: 1fr 3rem 1fr; } }
+</style>

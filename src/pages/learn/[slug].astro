@@ -1,0 +1,27 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ContentShell from '../../components/ContentShell.astro';
+import { lessons } from '../../data/content';
+
+export function getStaticPaths() {
+  return lessons.map((lesson) => ({ params: { slug: lesson.slug } }));
+}
+
+const lesson = lessons.find((item) => item.slug === Astro.params.slug)!;
+const headings = lesson.module.getHeadings();
+const Content = lesson.module.Content;
+---
+
+<SiteLayout title={lesson.title} description={lesson.description} surface="paper">
+  <PageHero
+    eyebrow={`Reference / Chapter ${lesson.order}`}
+    title={lesson.shortTitle}
+    accent={lesson.signal}
+    description={lesson.description}
+    meta={[{ label: 'Chapter', value: lesson.order }, { label: 'Read', value: lesson.readTime }, { label: 'Source', value: 'Markdown' }, { label: 'Status', value: 'Canonical' }]}
+  />
+  <ContentShell index={lesson.order} signal={lesson.signal} readTime={lesson.readTime} headings={headings} sourcePath={lesson.sourcePath}>
+    <Content />
+  </ContentShell>
+</SiteLayout>

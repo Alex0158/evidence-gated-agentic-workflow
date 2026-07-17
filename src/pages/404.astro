@@ -1,0 +1,23 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { pathFor } from '../lib/paths';
+---
+
+<SiteLayout title="Route not found" noindex>
+  <section class="not-found">
+    <div class="container not-found__grid">
+      <div><p class="eyebrow">HTTP 404 / Unknown route</p><h1 class="display-title">Unknown 是合法狀態。<br /><em>虛構 route 不是。</em></h1><p class="lead">這個地址不在目前的 system map。回到首頁，或用 command search 找到正確 source。</p><div class="button-row"><a class="button button--signal" href={pathFor('/')}>Return home <span>↗</span></a><button class="button" type="button" data-open-search>Search <span>⌘ K</span></button></div></div>
+      <div class="error-code" aria-hidden="true"><span>4</span><i></i><span>0</span><i></i><span>4</span></div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .not-found { display: grid; min-height: 72vh; align-items: center; padding-block: 5rem; }
+  .not-found__grid { display: grid; align-items: center; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; }
+  .not-found .lead { margin-bottom: 2rem; }
+  .error-code { display: grid; grid-template-columns: auto 1fr auto 1fr auto; align-items: center; color: var(--mint); }
+  .error-code span { font-family: var(--font-mono); font-size: clamp(4rem, 9vw, 9rem); }
+  .error-code i { height: 1px; background: var(--line-dark); }
+  @media (max-width: 760px) { .not-found__grid { grid-template-columns: 1fr; } }
+</style>

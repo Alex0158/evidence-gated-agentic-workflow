@@ -1,0 +1,111 @@
+---
+import { pathFor } from '../lib/paths';
+---
+
+<div class="classifier" data-classifier>
+  <form class="classifier__questions">
+    <fieldset class="classifier-question" data-weight="3">
+      <legend><span>01</span> Target 是否涉及 production、customer、正式資料或 external publication？</legend>
+      <label><input type="radio" name="external" value="yes" /> 是</label>
+      <label><input type="radio" name="external" value="no" checked /> 否</label>
+    </fieldset>
+    <fieldset class="classifier-question" data-weight="3">
+      <legend><span>02</span> 是否涉及 delete、permissions、auth、payment 或不可逆操作？</legend>
+      <label><input type="radio" name="irreversible" value="yes" /> 是</label>
+      <label><input type="radio" name="irreversible" value="no" checked /> 否</label>
+    </fieldset>
+    <fieldset class="classifier-question" data-weight="3">
+      <legend><span>03</span> Account、workspace、target identity 或 recovery 是否仍不清楚？</legend>
+      <label><input type="radio" name="identity" value="yes" /> 是</label>
+      <label><input type="radio" name="identity" value="no" checked /> 否</label>
+    </fieldset>
+    <fieldset class="classifier-question" data-weight="1">
+      <legend><span>04</span> 這次需要修改 code、data、formal docs 或 remote state？</legend>
+      <label><input type="radio" name="write" value="yes" /> 是</label>
+      <label><input type="radio" name="write" value="no" checked /> 否</label>
+    </fieldset>
+    <fieldset class="classifier-question" data-weight="1">
+      <legend><span>05</span> 是否跨 UI、API、data、config、runtime 或 deployment layer？</legend>
+      <label><input type="radio" name="cross" value="yes" /> 是</label>
+      <label><input type="radio" name="cross" value="no" checked /> 否</label>
+    </fieldset>
+  </form>
+
+  <aside class="result-panel classifier__result" aria-live="polite">
+    <span class="result-panel__label">Recommended profile</span>
+    <h2 data-mode-name>Fast</h2>
+    <p data-mode-summary>可逆、局部、read-only 或低風險工作：確認 boundary，做最小 action，再 read back。</p>
+    <div class="classifier__gates">
+      <small>Required gates</small>
+      <ul data-mode-gates>
+        <li>確認 target 與 source of truth</li>
+        <li>執行 smallest useful action</li>
+        <li>回讀結果並限制 claim</li>
+      </ul>
+    </div>
+    <a class="button button--signal" data-mode-link href={pathFor('/workbench/?mode=fast')}>Build this workflow <span>↗</span></a>
+    <p class="classifier__disclaimer">這是 workflow routing 建議，不是 security、safety 或 compliance 認證。</p>
+  </aside>
+</div>
+
+<script is:inline define:vars={{ workbenchBase: pathFor('/workbench/') }}>
+  document.querySelectorAll('[data-classifier]').forEach((root) => {
+    const profiles = {
+      fast: {
+        name: 'Fast',
+        summary: '可逆、局部、read-only 或低風險工作：確認 boundary，做最小 action，再 read back。',
+        gates: ['確認 target 與 source of truth', '執行 smallest useful action', '回讀結果並限制 claim'],
+      },
+      standard: {
+        name: 'Standard',
+        summary: '一般實作或正式資料操作：先鎖定 objective，再用 targeted verification 與 current-truth record 收口。',
+        gates: ['Task brief 與 non-goals', 'Evidence map + challenge', 'Targeted verification', '同步 owning truth layer'],
+      },
+      assured: {
+        name: 'Assured',
+        summary: '高風險 crossing：先確認 identity、authority 與 recovery，再以多層 evidence 和 external readback 收口。',
+        gates: ['Challenge / spec gate', 'Exact identity、scope、authority', 'Rollback / remediation', 'Runtime 或 external closure'],
+      },
+    };
+    const render = () => {
+      const yes = [...root.querySelectorAll('input[value="yes"]:checked')];
+      const assured = yes.some((input) => Number(input.closest('[data-weight]')?.dataset.weight) === 3);
+      const mode = assured ? 'assured' : yes.length ? 'standard' : 'fast';
+      const profile = profiles[mode];
+      root.querySelector('[data-mode-name]').textContent = profile.name;
+      root.querySelector('[data-mode-summary]').textContent = profile.summary;
+      root.querySelector('[data-mode-gates]').innerHTML = profile.gates.map((gate) => `<li>${gate}</li>`).join('');
+      root.querySelector('[data-mode-link]').href = `${workbenchBase}?mode=${mode}`;
+      try { localStorage.setItem('egaw-mode', mode); } catch {}
+    };
+    root.addEventListener('change', render);
+    render();
+  });
+</script>
+
+<style>
+  .classifier { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .classifier__questions { display: grid; gap: 0; border-top: 1px solid var(--line-dark); }
+  .classifier-question { display: grid; min-width: 0; margin: 0; padding: 1.25rem 0; border: 0; border-bottom: 1px solid var(--line-dark); grid-template-columns: 1fr auto auto; gap: 0.65rem; align-items: center; }
+  .classifier-question legend { display: contents; color: var(--text-on-dark); font-size: 0.95rem; }
+  .classifier-question legend span { margin-right: 0.7rem; color: var(--mint); font-family: var(--font-mono); font-size: 0.68rem; }
+  .classifier-question label { display: grid; min-width: 3.4rem; min-height: 2.8rem; place-items: center; border: 1px solid var(--line-dark); cursor: pointer; font-family: var(--font-mono); font-size: 0.68rem; }
+  .classifier-question label:has(input:checked) { border-color: var(--mint); background: rgba(110, 231, 213, 0.08); color: var(--mint); }
+  .classifier-question label:has(input:focus-visible) { outline: 2px solid var(--mint); outline-offset: 3px; }
+  .classifier-question input { position: absolute; opacity: 0; }
+  .classifier__result { position: sticky; top: 7rem; }
+  .classifier__gates { margin: 2rem 0; padding-top: 1rem; border-top: 1px solid var(--line-dark); }
+  .classifier__gates small { color: var(--mint); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .classifier__gates ul { padding-left: 1.2rem; color: var(--muted-on-dark); font-size: 0.85rem; }
+  .classifier__gates li { margin-block: 0.55rem; }
+  .classifier__disclaimer { margin-top: 1.2rem !important; font-size: 0.7rem !important; }
+  @media (max-width: 800px) {
+    .classifier { grid-template-columns: 1fr; }
+    .classifier__result { position: static; }
+    .classifier-question { grid-template-columns: 1fr auto auto; }
+  }
+  @media (max-width: 520px) {
+    .classifier-question { grid-template-columns: 1fr 1fr; }
+    .classifier-question legend { display: block; grid-column: 1 / -1; margin-bottom: 0.6rem; }
+  }
+</style>

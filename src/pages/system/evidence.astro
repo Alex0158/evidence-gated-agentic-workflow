@@ -1,0 +1,40 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import EvidenceMatcher from '../../components/EvidenceMatcher.astro';
+import { evidenceLevels } from '../../data/content';
+---
+
+<SiteLayout title="Evidence matcher" description="用七層 verification ladder 檢查 completion claim 是否超過現有 evidence。">
+  <PageHero
+    eyebrow="Claim–evidence calibration"
+    title="你可以說什麼，"
+    accent="由證據決定。"
+    description="選擇已完成的 evidence surface，再選擇想提出的 claim。網站會檢查是否同粒度；較高編號不會自動證明其他 surface。"
+    meta={[{ label: 'Evidence states', value: 'V / I / U' }, { label: 'Levels', value: 'L1—L7' }, { label: 'Output', value: 'Claim limit' }, { label: 'Guarantee', value: 'None' }]}
+  />
+  <section class="section control-zone"><div class="container"><EvidenceMatcher /></div></section>
+  <section class="section paper-zone">
+    <div class="container">
+      <div class="ladder-head"><p class="eyebrow">Claim-specific verification map</p><h2 class="section-title">每個 surface，<br /><em>只支持特定 claim。</em></h2></div>
+      <div class="ladder-table">
+        {evidenceLevels.map((level) => (
+          <div><span>L{level.value}</span><h3>{level.name}</h3><p>{level.proof}</p><strong>{level.claim}</strong><small>NOT: {level.not}</small></div>
+        ))}
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .ladder-head { max-width: 65rem; margin-bottom: 4rem; }
+  .ladder-table { border-top: 1px solid var(--line-light); }
+  .ladder-table > div { display: grid; min-height: 8rem; align-items: center; border-bottom: 1px solid var(--line-light); color: var(--text-on-light); grid-template-columns: 3rem 1fr 1.4fr 1.4fr 1fr; gap: 1.2rem; }
+  .ladder-table span, .ladder-table small { font-family: var(--font-mono); font-size: 0.62rem; }
+  .ladder-table span { color: var(--mint-dark); }
+  .ladder-table h3 { margin: 0; font-family: var(--font-display); font-size: 1.6rem; font-weight: 450; }
+  .ladder-table p { margin: 0; color: var(--muted-on-light); font-size: 0.78rem; }
+  .ladder-table strong { font-size: 0.82rem; }
+  .ladder-table small { color: var(--coral-dark); }
+  @media (max-width: 800px) { .ladder-table > div { padding-block: 1rem; grid-template-columns: 2rem 1fr; } .ladder-table p, .ladder-table strong, .ladder-table small { grid-column: 2; } }
+</style>

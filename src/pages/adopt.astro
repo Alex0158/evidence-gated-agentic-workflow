@@ -1,0 +1,57 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { pathFor } from '../lib/paths';
+
+const weeks = [
+  { no: '01', title: '建立最小閉環', focus: 'Objective + Boundary + Evidence claim', outcome: '團隊能區分「做了」與「已驗證完成」。' },
+  { no: '02', title: '風險分流', focus: 'Fast / Standard / Assured + decision rights', outcome: '低風險不被拖慢，高風險 crossing 不靠猜。' },
+  { no: '03', title: '整理 AI stack', focus: 'Instructions、Memory、Skills、Tools、Tests', outcome: 'AI 用較少 prompt 找到正確 source 與 tool。' },
+  { no: '04', title: '量 effectiveness', focus: 'Reopen、time-to-verified、operator cost', outcome: '刪除沒有 decision impact 的規則。' },
+];
+---
+
+<SiteLayout title="Adoption path" description="用四週漸進路徑採用 Evidence-Gated workflow，而不是一次搬入整套流程。">
+  <PageHero
+    eyebrow="Adoption / Four-week path"
+    title="先建立三個習慣，"
+    accent="不要一次搬完整套。"
+    description="這個 framework 的價值在 decision quality，不在 process density。由最小閉環開始，再逐步增加風險分流與可觀測 controls。"
+    meta={[{ label: 'Path', value: '04 weeks' }, { label: 'First habits', value: '03' }, { label: 'Primary metric', value: 'Time-to-verified' }, { label: 'End state', value: 'Prunable system' }]}
+  />
+  <section class="section paper-zone">
+    <div class="container adoption-path">
+      {weeks.map((week) => (
+        <div>
+          <span>{week.no}</span>
+          <small>WEEK {week.no}</small>
+          <h2>{week.title}</h2>
+          <p>{week.focus}</p>
+          <strong>{week.outcome}</strong>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="section control-zone">
+    <div class="container adoption-split">
+      <div><p class="eyebrow">Personal</p><h2 class="section-title">一份 brief，<br /><em>一份 verification report。</em></h2><p class="lead">個人先從 task envelope、repo instructions 與一個 improvement log 開始。</p></div>
+      <div><p class="eyebrow">Team</p><h2 class="section-title">增加 decision rights，<br /><em>不是增加最多規則。</em></h2><p class="lead">小團隊再加入 PR/issue templates、release/handoff record 與 1–2 條 traceability pilots。</p></div>
+    </div>
+    <div class="container adoption-actions"><a class="button button--signal" href={pathFor('/workbench/')}>Start week one <span>↗</span></a><a class="button" href={pathFor('/learn/adoption-guide/')}>Read full guide <span>↗</span></a></div>
+  </section>
+</SiteLayout>
+
+<style>
+  .adoption-path { display: grid; border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); grid-template-columns: repeat(4, 1fr); }
+  .adoption-path > div { display: grid; min-height: 30rem; padding: 1.5rem; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); color: var(--text-on-light); grid-template-rows: auto auto 1fr auto auto; }
+  .adoption-path span { color: var(--mint-dark); font-family: var(--font-mono); font-size: 3rem; letter-spacing: -0.06em; }
+  .adoption-path small { color: var(--muted-on-light); font-family: var(--font-mono); font-size: 0.6rem; }
+  .adoption-path h2 { align-self: center; margin: 4rem 0 2rem; font-family: var(--font-display); font-size: 2.5rem; font-weight: 430; line-height: 0.95; }
+  .adoption-path p { color: var(--muted-on-light); font-size: 0.82rem; }
+  .adoption-path strong { padding-top: 1rem; border-top: 1px solid var(--line-light); font-size: 0.78rem; }
+  .adoption-split { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+  .adoption-split > div + div { padding-left: 5rem; border-left: 1px solid var(--line-dark); }
+  .adoption-actions { display: flex; gap: 0.75rem; margin-top: 4rem; }
+  @media (max-width: 900px) { .adoption-path { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 650px) { .adoption-path, .adoption-split { grid-template-columns: 1fr; } .adoption-split > div + div { padding: 3rem 0 0; border-top: 1px solid var(--line-dark); border-left: 0; } }
+</style>

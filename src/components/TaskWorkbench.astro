@@ -1,0 +1,254 @@
+---
+const closureTargets = ['Answered', 'Diagnosed', 'Implemented', 'Integrated', 'Runtime-verified', 'Delivered', 'Externally closed'];
+---
+
+<div class="workbench" data-workbench>
+  <div class="workbench__editor">
+    <fieldset class="workbench__mode">
+      <legend class="mono-label">01 / Select profile</legend>
+      <div class="choice-grid">
+        <label class="choice">
+          <input type="radio" name="mode" value="fast" form="workbench-form" />
+          <strong>Fast</strong><small>Read-only、local、可逆</small>
+        </label>
+        <label class="choice">
+          <input type="radio" name="mode" value="standard" form="workbench-form" checked />
+          <strong>Standard</strong><small>Change/build、formal work</small>
+        </label>
+        <label class="choice">
+          <input type="radio" name="mode" value="assured" form="workbench-form" />
+          <strong>Assured</strong><small>Production、external、高風險</small>
+        </label>
+      </div>
+    </fieldset>
+
+    <form id="workbench-form" class="tool-form" autocomplete="off">
+      <h2 class="mono-label">02 / Define the envelope</h2>
+      <label class="field">
+        <span>Objective</span>
+        <textarea name="objective" placeholder="真正要改變的 outcome 是什麼？" data-persist></textarea>
+      </label>
+      <div class="workbench__split">
+        <label class="field">
+          <span>Success</span>
+          <textarea name="success" placeholder="什麼證據代表成功？" data-persist></textarea>
+        </label>
+        <label class="field">
+          <span>Non-goals</span>
+          <textarea name="nonGoals" placeholder="明確不做什麼？" data-persist></textarea>
+        </label>
+      </div>
+      <h2 class="mono-label">03 / Scope & truth</h2>
+      <div class="workbench__split">
+        <label class="field">
+          <span>Owner</span>
+          <textarea name="owner" placeholder="哪個 team、repo 或 data source 擁有 target？" data-persist></textarea>
+        </label>
+        <label class="field">
+          <span>In scope</span>
+          <textarea name="inScope" placeholder="Exact files、records、account、environment…" data-persist></textarea>
+        </label>
+      </div>
+      <label class="field">
+        <span>Out of scope</span>
+        <textarea name="outScope" placeholder="Protected surfaces、shared layers、unrelated cleanup…" data-persist></textarea>
+      </label>
+      <div class="workbench__split">
+        <label class="field">
+          <span>Current observed state</span>
+          <textarea name="currentState" placeholder="Current code、runtime、live data 或 tool readback…" data-persist></textarea>
+        </label>
+        <label class="field">
+          <span>Intended contract</span>
+          <textarea name="contract" placeholder="哪份 active spec 或 formal docs 定義預期？" data-persist></textarea>
+        </label>
+      </div>
+      <label class="field">
+        <span>Historical context（optional）</span>
+        <textarea name="history" placeholder="只有會改變 decision 的歷史才放在這裡。" data-persist></textarea>
+      </label>
+
+      <h2 class="mono-label">04 / Authority & evidence</h2>
+      <div class="workbench__split">
+        <label class="field">
+          <span>Mutation class</span>
+          <select name="mutation" data-persist>
+            <option>Read-only</option>
+            <option>Edit local</option>
+            <option>Write formal data</option>
+            <option>Publish</option>
+            <option>Deploy</option>
+            <option>Delete / destructive</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Closure target</span>
+          <select name="closure" data-persist>
+            {closureTargets.map((target) => <option>{target}</option>)}
+          </select>
+        </label>
+      </div>
+      <div class="workbench__split">
+        <label class="field">
+          <span>Operator</span>
+          <textarea name="operator" placeholder="誰實際執行或代表哪個身份？" data-persist></textarea>
+        </label>
+        <label class="field">
+          <span>Authority lifetime</span>
+          <select name="lifetime" data-persist>
+            <option>One-shot</option>
+            <option>Current task</option>
+            <option>Current session</option>
+            <option>Explicitly persistent</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">
+        <span>Preconditions</span>
+        <textarea name="authority" placeholder="Identity、dry-run、backup、review、approved target 等 preconditions…" data-persist></textarea>
+      </label>
+      <label class="field">
+        <span>Revalidation trigger</span>
+        <textarea name="revalidation" placeholder="Target、tool、identity、risk 或 mutation class 改變時，何時必須重新授權？" data-persist></textarea>
+      </label>
+      <div class="workbench__triple">
+        <label class="field"><span>Verified</span><textarea name="verified" placeholder="Current facts" data-persist></textarea></label>
+        <label class="field"><span>Inferred</span><textarea name="inferred" placeholder="Reasoned, not proven" data-persist></textarea></label>
+        <label class="field"><span>Unknown</span><textarea name="unknown" placeholder="Missing evidence / falsifier" data-persist></textarea></label>
+      </div>
+
+      <h2 class="mono-label">05 / Action & closure</h2>
+      <label class="field">
+        <span>Smallest reversible action</span>
+        <textarea name="action" placeholder="Precondition → smallest action → readback → next-entry condition" data-persist></textarea>
+      </label>
+      <div class="workbench__split">
+        <label class="field">
+          <span>Verification</span>
+          <textarea name="verification" placeholder="要跑什麼？最多支持哪一層 claim？" data-persist></textarea>
+        </label>
+        <label class="field">
+          <span>Stop / Recovery</span>
+          <textarea name="recovery" placeholder="何時停止？rollback 或 remediation 是什麼？" data-persist></textarea>
+        </label>
+      </div>
+    </form>
+  </div>
+
+  <aside class="workbench__output">
+    <div class="workbench__status">
+      <span class="status-dot status-dot--verified"></span>
+      <span>Local draft</span>
+      <strong data-workbench-mode>STANDARD</strong>
+    </div>
+    <div class="template-preview">
+      <div class="template-preview__actions">
+        <button class="button button--compact" type="button" data-copy-workbench>Copy Markdown</button>
+        <button class="button button--compact" type="button" data-download-workbench>Download</button>
+        <button class="button button--compact" type="button" data-clear-workbench>Clear</button>
+      </div>
+      <pre><code data-workbench-preview></code></pre>
+    </div>
+    <div class="notice">
+      <span class="status-dot status-dot--inferred"></span>
+      <p><strong>Privacy:</strong> 內容只存在於你的 browser local storage；網站不會上傳、追蹤或同步表單資料。Local storage 不是 secret store，請勿填入 token、credential 或敏感客戶資料。</p>
+    </div>
+  </aside>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('[data-workbench]').forEach((root) => {
+    const form = root.querySelector('#workbench-form');
+    const preview = root.querySelector('[data-workbench-preview]');
+    const modeLabel = root.querySelector('[data-workbench-mode]');
+    const storageKey = 'egaw-workbench-v1';
+    const modeInputs = [...root.querySelectorAll('input[name="mode"]')];
+    const copyText = async (text) => {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(text);
+    };
+
+    const value = (data, key, fallback = '—') => String(data.get(key) || '').trim() || fallback;
+    const generate = () => {
+      const data = new FormData(form);
+      const mode = root.querySelector('input[name="mode"]:checked')?.value || 'standard';
+      const markdown = `# Task Brief\n\n## Objective\n\n${value(data, 'objective')}\n\n## Success / non-goals\n\n- Success: ${value(data, 'success')}\n- Non-goals: ${value(data, 'nonGoals')}\n\n## Profile\n\n- Mode: ${mode[0].toUpperCase() + mode.slice(1)}\n- Reason: ${mode === 'assured' ? 'High-impact / external / difficult-to-recover surface' : mode === 'fast' ? 'Read-only / local / reversible surface' : 'Controlled change with targeted verification'}\n- Mutation class: ${value(data, 'mutation')}\n\n## Scope and owner\n\n- Owner: ${value(data, 'owner')}\n- In scope: ${value(data, 'inScope')}\n- Out of scope: ${value(data, 'outScope')}\n\n## Source of truth\n\n- Current observed state: ${value(data, 'currentState')}\n- Intended contract: ${value(data, 'contract')}\n- Historical context: ${value(data, 'history')}\n\n## Authority\n\n- Operator: ${value(data, 'operator')}\n- Allowed: ${value(data, 'mutation')}\n- Lifetime: ${value(data, 'lifetime')}\n- Revalidation trigger: ${value(data, 'revalidation')}\n- Preconditions: ${value(data, 'authority')}\n\n## Evidence status\n\n- Verified: ${value(data, 'verified')}\n- Inferred: ${value(data, 'inferred')}\n- Unknown: ${value(data, 'unknown')}\n\n## Smallest reversible action\n\n${value(data, 'action')}\n\n## Verification and closure target\n\n- Minimum verification: ${value(data, 'verification')}\n- Closure target: ${value(data, 'closure')}\n- Stop / rollback: ${value(data, 'recovery')}\n`;
+      preview.textContent = markdown;
+      modeLabel.textContent = mode.toUpperCase();
+      try {
+        const state = Object.fromEntries(data.entries());
+        state.mode = mode;
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        localStorage.setItem('egaw-mode', mode);
+      } catch {}
+      return markdown;
+    };
+
+    const restore = () => {
+      let state = {};
+      try { state = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch {}
+      const queryMode = new URLSearchParams(location.search).get('mode');
+      const savedMode = queryMode || state.mode || localStorage.getItem('egaw-mode') || 'standard';
+      modeInputs.forEach((input) => input.checked = input.value === savedMode);
+      root.querySelectorAll('[data-persist]').forEach((field) => {
+        if (state[field.name] !== undefined) field.value = state[field.name];
+      });
+    };
+
+    root.addEventListener('input', generate);
+    root.addEventListener('change', generate);
+    root.querySelector('[data-copy-workbench]')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      const original = button.textContent;
+      try {
+        await copyText(generate());
+        button.textContent = 'Copied';
+      } catch {
+        button.textContent = 'Copy failed · download instead';
+      }
+      setTimeout(() => button.textContent = original, 1400);
+    });
+    root.querySelector('[data-download-workbench]')?.addEventListener('click', () => {
+      const blob = new Blob([generate()], { type: 'text/markdown;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'task-brief.md';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+    root.querySelector('[data-clear-workbench]')?.addEventListener('click', () => {
+      if (!confirm('清除這個 browser 內保存的 Workbench draft？')) return;
+      form.reset();
+      modeInputs.forEach((input) => input.checked = input.value === 'standard');
+      try { localStorage.removeItem(storageKey); } catch {}
+      generate();
+    });
+    restore();
+    generate();
+  });
+</script>
+
+<style>
+  .workbench { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(24rem, 0.92fr); gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+  .workbench__editor { display: grid; gap: 3rem; }
+  .workbench__mode { min-width: 0; margin: 0; padding: 0; border: 0; }
+  .workbench__mode legend { width: 100%; }
+  .workbench__mode .choice-grid { grid-template-columns: repeat(3, 1fr); }
+  .workbench__split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .workbench__triple { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .workbench__output { position: sticky; top: 6.5rem; display: grid; gap: 1rem; }
+  .workbench__status { display: flex; align-items: center; gap: 0.65rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line-dark); color: var(--muted-on-dark); font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .workbench__status strong { margin-left: auto; color: var(--mint); }
+  .workbench .mono-label { margin-top: 0.75rem; }
+  .workbench__mode .mono-label { margin-top: 0; }
+  .workbench .notice p { margin: 0; }
+  @media (max-width: 980px) {
+    .workbench { grid-template-columns: 1fr; }
+    .workbench__output { position: static; }
+  }
+  @media (max-width: 600px) {
+    .workbench__mode .choice-grid,
+    .workbench__split,
+    .workbench__triple { grid-template-columns: 1fr; }
+  }
+</style>

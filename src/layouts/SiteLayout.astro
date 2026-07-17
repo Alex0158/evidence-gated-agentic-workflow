@@ -1,0 +1,102 @@
+---
+import '@fontsource-variable/newsreader';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SearchPalette from '../components/SearchPalette.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  surface?: 'dark' | 'paper';
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Evidence-Gated Agentic Workflow',
+  description = '一套以可信真相、清楚邊界與可驗證閉環為核心的人類 × AI 工作系統。',
+  surface = 'dark',
+  image,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title === 'Evidence-Gated Agentic Workflow' ? title : `${title} — Evidence-Gated`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image || `${import.meta.env.BASE_URL}og-card.png`, Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Evidence-Gated Agentic Workflow',
+  url: new URL(import.meta.env.BASE_URL, Astro.site),
+  inLanguage: 'zh-Hant',
+  description,
+};
+---
+
+<!doctype html>
+<html lang="zh-Hant" data-surface={surface}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071013" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Evidence-Gated Agentic Workflow" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Evidence-Gated Agentic Workflow control room" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialImage} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')}></script>
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <SiteHeader />
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    <SearchPalette />
+
+    <script is:inline>
+      const progress = document.querySelector('.reading-progress span');
+      const updateProgress = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const value = max > 0 ? window.scrollY / max : 0;
+        if (progress) progress.style.transform = `scaleX(${Math.min(1, value)})`;
+      };
+      updateProgress();
+      window.addEventListener('scroll', updateProgress, { passive: true });
+
+      const revealItems = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.setAttribute('data-visible', 'true');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -24px' });
+        revealItems.forEach((item) => observer.observe(item));
+      } else {
+        revealItems.forEach((item) => item.setAttribute('data-visible', 'true'));
+      }
+    </script>
+  </body>
+</html>

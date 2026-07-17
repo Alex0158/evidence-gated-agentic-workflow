@@ -1,0 +1,59 @@
+---
+import { pathFor } from '../lib/paths';
+
+const nav = [
+  { label: 'System', path: '/system/' },
+  { label: 'Playbooks', path: '/playbooks/' },
+  { label: 'Workbench', path: '/workbench/' },
+  { label: 'Codex', path: '/codex/' },
+  { label: 'Cases', path: '/cases/' },
+  { label: 'Adopt', path: '/adopt/' },
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="site-header" data-site-header>
+  <div class="site-header__inner">
+    <a class="brand" href={pathFor('/')} aria-label="Evidence-Gated 首頁">
+      <span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand__copy">
+        <strong>Evidence-Gated</strong>
+        <small>Model v0.1 · Site v0.2</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
+      <span>Menu</span><i></i><i></i>
+    </button>
+
+    <nav id="primary-navigation" class="primary-nav" aria-label="主要導覽" data-primary-nav>
+      {nav.map((item) => (
+        <a href={pathFor(item.path)} aria-current={current.includes(item.path) ? 'page' : undefined}>{item.label}</a>
+      ))}
+      <div class="mobile-nav-actions">
+        <button type="button" data-open-search>Search <span aria-hidden="true">⌕</span></button>
+        <a href={pathFor('/start/')}>Start a task <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-trigger" type="button" data-open-search aria-label="搜尋網站">
+        <span>Search</span><kbd>⌘ K</kbd>
+      </button>
+      <a class="button button--compact button--signal" href={pathFor('/start/')}>Start a task <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const header = document.querySelector('[data-site-header]');
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const nav = document.querySelector('[data-primary-nav]');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    nav?.toggleAttribute('data-open', !open);
+  });
+  window.addEventListener('scroll', () => header?.toggleAttribute('data-scrolled', window.scrollY > 12), { passive: true });
+</script>

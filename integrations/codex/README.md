@@ -99,7 +99,7 @@ Parent agent 必須：
 
 ## Starter instruction file
 
-可使用 [`AGENTS.example.md`](AGENTS.example.md) 作為 project-level 起點；`.example.md` 本身不會自動生效。
+可使用網站中的 [Codex AGENTS Example](https://alex0158.github.io/evidence-gated-agentic-workflow/toolkit/codex-agents-example/) 作為 project-level 起點；`.example.md` 本身不會自動生效，頁面亦保留 canonical GitHub source link。
 
 1. 複製內容到目標 repository root，並命名為 `AGENTS.md`。
 2. 依該 repository 的 owner、source of truth、commands 與 risk boundary 裁剪；長 workflow 放進 docs 或 Skills。

@@ -1,0 +1,33 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ModeClassifier from '../components/ModeClassifier.astro';
+import { pathFor } from '../lib/paths';
+---
+
+<SiteLayout title="Start a task" description="用五個高訊號問題，為目前任務選擇 Fast、Standard 或 Assured workflow。">
+  <PageHero
+    eyebrow="Task router / 5 questions"
+    title="先選風險深度，"
+    accent="再開始工作。"
+    description="低風險工作不應被流程拖慢；高風險 crossing 也不應靠臨場猜測。回答五個問題，取得最小充分 workflow。"
+    meta={[{ label: 'Profiles', value: '03' }, { label: 'Data sent', value: 'None' }, { label: 'Output', value: 'Task route' }, { label: 'Time', value: '< 90 sec' }]}
+  />
+  <section class="section control-zone">
+    <div class="container">
+      <ModeClassifier />
+    </div>
+  </section>
+  <section class="section paper-zone">
+    <div class="container next-step">
+      <div><p class="eyebrow">After routing</p><h2 class="section-title">把建議變成<br /><em>可執行的 brief。</em></h2></div>
+      <div><p class="lead">Classifier 只決定流程強度，不會替你決定 objective、target 或 authority。下一步在 Workbench 鎖定它們。</p><a class="button button--paper" href={pathFor('/workbench/')}>Open workbench <span>↗</span></a></div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .next-step { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: end; }
+  .next-step .lead { margin-bottom: 2rem; }
+  @media (max-width: 760px) { .next-step { grid-template-columns: 1fr; gap: 2rem; } }
+</style>

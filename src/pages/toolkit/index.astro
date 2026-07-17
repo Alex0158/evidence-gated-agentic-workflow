@@ -1,0 +1,41 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { templates } from '../../data/content';
+import { pathFor } from '../../lib/paths';
+---
+
+<SiteLayout title="Toolkit" description="十二個可直接複製、下載與裁剪的 Evidence-Gated workflow templates。">
+  <PageHero
+    eyebrow="Operational toolkit / 12 templates"
+    title="不要只理解方法，"
+    accent="拿走一個可用產物。"
+    description="每個 template 都直接讀取 repository 的 raw Markdown。Placeholder 不會被 HTML parser 吞掉，也不需要登入或把資料交給網站。"
+    meta={[{ label: 'Templates', value: '12' }, { label: 'Format', value: 'Markdown' }, { label: 'Copy', value: 'One click' }, { label: 'Tracking', value: 'None' }]}
+  />
+  <section class="section control-zone">
+    <div class="container toolkit-grid">
+      {templates.map((item, index) => (
+        <a class="toolkit-card" href={pathFor(`/toolkit/${item.slug}/`)} data-gate={item.mode === 'ASSURED' ? '' : undefined}>
+          <div><span>{String(index + 1).padStart(2, '0')}</span><small>{item.mode}</small></div>
+          <h2>{item.title}</h2>
+          <p>{item.purpose}</p>
+          <i>Open raw source ↗</i>
+        </a>
+      ))}
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .toolkit-grid { display: grid; border-top: 1px solid var(--line-dark); border-left: 1px solid var(--line-dark); grid-template-columns: repeat(3, 1fr); }
+  .toolkit-card { position: relative; display: grid; min-height: 22rem; padding: 1.5rem; border-right: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); background: var(--ink-2); grid-template-rows: auto 1fr auto auto; transition: background 180ms ease; }
+  .toolkit-card:hover { background: var(--ink-3); }
+  .toolkit-card[data-gate] { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+  .toolkit-card > div { display: flex; justify-content: space-between; color: var(--mint); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; }
+  .toolkit-card h2 { align-self: center; margin: 3rem 0 1rem; font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 430; line-height: 0.95; letter-spacing: -0.04em; }
+  .toolkit-card p { color: var(--muted-on-dark); font-size: 0.84rem; }
+  .toolkit-card > i { margin-top: 1.5rem; color: var(--mint); font-family: var(--font-mono); font-size: 0.62rem; font-style: normal; text-transform: uppercase; }
+  @media (max-width: 900px) { .toolkit-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .toolkit-grid { grid-template-columns: 1fr; } .toolkit-card { min-height: 18rem; } }
+</style>

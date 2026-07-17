@@ -1,0 +1,41 @@
+---
+import { pathFor } from '../lib/paths';
+
+interface Heading { depth: number; slug: string; text: string }
+interface Props {
+  index: string;
+  signal: string;
+  readTime: string;
+  headings: Heading[];
+  sourcePath: string;
+}
+
+const { index, signal, readTime, headings, sourcePath } = Astro.props;
+const toc = headings.filter((heading) => heading.depth === 2);
+const sourceUrl = `https://github.com/Alex0158/evidence-gated-agentic-workflow/blob/main/${sourcePath}`;
+---
+
+<div class="content-shell">
+  <div class="content-shell__grid">
+    <aside class="content-rail" aria-label="章節資訊">
+      <span class="content-rail__index">{index}</span>
+      <p>{signal}<br />{readTime} reference read</p>
+      <div class="receipt-stamp">
+        <strong>CANONICAL SOURCE</strong>
+        <span>Markdown / Git</span>
+        <span>Public edition</span>
+      </div>
+      <a class="button button--paper button--compact" href={sourceUrl}>Open source <span>↗</span></a>
+      <a class="button button--paper button--compact" href={pathFor('/workbench/')}>Apply now <span>↗</span></a>
+    </aside>
+    <article class="prose">
+      <slot />
+    </article>
+    <aside class="content-toc" aria-label="本頁目錄">
+      <p>On this page</p>
+      <nav>
+        {toc.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+      </nav>
+    </aside>
+  </div>
+</div>
