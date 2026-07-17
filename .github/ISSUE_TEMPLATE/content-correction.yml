@@ -1,0 +1,32 @@
+name: Content or evidence correction
+description: Report an incorrect, stale, contradictory, or overclaimed statement.
+title: "[Correction]: "
+labels: [documentation]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What statement is incorrect or too broad?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or source
+      description: Link to a public source. Do not include private data or credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction and claim boundary
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public safety
+      options:
+        - label: This report contains no credentials, personal data, customer data, or private system details.
+          required: true

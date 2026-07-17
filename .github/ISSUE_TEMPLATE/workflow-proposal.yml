@@ -1,0 +1,38 @@
+name: Workflow proposal
+description: Propose a reusable control, pattern, template, or workflow improvement.
+title: "[Proposal]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Repeated problem
+      description: What recurring failure or cost does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: trigger
+    attributes:
+      label: Trigger and non-trigger cases
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Smallest proposed landing point
+      description: Rule, docs, runbook, Skill, helper, test, eval, or other.
+    validations:
+      required: true
+  - type: textarea
+    id: cost
+    attributes:
+      label: Verification, operator cost, and pruning condition
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public safety
+      options:
+        - label: Examples are synthetic and contain no private or identifying data.
+          required: true
