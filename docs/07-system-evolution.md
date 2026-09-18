@@ -19,6 +19,20 @@ repeated success/failure
 → keep, revise, or prune
 ```
 
+### 先診斷既有指引
+
+提出 workflow 修訂前，先找 owning section，比較事件當時適用的指引、實際讀取／執行證據，以及目前版本是否已修正。不能用後來新增的規則追判早期行為；缺少當時證據就保留 Unknown。
+
+| 診斷 | 最小處置 |
+| --- | --- |
+| 規則清楚，但未被找到或執行 | 修入口、執行方式或工具；不重複加規則 |
+| 規則缺漏、含糊、矛盾或過度限制 | 修正原有 owning section，補必要反例與適用邊界 |
+| 新情境超出原有範圍 | 先評估能否延伸既有指引，再考慮新候選 |
+| 沒有對應機制且具重用價值 | 提出有 trigger、成本及驗證方式的最小候選 |
+| 因果或事件時證據不足 | 保留案例與 Unknown，列出會改變判斷的證據 |
+
+已證明錯誤或誤導的指引可直接提出 correction，不必等再次出錯；新的通用 control 才需要相應的重用及效益證據。使用 [Workflow Extraction](../templates/workflow-extraction.md) 記錄必要判斷，可合併在現有 task／proposal，不要求每次小修追溯完整會話。
+
 ## 2. Landing-point ladder
 
 | Pattern | 最小落點 |

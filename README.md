@@ -29,7 +29,7 @@ Production gate：
 npm run build
 ```
 
-Build 會依序執行 Astro type/content checks、static generation、內部 routes/assets 驗證、canonical source coverage 與 private-path leakage scan。
+Build 會依序執行 Astro type/content checks、static generation、內部 routes/assets 驗證、canonical source coverage、private-path leakage scan，以及分流情境／摘要一致性檢查。這些 checks 不代替人工判斷全文語義或方法的實際效益。
 
 ## 一句話版本
 
@@ -88,9 +88,13 @@ flowchart LR
 
 不要讓所有工作都進 Assured；也不要讓高風險工作偽裝成 Fast。
 
+純文字／格式等單一、局部、可逆小改動，在不改產品行為、資料契約或權限且沒有其他高風險因素時，可用 Fast。一般功能實作仍用 Standard；風險不清先查證，不因改動行數少就降級。
+
+Profile 決定必要邊界與檢查深度；[closure target](docs/06-verification-delivery-and-closure.md#8-closure-budget) 依本次任務選定。Assured 不會自動要求部署或授權外部操作。
+
 ## 快速開始
 
-1. 複製 [`templates/task-brief.md`](templates/task-brief.md)，填寫 objective、boundary、authority、closure target。
+1. 依 [`templates/task-brief.md`](templates/task-brief.md) 在現有 task／PR／工作記錄寫清 objective、boundary、authority、closure target；簡單任務可用簡短回覆，不必另建檔案。
 2. 選擇 Fast、Standard 或 Assured。
 3. 先收集足以改變決策的 evidence，不做無差別掃描。
 4. 執行最小、可逆、可驗證的 action。

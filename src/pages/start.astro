@@ -5,12 +5,12 @@ import ModeClassifier from '../components/ModeClassifier.astro';
 import { pathFor } from '../lib/paths';
 ---
 
-<SiteLayout title="Start a task" description="用五個高訊號問題，為目前任務選擇 Fast、Standard 或 Assured workflow。">
+<SiteLayout title="Start a task" description="按風險與改動範圍，為目前任務選擇 Fast、Standard 或 Assured workflow。">
   <PageHero
-    eyebrow="Task router / 5 questions"
+    eyebrow="Task router / Risk and scope"
     title="先選風險深度，"
     accent="再開始工作。"
-    description="低風險工作不應被流程拖慢；高風險 crossing 也不應靠臨場猜測。回答五個問題，取得最小充分 workflow。"
+    description="按風險與範圍選流程；有修改時，再分辨是否只是低風險小修。Closure target 另按任務選定。"
     meta={[{ label: 'Profiles', value: '03' }, { label: 'Data sent', value: 'None' }, { label: 'Output', value: 'Task route' }, { label: 'Time', value: '< 90 sec' }]}
   />
   <section class="section control-zone">

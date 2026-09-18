@@ -184,14 +184,25 @@ export const explorations = [
   },
 ];
 
+// Website summaries share one owner; Markdown defines the policy.
+export const modeSources = {
+  profiles: 'https://github.com/Alex0158/evidence-gated-agentic-workflow/blob/main/README.md#三速工作模式',
+  risk: '/learn/risk-and-authority/',
+  closure: '/learn/verification-and-closure/#8-closure-budget',
+};
+
 export const modes = [
   {
     slug: 'fast',
     name: 'Fast',
     index: '01',
-    description: '可逆、局部、read-only 或低風險工作。',
+    description: '邊界清楚的低風險查詢，或單一、局部、可逆小改動。',
     promise: '最小 boundary，快速 evidence，立即 readback。',
-    minimum: ['確認 target 與 source', '執行 smallest useful action', '回讀結果並限制 claim'],
+    minimum: ['確認 target、source 與操作權限', '執行 smallest useful action', '回讀結果並限制 claim'],
+    triggers: ['低風險 read-only investigation', '局部 diagnostic', '不改行為／契約／權限的文字或格式小修'],
+    avoid: ['無差別掃描', '為簡單任務另建完整 spec', '用 static evidence 宣稱 runtime 成功'],
+    verify: '依 claim 做 readback 或 focused check',
+    closure: 'Answered、Diagnosed 或有界驗證結果',
     color: 'signal',
   },
   {
@@ -201,6 +212,10 @@ export const modes = [
     description: '一般實作、正式文件或可控資料操作。',
     promise: 'brief、challenge、targeted verification、record。',
     minimum: ['鎖定 objective / non-goals', '建立 evidence map 與最小方案', '驗證 owning contract 並同步 current truth'],
+    triggers: ['一般功能實作', '正式文件或可控資料修改', '未涉及高風險 crossing 的跨層工作'],
+    avoid: ['無關重構', '把 targeted pass 說成 full suite', '文件與行為未同步'],
+    verify: 'Targeted contract、項目 required checks；按需 runtime smoke',
+    closure: '依 brief 選 Implemented、Integrated 等結果',
     color: 'amber',
   },
   {
@@ -208,8 +223,12 @@ export const modes = [
     name: 'Assured',
     index: '03',
     description: 'Production、customer、auth、permissions、destructive 或 external publication。',
-    promise: '明確 authority、recovery、多層 evidence 與外部 closure。',
-    minimum: ['Challenge / spec gate', 'identity、scope、authority、recovery', 'runtime / external readback 與 residual-risk owner'],
+    promise: '明確 authority、recovery，以及與本次 claim 相符的 evidence。',
+    minimum: ['Challenge / spec decision', '確認 identity、scope、authority 與 recovery', '按 closure target 驗證並指定 residual-risk owner'],
+    triggers: ['Production 或 customer impact', 'Auth／permissions／destructive', 'External publication 或 payment', 'Identity 或 recovery 尚待釐清'],
+    avoid: ['Timeout 後盲目重試', '從 read access 推導 write authority', '為滿足 profile 而進行未授權部署'],
+    verify: '依風險與 claim 選 checks；需要且獲授權才做外部驗證',
+    closure: '依 brief 選定；Assured 不自動要求 deployment 或 external closure',
     color: 'coral',
   },
 ];
@@ -218,7 +237,7 @@ export const loopStages = [
   { id: '00', name: 'Objective', question: '真正要改變的 outcome 是什麼？', output: 'Objective、success、non-goals', stop: '症狀與目標仍混在一起', verb: 'Frame' },
   { id: '01', name: 'Boundary', question: '誰擁有 target？可做哪種 mutation？', output: 'Scope、authority、stop condition', stop: '身份、target 或權限不清', verb: 'Bound' },
   { id: '02', name: 'Classify', question: '這是什麼任務？風險 profile 是哪一級？', output: 'Fast / Standard / Assured', stop: '高風險被偽裝成 quick task', verb: 'Route' },
-  { id: '03', name: 'Evidence', question: '哪些 current evidence 會改變 decision？', output: 'Verified / Inferred / Unknown map', stop: '只有 history 或 memory，沒有 current proof', verb: 'Observe' },
+  { id: '03', name: 'Evidence', question: '哪些證據能回答這個問題及其時間範圍？', output: '現況用 current proof；歷史用 event-time records；標示 Verified / Inferred / Unknown', stop: '用 history 或 memory 代替所需的 current-state proof，或把後來規則當成當時指引', verb: 'Observe', source: '/learn/core-principles/#1-current-truth-優先於-memory' },
   { id: '04', name: 'Challenge', question: '什麼會證明目前假設錯？', output: 'Falsifier、failure modes、minimum test', stop: '方案仍修錯層或擴大 blast radius', verb: 'Stress' },
   { id: '05', name: 'Decision', question: '直接做、先記錄，還是只分析？', output: 'Decision / issue / spec / non-goal', stop: '高風險 intent 沒有留下 record', verb: 'Commit' },
   { id: '06', name: 'Smallest Path', question: '最小、可逆、可驗證的下一步是什麼？', output: 'Precondition → action → verify → rollback', stop: '方案包含無關 cleanup 或 shared-layer change', verb: 'Design' },
@@ -226,7 +245,7 @@ export const loopStages = [
   { id: '08', name: 'Verify', question: '哪一層 evidence 才支持 intended claim？', output: 'Static → targeted → runtime → external', stop: 'claim 超過已跑的驗證層級', verb: 'Prove' },
   { id: '09', name: 'Record', question: '結果應回到哪個 owning truth layer？', output: 'Current docs / issue / test / release record', stop: '探索歷史冒充正式 current truth', verb: 'Land' },
   { id: '10', name: 'Deliver', question: '接手者能否不重讀對話就執行？', output: 'Self-contained handoff', stop: 'artifact ready 被誤當 adopted', verb: 'Transfer' },
-  { id: '11', name: 'Evolve', question: '這個 pattern 值得沉澱還是應該 pruning？', output: 'Rule / Skill / helper / test / no promotion', stop: '只因一次成功就過度制度化', verb: 'Learn' },
+  { id: '11', name: 'Evolve', question: '是既有指引、入口、執行問題，還是新情境？', output: '修原文／入口／工具，保留案例，或提出新候選', stop: '未診斷舊指引便直接新增 control', verb: 'Learn', source: '/learn/system-evolution/#先診斷既有指引' },
   { id: '12', name: 'Close', question: 'Objective、evidence、truth 與 risk 是否都收口？', output: 'Precise closure state', stop: '仍有 adoption 或 residual risk 沒有 owner', verb: 'Close' },
 ];
 

@@ -1,5 +1,14 @@
 # Public Release Gate
 
+## Release mode
+
+選擇本次模式；只填適用分支及共用 checks，其他項目標明 N/A 及原因。
+
+- [ ] A — 首次建立公開 repository（可包含從私人來源抽取的通用內容）
+- [ ] B — 更新既有公開 repository
+
+兩種模式均須去除私人來源及未授權內容。既有 repo 加入新的抽取內容仍使用 B，不因此重建 repository 或改寫 history。
+
 ## Scope and ownership
 
 - Audience/purpose: `<...>`
@@ -8,10 +17,21 @@
 - Owner and publication authority: `<...>`
 - License/attribution: `<...>`
 
-## Clean export
+## A — First public repository only
 
 - [ ] Built in a new directory with clean Git history
-- [ ] No private `.git`, hidden files, logs, exports, attachments or symlinks
+- [ ] New/empty destination remote verified; no unrelated history imported
+- [ ] Main protection/ruleset configured after bootstrap under the approved repository policy
+
+## B — Existing public repository only
+
+- [ ] Existing remote, branch, visibility and intended baseline verified
+- [ ] Exact diff reviewed; unrelated work and existing history preserved
+- [ ] Applicable branch rules, CI and deployment effects identified
+
+## Shared content boundary
+
+- [ ] No private Git metadata, unreviewed hidden files, logs, exports, attachments or symlink targets
 - [ ] Examples use synthetic placeholders only
 - [ ] README states scope, non-goals, status and license
 
@@ -38,7 +58,7 @@
 - [ ] Exact files staged; cached diff reviewed
 - [ ] Commit contains only public allowlist
 - [ ] Correct GitHub identity and owner verified live
-- [ ] Remote is new/empty; no force push or unrelated history
+- [ ] Push targets the approved remote/branch without force push or unrelated changes
 - [ ] Remote visibility verified
 - [ ] Local and remote HEAD SHA match
 
@@ -47,5 +67,4 @@
 - [ ] README/license render checked in GitHub UI
 - [ ] Anonymous/incognito access verified
 - [ ] No links depend on private systems
-- [ ] Main protection/ruleset configured after bootstrap
 - [ ] Clean clone passes the same QA

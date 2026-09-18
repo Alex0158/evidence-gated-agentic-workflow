@@ -46,6 +46,8 @@
 
 每個重要結論記錄 Verified、Inferred、Unknown，以及可能推翻它的 falsifier。
 
+Current-state 問題需要當前證據；歷史事件則查當時的規則、版本及執行紀錄。Memory 只協助定位，不把後來的規則倒推成當時已適用。
+
 ## Stage 4：Challenge
 
 Standard/Assured 任務問：
@@ -149,7 +151,7 @@ Handoff 必須 self-contained：baseline、target、changed、operator、steps�
 - 最小正確 landing point 是 docs、Skill、helper、test、eval 還是 decision note？
 - 如何驗證它會 trigger 且不誤觸發？
 
-不要把每次成功都制度化。只有重複、穩定、可命名、可驗證的 pattern 才 promotion。
+先依[既有指引診斷](07-system-evolution.md#先診斷既有指引)判斷是內容、入口、執行問題還是新情境。已確認的內容錯誤可直接修正；不要把每次成功都制度化，新的通用 control 仍需穩定、可重用及可驗證的 pattern。
 
 ## Stage 12：Closure
 

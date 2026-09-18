@@ -37,6 +37,8 @@
 
 ## Verification
 
+若交接需要沿用先前驗證，附上 [Verification Report 的 Reused evidence](verification-report.md#reused-evidence--only-when-applicable) 或等價記錄，說明原 source／claim、本次差異及保留／重驗理由；首次驗證可省略。
+
 - Expected evidence: `<...>`
 - Success condition: `<...>`
 - Known risks: `<...>`

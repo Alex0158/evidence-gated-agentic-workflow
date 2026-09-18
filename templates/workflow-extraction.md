@@ -1,15 +1,26 @@
 # Workflow Extraction
 
-## Repeated pattern
+## Problem / observed pattern
 
 - Trigger/context: `<when it appears>`
-- Independent occurrences: `<count/scope; no private data>`
+- Independent occurrences: `<count/scope if proposing a reusable control; no private data>`
 - Current handling: `<...>`
-- Repeated failure or cost: `<...>`
+- Observed failure or cost: `<...>`
 
-## Candidate rule
+## Existing guidance diagnosis
 
-`<smallest durable principle or procedure>`
+依[系統演化指引](../docs/07-system-evolution.md#先診斷既有指引)先判斷要修哪一層。已確認的內容錯誤不必等再次發生；無法核實的歷史保留 Unknown。
+
+- Existing guidance / owning section: `<source, or none found within stated search scope>`
+- Event-time rule and retrieval/execution evidence: `<version, evidence, or Unknown>`
+- Current guidance already corrected: `<yes/no/Unknown; relevant difference>`
+- Diagnosis: `<missing/ambiguous/conflicting/over-broad rule; routing/execution/tool gap; new context; Unknown>`
+
+## Candidate disposition
+
+`<correct existing guidance / improve routing or execution / add example / retain case / propose new control>`
+
+Smallest change and reason: `<...>`
 
 ## Landing-point decision
 

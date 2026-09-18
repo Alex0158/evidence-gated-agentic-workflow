@@ -5,6 +5,10 @@
 - 新增 `explorations/`，保存可公開、通用的創新工作模式研究，預設標為 Experimental。
 - 首份探索整理 AI Development Factory 的設計、一般化試驗觀察、限制、進度、比較試驗及停止條件。
 - 更新 clone／初始化採用指引、governance 及網站探索入口；既有工作模式的預設權限與 gates 不變。
+- 補充既有驗證／handoff 指引：以通用例子區分 source identity、ownership 與 change impact，說明何時可沿用 evidence 或局部重驗。
+- 統一既有指引診斷、extraction／proposal 入口及 evidence-reuse 模板；明確保留項目 required checks，模板可合併使用。
+- 修正採用週次與風險要求、首次公開與既有 repo 發佈的適用範圍。
+- 統一網站 profile 摘要與正文：區分低風險小改動、歷史證據及按任務選定的 closure，加入 routing 情境檢查。
 
 ## 0.2.0 — 2026-07-17
 

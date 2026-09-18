@@ -136,6 +136,27 @@ stateDiagram-v2
 
 不要要求接手者回頭閱讀整條 chat 才能執行。
 
+### 來源變更後，哪些驗證仍可沿用？
+
+Source identity 回答「驗證了哪份內容」；change impact 回答「哪些結論仍然成立」。Commit 或 hash 是識別依據；它們有變，不能單獨裁決所有 evidence 失效。同樣，功能檔案沒變也不能證明所有相關前提不變。
+
+當交接、並行修改或後續變更需要沿用既有驗證時，先對照原 claim、實際 diff 及相關輸入，包括需求／acceptance criteria、shared contract、dependency、runtime、config、data 與 generated inputs。Ownership 說明誰可以改；是否需要重驗仍由改動對 claim 的影響判斷。獲准修改不代表舊驗證繼續有效。
+
+以下是 fictional example：一份 Task 文件同時記錄驗收條件及工作進度。
+
+| 變更 | 判斷 | 最小處理 |
+| --- | --- | --- |
+| 只新增進度文字，驗收條件及執行前提不變 | 文件版本變了，原產品驗證的前提未變 | 回讀 diff、記錄理由；可保留原產品結論，文件本身的檢查另行更新 |
+| 同一文件改了驗收條件 | 即使沒有 code diff，原驗證也未必回答新要求 | 重開受影響 claim，依新條件補驗證 |
+| 功能檔案沒變，但 shared schema、dependency 或 runtime 改了 | 檔案路徑分開不代表語義獨立 | 檢查相依影響，重跑必要 checks；範圍不清時不能直接沿用 |
+| 無法確認誰改了哪些相關輸入 | 來源或 ownership 不足以支持交接 | 暫停受影響的交接／驗證，保留 candidate 並釐清；不因此丟棄成果 |
+
+修正正在驗證的相關 source 或前提時，要重新識別候選並處理受影響 checks，不能把不同版本的結果混成同一次通過。若沿用舊 evidence，在原有 verification report 記下適用範圍、差異及保留理由；不要把歷史結果寫成新執行。
+
+局部重驗判斷不會自行取消目標項目已明確要求的 release／CI checks；要更改這些要求，仍須回到其 owning rule 與決策者。
+
+這是既有 [Decision lock 與 reopen](05-risk-authority-and-decision-rights.md#7-decision-lock-與-reopen) 的具體用法。一般單人小改動仍使用最小 diff／check；只在交接或 evidence reuse 有需要時補充輸入與 ownership 說明，不要求所有任務建立全庫 manifest 或永久鎖定表。
+
 ## 7. Git 不等於 closure
 
 Git commit/push 能證明內容被版本化與送到 remote，但不能自動證明：
@@ -164,3 +185,5 @@ Git commit/push 能證明內容被版本化與送到 remote，但不能自動證
 | Externally closed | adoption、readback、risk 全部收口 |
 
 不是每個任務都需要最高層；但必須誠實命名目前在哪一層。
+
+風險 profile 決定檢查深度與必要邊界，closure target 決定本次要交付到哪裡。Assured 的本機 auth 修復仍可停在已約定的有界驗證結果；只有任務需要且取得相應授權，才進行 deployment 或 external closure。

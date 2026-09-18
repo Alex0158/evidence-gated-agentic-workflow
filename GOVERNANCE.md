@@ -34,6 +34,7 @@ rule documented → gate executed → error intercepted → outcome improved
 ## Change process
 
 - 小型文字修正可直接以 pull request 處理。
+- Workflow 提案先依[既有指引診斷](docs/07-system-evolution.md#先診斷既有指引)分清內容、入口、執行或新情境問題；已確認的錯誤不必等重複發生才修正。
 - 新 control、task profile 或 terminology claim 應附 problem、source、trigger、non-trigger、cost 與 verification。
 - Breaking workflow change 應更新 CHANGELOG，並說明 migration。
 - Privacy/security incident 不應在 public issue 貼出 sensitive detail；依 SECURITY.md 處理。

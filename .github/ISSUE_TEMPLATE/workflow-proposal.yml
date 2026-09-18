@@ -6,8 +6,15 @@ body:
   - type: textarea
     id: problem
     attributes:
-      label: Repeated problem
-      description: What recurring failure or cost does this address?
+      label: Problem and observed cost
+      description: What failure or cost does this address? A proven content error does not need to recur before correction.
+    validations:
+      required: true
+  - type: textarea
+    id: existing-guidance
+    attributes:
+      label: Existing guidance and diagnosis
+      description: Identify the owning section, event-time rule and retrieval/execution evidence, and any later correction. Distinguish a rule gap, ambiguity, conflict, over-restriction, routing/execution/tool gap, or new context. Mark missing evidence Unknown; use only public or synthetic sources.
     validations:
       required: true
   - type: textarea
@@ -20,7 +27,7 @@ body:
     id: proposal
     attributes:
       label: Smallest proposed landing point
-      description: Rule, docs, runbook, Skill, helper, test, eval, or other.
+      description: Correct existing guidance, improve routing/execution, add an example, retain the case, or propose a new control. Explain why the existing owner can or cannot handle it.
     validations:
       required: true
   - type: textarea

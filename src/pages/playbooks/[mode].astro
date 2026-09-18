@@ -1,7 +1,7 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import PageHero from '../../components/PageHero.astro';
-import { modes } from '../../data/content';
+import { modes, modeSources } from '../../data/content';
 import { pathFor } from '../../lib/paths';
 
 export function getStaticPaths() {
@@ -9,30 +9,7 @@ export function getStaticPaths() {
 }
 
 const mode = modes.find((item) => item.slug === Astro.params.mode)!;
-const detailsByMode = {
-  fast: {
-    triggers: ['Read-only investigation', 'Local diagnostic', 'Single-target reversible edit', 'Quick current-state answer'],
-    gates: ['Confirm exact target', 'Use current source, not memory', 'Smallest action', 'Immediate readback'],
-    avoid: ['Broad repo scan without decision value', 'Formal spec for trivial work', 'Claiming runtime from static evidence'],
-    verify: 'Static/readback or focused live smoke',
-    closure: 'Answered / Diagnosed / static-verified',
-  },
-  standard: {
-    triggers: ['General implementation', 'Formal documentation', 'Controlled data operation', 'Cross-file contract change'],
-    gates: ['Task brief + non-goals', 'Evidence map and challenge', 'Smallest reversible plan', 'Targeted tests + current-truth record'],
-    avoid: ['Unrelated refactor', 'Treating targeted pass as full suite', 'Leaving docs and behavior divergent'],
-    verify: 'Targeted contract, relevant suite, optional runtime smoke',
-    closure: 'Implemented / Integrated / runtime-verified',
-  },
-  assured: {
-    triggers: ['Production or customer', 'Auth / permissions', 'Destructive operation', 'External publication or payment'],
-    gates: ['Challenge / spec decision', 'Exact identity and authority', 'Recovery / remediation', 'Multi-layer proof + external readback'],
-    avoid: ['Blind retry after timeout', 'Inferring write from read access', 'Calling delivered closed before adoption evidence'],
-    verify: 'Runtime, true-chain, artifact freshness, external closure',
-    closure: 'Delivered / externally closed with residual-risk owner',
-  },
-};
-const details = detailsByMode[mode.slug as keyof typeof detailsByMode]!;
+const details = mode;
 ---
 
 <SiteLayout title={`${mode.name} playbook`} description={mode.description}>
@@ -49,11 +26,12 @@ const details = detailsByMode[mode.slug as keyof typeof detailsByMode]!;
     <div class="container playbook-detail">
       <div class="playbook-detail__index"><span>{mode.index}</span><p>{mode.name.toUpperCase()} / ACTIVE PROFILE</p></div>
       <div class="playbook-block"><small>Use when</small><ul>{details.triggers.map((item) => <li>{item}</li>)}</ul></div>
-      <div class="playbook-block" data-gate><small>Required gates</small><ol>{details.gates.map((item) => <li>{item}</li>)}</ol></div>
+      <div class="playbook-block" data-gate><small>Required gates</small><ol>{mode.minimum.map((item) => <li>{item}</li>)}</ol></div>
       <div class="playbook-block"><small>Do not</small><ul>{details.avoid.map((item) => <li>{item}</li>)}</ul></div>
     </div>
   </section>
   <section class="section bone-zone">
+    <p class="container">本頁為摘要；<a href={modeSources.profiles}>分流規範</a>及<a href={pathFor(modeSources.risk)}>風險指引</a>裁決適用邊界。<a href={pathFor(modeSources.closure)}>Closure target</a> 依任務選定，高風險不自動授權部署或要求外部交付。</p>
     <div class="container closure-band">
       <div><p class="eyebrow">Verification target</p><h2>{details.verify}</h2></div>
       <div><p class="eyebrow">Precise closure</p><h2>{details.closure}</h2></div>

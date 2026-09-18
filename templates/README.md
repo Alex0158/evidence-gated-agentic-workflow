@@ -13,10 +13,12 @@
 | [Operation receipt](operation-receipt.md) | remote/async mutation 與 outcome reconciliation |
 | [Verification report](verification-report.md) | 限制完成聲明與 residual risk |
 | [Handoff](handoff.md) | self-contained delivery/adoption closure |
-| [Workflow extraction](workflow-extraction.md) | 把重複做法沉澱為 durable asset |
-| [Public release](public-release.md) | documentation/public repository 發布 gate |
+| [Workflow extraction](workflow-extraction.md) | 先診斷既有指引，再決定修正、保留案例或新增候選 |
+| [Public release](public-release.md) | 區分首次建立公開 repo 與既有公開 repo 更新 |
 
 建議組合：
+
+以下是所需資訊的組合，可合併在現有 task／PR／交付回覆；簡單任務不要求另建檔案。只有 handoff、recovery 或重用需要時才持久化更多資料，並保留可找回的必要證據。
 
 - Fast：Task brief + Verification report。
 - Standard：Task brief + Investigation/Implementation + Verification report。

@@ -15,10 +15,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build && node scripts/validate-site.mjs",
+    "build": "astro check && astro build && node scripts/validate-site.mjs && node scripts/test-workflow-routing.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "test:site": "node scripts/validate-site.mjs"
+    "test:site": "node scripts/validate-site.mjs",
+    "test:routing": "node scripts/test-workflow-routing.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

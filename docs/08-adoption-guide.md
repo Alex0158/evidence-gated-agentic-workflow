@@ -11,13 +11,17 @@
 ## 2. 第一週：建立最小閉環
 
 - 使用 `templates/task-brief.md`。
-- 只選 Fast 或 Standard，暫不新增複雜 gate。
+- 先選低風險任務練習 Fast／Standard，暫不新增非必要 gate。
 - 任務完成後回寫 owning truth source。
 - 追蹤一次 false closure 或 wrong-boundary incident。
 
 成功條件：團隊能區分「做了」與「已驗證完成」。
 
+任何時間遇到 production、auth、destructive 或 external publication 等高風險工作，仍依[風險指引](05-risk-authority-and-decision-rights.md)處理，不因採用進度降低要求。
+
 ## 3. 第二週：風險分流
+
+這一週整理分流規則與入口；必要的風險邊界從第一天起就適用。
 
 - 定義哪些 mutation 必須 Assured。
 - 建立 destructive/publication/production gate。

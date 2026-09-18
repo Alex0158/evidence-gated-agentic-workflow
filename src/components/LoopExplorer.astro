@@ -1,5 +1,7 @@
 ---
 import { loopStages } from '../data/content';
+import { pathFor } from '../lib/paths';
+const routedStages = loopStages.map((stage) => ({ ...stage, source: pathFor(stage.source ?? '/learn/operating-loop/') }));
 ---
 
 <section class="loop-explorer" data-loop-explorer>
@@ -46,9 +48,10 @@ import { loopStages } from '../data/content';
   </div>
 
   <p class="loop-explorer__fallback">Objective → Boundary → Evidence → Challenge → Decision → Action → Verify → Record → Deliver → Evolve → Close</p>
+  <p><a data-loop-source href={routedStages[0].source}>Read owning guidance ↗</a></p>
 </section>
 
-<script is:inline type="application/json" data-loop-data set:html={JSON.stringify(loopStages).replace(/</g, '\\u003c')}></script>
+<script is:inline type="application/json" data-loop-data set:html={JSON.stringify(routedStages).replace(/</g, '\\u003c')}></script>
 <script is:inline>
   document.querySelectorAll('[data-loop-explorer]').forEach((root) => {
     const dataNode = root.nextElementSibling?.matches('[data-loop-data]') ? root.nextElementSibling : document.querySelector('[data-loop-data]');
@@ -64,6 +67,7 @@ import { loopStages } from '../data/content';
         tab.setAttribute('tabindex', tabIndex === index ? '0' : '-1');
       });
       const fields = { id: stage.id, verb: stage.verb, question: stage.question, output: stage.output, stop: stage.stop };
+      root.querySelector('[data-loop-source]').href = stage.source;
       Object.entries(fields).forEach(([key, value]) => {
         const node = root.querySelector(`[data-loop-${key}]`);
         if (node) node.textContent = value;
