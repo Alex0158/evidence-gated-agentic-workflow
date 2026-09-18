@@ -125,3 +125,9 @@ AND residual risk owned
 ```
 
 如果其中一項不成立，不必說失敗；只需用正確狀態交付。
+
+## 11. 用於項目初始化與新模式試驗
+
+Clone 本 repository 後，先按自己項目的 repository boundary、產品風險、source of truth、工具及驗證方式，選取最少需要的 instructions、文件與模板。保留各資料的角色及 stability，避免把整個資料庫變成每次工作必讀的 context。
+
+[創新工作模式探索](../explorations/README.md)保存尚待驗證的設計與一般化試驗觀察。當你的項目有相應瓶頸，才選擇其中一個 bounded pilot，並在項目內記錄採用範圍、成本及退出條件。Experimental 內容不會因 clone 或 agent 讀取而自動啟用；它亦不改變既有的 authority 與 verification 邊界。

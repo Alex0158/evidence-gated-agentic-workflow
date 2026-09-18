@@ -8,6 +8,8 @@
 
 > Public edition：本 repository 只保留可分享的方法、流程、模板與概念定位。它刻意排除原始對話、Memory、審計底稿、推理過程、個人路徑、帳號狀態、客戶與專案識別資料。
 
+你可以 clone 本 repository，依自己項目的風險與現況，選用相關原則、模板及探索資料來建立初始 instructions、文件架構與開發流程。先從最小閉環開始；各項探索的成熟度及適用條件由其文件明示。
+
 ## 互動網站
 
 [開啟 Evidence-Gated Workflow Observatory](https://alex0158.github.io/evidence-gated-agentic-workflow/)
@@ -109,6 +111,7 @@ flowchart LR
 - [可直接套用的模板](templates/README.md)
 - [Codex adapter](integrations/codex/README.md)
 - [三個 fictional end-to-end examples](examples/README.md)
+- [創新工作模式探索（Experimental）](explorations/README.md)：包含 AI Development Factory 的一般化觀察、分析、進度及採用試驗。
 
 ## 不主張什麼
 

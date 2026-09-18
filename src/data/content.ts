@@ -24,6 +24,8 @@ import * as StandardCase from '../../examples/standard-bugfix/README.md';
 import * as AssuredCase from '../../examples/assured-remote-write/README.md';
 import * as CodexDoc from '../../integrations/codex/README.md';
 import * as AgentsExample from '../../integrations/codex/AGENTS.example.md';
+import * as ExplorationsDoc from '../../explorations/README.md';
+import * as FactoryDoc from '../../explorations/ai-development-factory.md';
 
 export const lessons = [
   {
@@ -167,6 +169,21 @@ export const codexContent = {
   agentsModule: AgentsExample,
 };
 
+export const explorationIndex = {
+  sourcePath: 'explorations/README.md',
+  module: ExplorationsDoc,
+};
+
+export const explorations = [
+  {
+    slug: 'ai-development-factory',
+    title: 'AI Development Factory',
+    description: '有邊界的自動開發協作探索：設計、一般化試驗觀察、成本、限制與下一步。',
+    sourcePath: 'explorations/ai-development-factory.md',
+    module: FactoryDoc,
+  },
+];
+
 export const modes = [
   {
     slug: 'fast',
@@ -240,8 +257,10 @@ export const searchEntries = [
   { title: 'Playbooks', type: 'Reference', path: '/playbooks/', keywords: 'fast standard assured' },
   { title: 'Codex Stack', type: 'Guide', path: '/codex/', keywords: 'agents memory skill plugin connector mcp browser' },
   { title: 'Cases', type: 'Examples', path: '/cases/', keywords: 'configured bugfix timeout remote write' },
+  { title: '創新工作模式探索', type: 'Experimental', path: '/explorations/', keywords: 'factory 自動化 協作 試驗 創新 工作模式' },
   { title: '四週採用', type: 'Guide', path: '/adopt/', keywords: 'personal team adoption week' },
   ...lessons.map((item) => ({ title: item.title, type: 'Chapter', path: `/learn/${item.slug}/`, keywords: `${item.signal} ${item.description}` })),
   ...templates.map((item) => ({ title: item.title, type: 'Template', path: `/toolkit/${item.slug}/`, keywords: `${item.mode} ${item.purpose}` })),
   ...cases.map((item) => ({ title: item.title, type: 'Case', path: `/cases/${item.slug}/`, keywords: `${item.eyebrow} ${item.lesson}` })),
+  ...explorations.map((item) => ({ title: item.title, type: 'Experimental', path: `/explorations/${item.slug}/`, keywords: item.description })),
 ];

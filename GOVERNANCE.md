@@ -41,6 +41,14 @@ rule documented → gate executed → error intercepted → outcome improved
 ## Content source of truth
 
 - `docs/`、`templates/`、`examples/` 與 `integrations/` 中已收錄的 Markdown 裁決完整方法論正文與可複製 source。
+- `explorations/` 的 Markdown 擁有各探索的設計、觀察、限制及目前研究狀態；預設為 `Experimental`，不會因收錄而成為 mandatory control 或預設初始化架構。
 - 網站 components、navigation metadata 與 interactive synthesis 負責教學與操作，不得暗中重定義 canonical claim、gate 或 evidence boundary。
 - 需要結構化視覺資料時，應保留對應 source path，並以 build-time consistency checks 防止遺漏或漂移。
 - 若 UI 與 canonical Markdown 衝突，先視為 release blocker；修正兩者並重新驗證後才可發布。
+
+## Experimental workflow intake
+
+- 內部試驗以通用機制及最少必要觀察重寫；不得複製私人 case、原始證據、項目架構或指向私人材料的連結。
+- 分開 design、observation、inference、unknown 及下一輪驗證。原始材料未公開時，明說不能獨立重現，不把 qualitative 經驗稱為 benchmark。
+- 失敗及混合結果可以保留；實驗進度由單一 owning document 更新，索引只路由。
+- 採納時選最小可重用部分，依既有 change process 裁決；探索中的角色、流程、queue 或狀態機不會整套自動進入既有方法。

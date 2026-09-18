@@ -1,0 +1,27 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ContentShell from '../../components/ContentShell.astro';
+import { explorations } from '../../data/content';
+
+export function getStaticPaths() {
+  return explorations.map((item) => ({ params: { slug: item.slug } }));
+}
+
+const item = explorations.find((entry) => entry.slug === Astro.params.slug)!;
+const headings = item.module.getHeadings();
+const Content = item.module.Content;
+---
+
+<SiteLayout title={item.title} description={item.description} surface="paper">
+  <PageHero
+    eyebrow="Workflow exploration / Experimental"
+    title={item.title}
+    accent="有邊界的自動開發協作。"
+    description={item.description}
+    meta={[{ label: 'Stability', value: 'Experimental' }, { label: 'Adoption', value: 'Opt-in' }, { label: 'Source', value: 'Markdown' }]}
+  />
+  <ContentShell index={`E${explorations.indexOf(item) + 1}`} signal="DESIGN / OBSERVE / CHALLENGE" readTime="10 min" headings={headings} sourcePath={item.sourcePath} stability="Experimental">
+    <Content />
+  </ContentShell>
+</SiteLayout>

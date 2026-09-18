@@ -30,6 +30,8 @@ const requiredOutputs = [
   'toolkit/task-brief/index.html',
   'toolkit/codex-agents-example/index.html',
   'cases/remote-timeout/index.html',
+  'explorations/index.html',
+  'explorations/ai-development-factory/index.html',
   '404.html',
   'robots.txt',
   'sitemap-index.xml',
@@ -125,6 +127,7 @@ const expectedSources = [
   ...(await readdir(join(root, 'docs'))).filter((name) => name.endsWith('.md')).map((name) => `docs/${name}`),
   ...(await readdir(join(root, 'templates'))).filter((name) => name.endsWith('.md') && name !== 'README.md').map((name) => `templates/${name}`),
   ...(await readdir(join(root, 'examples'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).map((entry) => `examples/${entry.name}/README.md`),
+  ...(await readdir(join(root, 'explorations'))).filter((name) => name.endsWith('.md')).map((name) => `explorations/${name}`),
   'integrations/codex/README.md',
   'integrations/codex/AGENTS.example.md',
 ];
@@ -145,6 +148,13 @@ for (const file of files.filter((file) => /\.(?:html|css|js|json|xml|txt|svg)$/i
   const contents = await readFile(file, 'utf8');
   for (const [label, pattern] of leakPatterns) {
     if (pattern.test(contents)) failures.push(`Detected ${label} in ${relative(dist, file)}`);
+  }
+}
+
+for (const source of expectedSources) {
+  const contents = await readFile(join(root, source), 'utf8');
+  for (const [label, pattern] of leakPatterns) {
+    if (pattern.test(contents)) failures.push(`Detected ${label} in source ${source}`);
   }
 }
 

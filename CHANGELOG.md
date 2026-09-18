@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- 新增 `explorations/`，保存可公開、通用的創新工作模式研究，預設標為 Experimental。
+- 首份探索整理 AI Development Factory 的設計、一般化試驗觀察、限制、進度、比較試驗及停止條件。
+- 更新 clone／初始化採用指引、governance 及網站探索入口；既有工作模式的預設權限與 gates 不變。
+
 ## 0.2.0 — 2026-07-17
 
 - 加入以 Astro 產生的多頁互動教學／參考網站，部署至 GitHub Pages。
