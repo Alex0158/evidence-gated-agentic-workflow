@@ -25,7 +25,7 @@
 4. Impact：適用範圍、可能誤觸發與遷移成本。
 5. Verification：links、rendering、examples 或 consistency 如何驗證？
 
-提交 contribution 即表示你確認有權提供相關內容，並同意按 contribution 類型發布：文字、圖表與模板採 CC BY 4.0；網站 source code 採 MIT License。
+提交 contribution 即表示你確認有權提供相關內容，並同意將文字、圖表與模板按 CC BY 4.0 發布。
 
 ## 編輯原則
 
@@ -34,4 +34,4 @@
 - 文字以繁體中文為主，technical terms 可保留 English。
 - 不把 practitioner term 說成正式業界標準。
 - 所有完成聲明必須與 evidence level 相配。
-- 修改網站 source、routes、metadata 或互動邏輯後，提交前執行 `npm run build`；build gate 必須通過 internal-link、canonical-source coverage 與 private-path checks。
+- 修改文件後，提交前驗證 Markdown links／anchors、導覽、claim boundaries 及 public privacy／secret boundary；mechanical checks 不代替語義審核。本 repository 已移除網站 build tooling，不再使用 `npm run build` 作為 gate。

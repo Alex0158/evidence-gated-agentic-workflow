@@ -43,9 +43,8 @@ rule documented → gate executed → error intercepted → outcome improved
 
 - `docs/`、`templates/`、`examples/` 與 `integrations/` 中已收錄的 Markdown 裁決完整方法論正文與可複製 source。
 - `explorations/` 的 Markdown 擁有各探索的設計、觀察、限制及目前研究狀態；預設為 `Experimental`，不會因收錄而成為 mandatory control 或預設初始化架構。
-- 網站 components、navigation metadata 與 interactive synthesis 負責教學與操作，不得暗中重定義 canonical claim、gate 或 evidence boundary。
-- 需要結構化視覺資料時，應保留對應 source path，並以 build-time consistency checks 防止遺漏或漂移。
-- 若 UI 與 canonical Markdown 衝突，先視為 release blocker；修正兩者並重新驗證後才可發布。
+- Repository 目前採 documentation-only 形式；教學前端已撤除，是否重建由 maintainer 另行裁決。
+- 日後若重建教學或互動層，Markdown 仍裁決完整方法；衍生內容不得重定義 canonical claim、gate 或 evidence boundary，並須驗證來源一致性後才可發布。
 
 ## Experimental workflow intake
 

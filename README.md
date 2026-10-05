@@ -2,7 +2,7 @@
 
 一套以「可信真相、清楚邊界、可驗證閉環」為核心的人類 × AI 工作系統。
 
-狀態：`v0.2 public reference + interactive site`。`Evidence-Gated Agentic Workflow` 是本 repository 自定義的描述性名稱，不是正式標準、安全認證、formal assurance case，也尚未以 benchmark 證明 operational effectiveness。
+狀態：`v0.2 public reference — documentation-only`。`Evidence-Gated Agentic Workflow` 是本 repository 自定義的描述性名稱，不是正式標準、安全認證、formal assurance case，也尚未以 benchmark 證明 operational effectiveness。
 
 這不是一組萬能 prompts，也不是要求 AI 無限制自治。它是一個可落地的 operating model：先決定真正目標與權限邊界，讓 AI 在正確 context、tools 與 safeguards 中執行，再以 tests、live evidence、正式記錄和 human verdict 收口。
 
@@ -10,26 +10,11 @@
 
 你可以 clone 本 repository，依自己項目的風險與現況，選用相關原則、模板及探索資料來建立初始 instructions、文件架構與開發流程。先從最小閉環開始；各項探索的成熟度及適用條件由其文件明示。
 
-## 互動網站
+## 文件入口
 
-[開啟 Evidence-Gated Workflow Observatory](https://alex0158.github.io/evidence-gated-agentic-workflow/)
+本 repository 目前只維護 Markdown 方法、模板、examples、Codex adapter 與 Experimental explorations。教學前端、網站 build tooling 及 Pages deployment workflow 已移除，以降低維護負擔；是否重建前端留待另行決定。
 
-網站不是 Markdown 的換皮版，而是把方法轉成可操作的 system map、risk classifier、claim–evidence matcher、Codex capability ladder 與 task brief workbench。完整方法仍由本 repository 的 Markdown 裁決；網站直接從那些 canonical files 建置，避免建立第二份內容真相。
-
-本機開發：
-
-```bash
-npm ci
-npm run dev
-```
-
-Production gate：
-
-```bash
-npm run build
-```
-
-Build 會依序執行 Astro type/content checks、static generation、內部 routes/assets 驗證、canonical source coverage、private-path leakage scan，以及分流情境／摘要一致性檢查。這些 checks 不代替人工判斷全文語義或方法的實際效益。
+直接從下方導覽閱讀或 clone repository 使用，不需要安裝 Node.js 或 npm dependencies。既有網站工具的使用者請改用 `templates/` 中的 Markdown，以及 `integrations/codex/AGENTS.example.md`。撤除 repository 內的前端不代表既有 hosted website 已下架。
 
 ## 一句話版本
 
@@ -131,6 +116,6 @@ Profile 決定必要邊界與檢查深度；[closure target](docs/06-verificatio
 
 原始編纂與授權者：[Alex0158](https://github.com/Alex0158)。
 
-文字、圖表與模板採 [Creative Commons Attribution 4.0 International](LICENSE) 授權。網站 source code 採 [MIT License](LICENSE-CODE)。你可以分享與改作，但請保留相應的署名與授權聲明；bundled fonts 與 dependencies 見 [Third-party notices](THIRD_PARTY_NOTICES.md)。
+文字、圖表與模板採 [Creative Commons Attribution 4.0 International](LICENSE) 授權。你可以分享與改作，但請保留相應的署名與授權聲明。舊版本網站程式碼及其授權可在 Git history 中查閱；其歷史授權不因本次移除而改變。
 
 參與前請看 [Contributing](CONTRIBUTING.md)；內容裁決見 [Governance](GOVERNANCE.md)；敏感資料請依 [Security and privacy](SECURITY.md) 私下回報。
