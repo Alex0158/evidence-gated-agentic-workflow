@@ -1,5 +1,9 @@
 # Codex Adapter
 
+> **內容身份：** Reference — Codex adapter 概念對照，不是本機 capability inventory 或 active instruction。
+> **適用範圍：** 按實際任務查證工具／身份；本 starter 的指令由根 AGENTS 承接，binding 由工程入口承接。
+> **現行 owner：** [根 AGENTS](../../AGENTS.md) · [項目工程入口](../../項目文件/00-協作與執行/項目工程入口.md) · [工具能力與身份](../../項目文件/00-協作與執行/規則與標準/工作規則與標準.md#工具能力與身份)
+
 這份 adapter 將本 repository 的 vendor-neutral workflow 映射到 Codex concepts。它不列出任何個人的 installed plugins、auth state、local paths 或 current capability inventory。
 
 ## Capability mapping
@@ -97,10 +101,10 @@ Parent agent 必須：
 
 修改 global instructions、Memory、Skills、Plugins、MCP config、automations 或 hooks 會改變未來行為，不應只是因本次 workaround 有效就自動持久化。先取得 explicit authority，選最小 landing point，驗證後再版本化。
 
-## Starter instruction file
+## Starter instruction file（repositories without an active AGENTS.md）
 
-可使用 [Codex AGENTS Example](AGENTS.example.md) 作為 project-level 起點；`.example.md` 本身不會自動生效。
+只有在目標 repository 尚無 active `AGENTS.md` 時，才可使用 [Codex AGENTS Example](AGENTS.example.md) 作為 project-level 起點；`.example.md` 本身不會自動生效。本 starter 已有根 [AGENTS.md](../../AGENTS.md)，請保留它，不要複製覆寫。
 
-1. 複製內容到目標 repository root，並命名為 `AGENTS.md`。
+1. 僅在目標 repository 沒有 active instruction entry 時，才複製內容到該 repository root 並命名為 `AGENTS.md`。
 2. 依該 repository 的 owner、source of truth、commands 與 risk boundary 裁剪；長 workflow 放進 docs 或 Skills。
 3. 開啟新的 Codex task，要求它 read back applicable instructions 與 repository boundary，再用一個 read-only task 驗證載入。

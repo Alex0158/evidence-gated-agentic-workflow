@@ -1,5 +1,9 @@
 # 07 — 把重複成功演化成系統
 
+> **內容身份：** Reference — 保留供底座維護者按需使用的演化方法。
+> **適用範圍：** 不是所有項目的日常要求；metrics、Skill lifecycle 與 prune 仍須由項目按需裁決。
+> **現行 owner：** [Governance](../GOVERNANCE.md) · [Contributing](../CONTRIBUTING.md) · [Agent 工作入口](../AGENTS.md)
+
 ## 1. Double-loop learning
 
 第一層 loop 修任務：

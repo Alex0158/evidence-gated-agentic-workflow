@@ -1,5 +1,9 @@
 # Operation Receipt
 
+> **內容身份：** Reference — 舊 provider receipt 欄位提示，不新增通用 operation ledger。
+> **適用範圍：** 只在有外部操作時按需參考；未知結果規則回工作標準，receipt／逐項結果留在原 Task、REL 或服務紀錄。
+> **現行 owner：** [外部操作、授權時點與未知結果](../項目文件/00-協作與執行/規則與標準/工作規則與標準.md#外部操作授權時點與未知結果) · [工作任務範本](../文件模板/工作任務範本.md) · [交付紀錄範本](../文件模板/交付紀錄範本.md)
+
 ## Dispatch
 
 - Operation ID: `<stable ID>`

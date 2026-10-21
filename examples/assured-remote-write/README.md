@@ -1,5 +1,9 @@
 # Example — Assured remote write
 
+> **內容身份：** Example — fictional remote-write case; no real service or product evidence。
+> **適用範圍：** 只示範一個情境；Assured profile 與 closure target 不成為普遍要求。
+> **現行 owner：** [外部操作、授權時點與未知結果](../../項目文件/00-協作與執行/規則與標準/工作規則與標準.md#外部操作授權時點與未知結果) · [交付 Runbook](../../項目文件/00-協作與執行/Runbooks/版本交付.md)
+
 ## Task
 
 在 fictional inventory service 為 exact SKU 建立一次 replenishment request。Remote API 可能 timeout。

@@ -12,3 +12,13 @@ private/
 audit/
 memory/
 rollouts/
+
+# Framework tooling and retained local initialization receipts.
+__pycache__/
+*.pyc
+.evidence/
+.workflow/init-config-before.json
+.workflow/init-receipt.json
+文件模板/template-build-report.md
+.workflow/init-candidate-*.json
+.workflow/init-partial-*.json

@@ -1,5 +1,9 @@
 # 08 — 採用指南
 
+> **內容身份：** Reference — 保留原分週採用及組織類型內容，僅作歷史參考。
+> **適用範圍：** 此處不再維護 clone／初始化教學；目前採用流程請用[根 README](../README.md)。
+> **現行 owner：** [根 README 採用流程](../README.md) · [Agent 工作入口](../AGENTS.md)
+
 ## 1. 不要一次搬完整套
 
 這個 framework 的價值在 decision quality，不在 process density。推薦由三個最小習慣開始：

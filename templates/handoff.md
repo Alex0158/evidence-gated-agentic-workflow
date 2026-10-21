@@ -1,5 +1,9 @@
 # Handoff
 
+> **內容身份：** Reference — 舊 handoff 欄位格式，不新增平行 handoff 狀態表。
+> **適用範圍：** 版本交付依 Runbook 與 REL；一般任務交接沿用原 Task。
+> **現行 owner：** [版本交付 Runbook](../項目文件/00-協作與執行/Runbooks/版本交付.md) · [交付紀錄範本](../文件模板/交付紀錄範本.md) · [工作任務範本](../文件模板/工作任務範本.md)
+
 ## Objective
 
 `<target outcome>`

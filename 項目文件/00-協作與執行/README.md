@@ -1,0 +1,30 @@
+# 00 協作與執行
+
+本層承接工作方法、決策／變更治理、工程品質、驗證 evidence、環境前提與操作程序。它依正式產品和技術 owners 工作，不自行改寫產品行為。
+
+開始前先用本次目標和允許動作回答：要到分析、source change、驗證、部署還是接受哪一層？目前 current／intended／observed 是甚麼？哪個 owner 及確認事件裁決？實際 repo、工具、environment 與 runner 在哪裡？哪個未知會阻塞依賴它的部分？需要甚麼可觀察結果和最小回寫？
+
+## Runbook 路由
+
+| 任務目標 | 使用程序 | 主要輸出 |
+| --- | --- | --- |
+| 新項目初始化或重大方向重定 | [啟動項目](Runbooks/啟動項目.md) | 有來源及確認狀態的產品骨架、主要情境／流程／能力、關鍵未知及就緒判斷 |
+| 查明問題、來源衝突或行為差異 | [調查與分析](Runbooks/調查與分析.md) | 可追溯事實、推論、未知、分類與下一步 |
+| 已授權的功能／技術變更 | [開發與變更](Runbooks/開發與變更.md) | owner 對齊的最小變更、適用驗證、必要回寫 |
+| 已觀察到相對正式預期的失敗 | [修復缺陷](Runbooks/修復缺陷.md) | 根因分類、最小修正、回歸 evidence 與未驗範圍 |
+| 要證明一個已定義的驗收／工程 claim | [驗證功能](Runbooks/驗證功能.md) | 按 claim scope 記錄結果、阻塞與未驗範圍 |
+| 需要 build、package、deploy 或 handoff | [版本交付](Runbooks/版本交付.md) | 按適用階段記錄 source→artifact→target→receipt |
+
+複合任務依賴最少地串接程序，例如先調查再修復，或開發後驗證再交付。研究輸出可作為完成結果；驗證發現缺陷不會自動把 verify-only 擴大成修復。既有授權內可繼續的獨立工作不因另一個 blocker 全面停止。Runbook 的「按需檢查」是提示而非必填問卷；只處理會改變本次判斷或下一步的項目，小而可逆的工作走最短適用路徑，不要求全庫預讀或建立所有紀錄。
+
+## 標準與工程入口
+
+[工作規則與標準](規則與標準/工作規則與標準.md)合併協作決策、工程品質與測試／evidence 要求；它定 must-hold 與判定方式，Runbook 定操作順序。實際 repo、工具、命令、environment 與 runner 只由[項目工程入口](項目工程入口.md)導向唯一 binding；本層不另抄命令值或 secret。
+
+Source map 在[項目文件 README](../README.md)。只讀適用 owner，不要求全讀 00；高風險、跨層、前提變更或可能影響資料／權限／相容性時展開完整程序。小而可逆的工作可沿用已核前提，但仍需留下它所要求的 evidence 與 exit 狀態。
+
+## 工作狀態與回寫
+
+分析、工作進度、驗證結果、交付／部署和 user acceptance 是不同維度。每次結果回到項目指定的 dated record／primary tracker；穩定規則回其 canonical owner。只在相關內容、scope 或入口改變時更新 consumer、摘要或 derived view。
+
+本次檢查需要 native runner 卻缺少時，該項寫 NOT_RUN，不造命令；人工／工具核查及結果依[工作標準](規則與標準/工作規則與標準.md#結果與狀態)判定。外部 gate 或資料前提缺失，說明被阻塞的 claim 及可獨立完成的部分。拒絕、延後、部分採納、部分實作與 pending acceptance 要保留各自 scope 和依據；它們不等於全部接受或完成。

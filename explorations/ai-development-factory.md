@@ -1,5 +1,9 @@
 # AI Development Factory：有邊界的自動開發協作探索
 
+> **內容身份：** Experimental — 保留原研究、觀察與限制，不代表 starter 已具備 factory 能力。
+> **適用範圍：** 只供按需評估；不自動導入 queue、持續 orchestration 或原研究中的角色／狀態機。
+> **現行 owner：** [Governance](../GOVERNANCE.md) · [Agent 工作入口](../AGENTS.md) · [根 README 採用流程](../README.md)
+
 - Stability：**Experimental**
 - 研究狀態：**初步試驗回顧已整理；修訂模式與比較驗證待進行**
 - 公開整理更新：2026-09-18
@@ -130,5 +134,5 @@ Candidate → verification → integration 的目前狀態：
 - [風險、授權與決策權](../docs/05-risk-authority-and-decision-rights.md)：自主範圍、unknown delivery 及局部 reopen。
 - [驗證、交付與 Closure](../docs/06-verification-delivery-and-closure.md)：不同 evidence surface、handoff 及整合完成。
 - [系統演化](../docs/07-system-evolution.md)：控制的效益、成本及 pruning。
-- [採用指南](../docs/08-adoption-guide.md)：按項目需要作最小採用。
+- [根 README 採用流程](../README.md)：按項目需要作最小採用。
 - [返回探索索引](README.md)。

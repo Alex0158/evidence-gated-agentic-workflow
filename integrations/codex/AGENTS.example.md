@@ -1,5 +1,9 @@
 # Project Agent Guide
 
+> **內容身份：** Example — 非 active instruction；本 starter 已有根 AGENTS。
+> **適用範圍：** 不得將此範例複製覆寫現有根 AGENTS；只在其他 repository 尚無 active 指令入口時按需參考。
+> **現行 owner：** [本 starter 根 AGENTS](../../AGENTS.md)
+
 ## Communication
 
 - 預設先給一句結論，再補會改變 decision 或 next step 的 evidence。

@@ -1,5 +1,9 @@
 # 02 — 端到端 Operating Loop
 
+> **內容身份：** Reference — 保留原 12 階段 operating loop。
+> **適用範圍：** 按需參考舊方法；該階段循環及 Fast／Standard／Assured、closure labels 不作此 starter 的預設程序或 enum。
+> **現行 owner：** [現行工作路由與 Runbooks](../項目文件/00-協作與執行/README.md)
+
 ## Stage 0：Objective
 
 先定義要改變的 outcome，不從工具或 solution 開始。
