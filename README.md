@@ -121,7 +121,9 @@ git -C "$PROJECT_DIR" config --local --get push.default
 
 ## 本地驗證、GitHub CI 與限制
 
-修訂 15 的本機基線曾在 macOS／Python 3.14.2 驗證。這不等於整合後候選已通過同一檢查。0.3.0-rc.1 的 GitHub Actions 矩陣尚未執行；目前不宣稱 Linux、Python 3.11 或其他環境已通過。GitHub workflow 是底座維護用檢查；若在下游 repository 被條件略過，skipped 不是測試成功，也不證明下游文件或產品通過。
+整合候選已完成本機工具契約、文件檢查、隔離 clone／初始化、三核心草稿與五類按需文件生成，以及重複建立／錯配核心路徑的拒絕驗證；README 採用與 remote 分工亦以隔離的本地 repositories 演練。實測 Python 組合與 filesystem 限制見[工程入口](項目文件/00-協作與執行/項目工程入口.md#生成與工程前提)。這些只證明本地框架與採用路徑，不代表產品已實作。
+
+GitHub Actions 矩陣、Linux runner、公開 tag／Release 及 GitHub default-branch 協作入口尚未驗證。GitHub workflow 是底座維護用檢查；若在下游 repository 被條件略過，skipped 不是已執行，也不證明下游文件或產品通過。
 
 若要聲稱整個 repository 的 Markdown links／anchors 已核對，發布前仍須做一次涵蓋全庫 tracked Markdown 的完整 QA。scripts/check_docs.py 及其 --project-docs 模式都不是這項全庫檢查，不可用它們取代。
 

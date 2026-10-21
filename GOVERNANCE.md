@@ -43,7 +43,7 @@
 
 本地分支、候選版號及 CHANGELOG 草稿不等於 public tag、Release、遠端 CI 或外部採用。版本發布須以實際授權的遠端動作與可回查 receipt 證明。推送、合併、打 tag、建立 Release 和部署均是各自獨立的外部操作；此文件本身不構成授權。
 
-現行 0.3.0-rc.1 是本地整合候選，尚未發布。任何候選需按適用驗收核對檔案來源、舊入口路由、工具、全庫 Markdown links/anchors、公開內容與授權。未執行的檢查明確記為 NOT_RUN；本地 checker PASS 不代表 GitHub matrix 通過或產品已驗收。
+目前版本與發布身份由[根 README](README.md#版本與來源身份)承接，本文件不另存一份版本狀態。任何候選需按適用驗收核對檔案來源、舊入口路由、工具、全庫 Markdown links/anchors、公開內容與授權。未執行的檢查明確記為 NOT_RUN；本地 checker PASS 不代表 GitHub matrix 通過或產品已驗收。
 
 ## 下游項目的邊界
 

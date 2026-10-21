@@ -32,7 +32,7 @@ PR template 提供底座審查項目。只有與該改動相關的檢查才適�
 
 每次公開發布仍須額外完成一次涵蓋整個 repository tracked Markdown 的 links／anchors QA，並進行公開 privacy、claim 和 license 審查。scripts/check_docs.py 的 default 與 --project-docs 檢查範圍由其程式和工程入口定義；它不是全庫 Markdown QA。不得以這些腳本的 PASS 代替發布所需的全庫檢查。
 
-任何未執行的檢查均標為 NOT_RUN，並說明對發布或結論的影響。此候選的 GitHub Actions matrix 尚未執行。
+任何未執行的檢查均標為 NOT_RUN，並說明對發布或結論的影響。當前候選的驗證範圍由[根 README](README.md#本地驗證github-ci-與限制)承接；真正 GitHub matrix 結果須引用對應的 Actions run，不能由本機檢查推定。
 
 ## 授權與署名
 
