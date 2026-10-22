@@ -16,6 +16,22 @@ Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，
 
 六份 Runbook 和八種模板由上述路由及工程入口定位。舊方法文章、案例、探索及 Codex adapter 保留為參考，採用者不需要先讀完整個 repository。
 
+<a id="採用前先辨認工作狀態"></a>
+
+## 採用前先辨認工作狀態
+
+README 是採用流程的唯一 owner；先按目前目錄狀態選入口，再看下方的共用採用程序。`PROJECT_DIR` 一律填絕對路徑。新目錄模式要求其父目錄已存在；既有 checkout 模式會在該 checkout 根目錄完成採用，不會再巢狀 clone。
+
+| 目前狀態 | 下一步 |
+| --- | --- |
+| 尚未取得項目目錄 | 用 `DESTINATION_MODE='new'`，指定不存在的新 `PROJECT_DIR`，並從該路徑的既有父目錄執行。 |
+| 已取得乾淨、未初始化的 Git checkout | 先檢查 ignored files 與項目資料，再用 `DESTINATION_MODE='existing'` 指向該 checkout 根目錄；驗證來源後在同一根目錄建立工作 branch 並初始化，不要再 clone。既有 `origin` 保留；只有能明確辨認為此 workflow 上游來源時才按下方規則調整。 |
+| 已初始化的項目 | 以 `.workflow/instance.json` 為唯一 active binding，沿項目文件來源目錄及工作路由繼續工作；不要再次執行初始化器。 |
+| 有 partial receipt、非空核心文件、自訂／不確定 binding、未追蹤或 ignored 項目資料，或來源／branch 衝突 | 停止初始化並保留現況。依[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)及[啟動項目 Runbook](項目文件/00-協作與執行/Runbooks/啟動項目.md)的 recovery 分支核對 owner；需要時改在新目的地明確採納。不要用 reset、clean、force 或刪檔重試。 |
+| 維護底座模板 | 按底座 maintainer scope 工作。`.workflow/project.json` 的 `TEMPLATE` 狀態本身不會觸發產品初始化，也不代表要把底座 repository 轉成某個產品項目。 |
+
+本次新增的採用入口屬於目前未發布的 README source revision；已發布的 `v0.3.0-rc.1` 來源保持原樣。指引版本與要採用的來源分別核對：可依這份候選指引操作已驗證的 RC1 checkout，但 RC1 attestation 不涵蓋本次指引改動。候選來源本身的驗證使用下方 candidate-branch／local 模式，結果只作 maintainer 預演。
+
 ## 版本與來源身份
 
 - 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。合併狀態以 [PR #1](https://github.com/Alex0158/evidence-gated-agentic-workflow/pull/1) 核對；tag 與 Release 狀態分別以 [Tags](https://github.com/Alex0158/evidence-gated-agentic-workflow/tags) 及 [Releases](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases) 核實。
@@ -26,7 +42,7 @@ Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，
 gh release verify v0.3.0-rc.1 --repo Alex0158/evidence-gated-agentic-workflow --format json
 ~~~
 
-只有驗證成功且 attestation 的完整 commit SHA 可確認時才繼續。取得來源後，核對 tag peeled commit (`refs/tags/$RELEASE_TAG^{commit}`) 與該 SHA 完全相同。Annotated tag object SHA 與其指向的 commit SHA 可以不同；不能把兩者混用。Release 不可讀、驗證命令不可用或 SHA 不一致時，停止一般採用。
+對 `v0.3.0-rc.1`，已觀察到驗證成功的 attestation subject URI 是 `pkg:github/Alex0158/evidence-gated-agentic-workflow@v0.3.0-rc.1`，其 `digest.sha1` 是 annotated tag object `8ed9198af71441b2742e0ece3ff7066f4af8acc5`，不是 commit SHA。GitHub 該 tag object 的 `object` target 為 `type=commit`、`sha=daae81d6d535e0e7b3b751f6759741bed45791f6`。因此要核的是 **attestation subject → tag object → peeled commit**：以 matching subject 確認 attested tag object SHA，fetch 精確 tag ref 後比對 tag object SHA，再比對 `refs/tags/$RELEASE_TAG^{commit}` 與 `EXPECTED_COMMIT`。其他 annotated tag 依同一鏈路實際查證，不把 subject digest 當 commit SHA。Release 不可讀、驗證命令不可用或任一 SHA 不一致時，停止一般採用；可編輯 Release notes 只提供發布描述，不能代替 cryptographic identity。
 - Maintainer 預演可從 PR head／GitHub branch readback 取得候選 branch 的完整 commit SHA，並按該 branch/head 核對 [framework-checks workflow run](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml)。Branch 名稱本身不能證明檢查結果；未完成或 skipped 的 run 不算成功，預演也不代表 Release 已公開。
 - 設計基線仍記為 v1.0-rev15。項目 metadata 的 source digest 用來識別設計來源，不是整個底座、下載包或公開 release 的 checksum。
 - 公開版本身份以 GitHub 實際 Release、tag peeled commit、attestation 與 CHANGELOG 共同核實。只改版號、有本地 commit 或找到同名 tag，不表示公開版本已驗證。
@@ -35,132 +51,238 @@ gh release verify v0.3.0-rc.1 --repo Alex0158/evidence-gated-agentic-workflow --
 
 <a id="從候選採用"></a>
 
-固定版本是一般採用的主路徑；下方保留候選 branch 和 local 兩種 maintainer 預演來源。每種來源都先核對完整 commit SHA，再 detached checkout，最後才建立項目自己的工作 branch。Tag 模式只解析精確的 `refs/tags/$RELEASE_TAG^{commit}`，不會以同名 branch 代替 tag。
+固定版本是一般採用的主路徑；候選 branch 和 local 只供 maintainer 以已核實的完整 SHA 預演，不能代替公開 Release 驗證。Tag 模式只解析精確的 `refs/tags/$RELEASE_TAG`，核對 attested tag object，再檢查 peeled commit，不會以同名 branch 代替 tag。
 
-採用前先讀[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)的 filesystem 前提，包括 exclusive maintenance、hard link 支援及 symlink／越界保護；環境不符合時停止並保留資料。固定版本模式執行前，先按[版本與來源身份](#版本與來源身份)核實公開 Release、attestation 與完整 commit SHA，並將已確認的 SHA 填入 `EXPECTED_COMMIT`。本地來源須是乾淨的候選 clone；其 HEAD 與 branch tip 都必須等於同一預期 SHA。
+採用前先讀[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)的 filesystem 前提，包括 exclusive maintenance、hard link 支援及 symlink／越界保護；環境不符合時停止並保留資料。固定版本模式執行前，先按[版本與來源身份](#版本與來源身份)核實公開 Release、attestation subject、tag object 與 peeled commit，將 tag object SHA 填入 `ATTESTED_TAG_OBJECT`、commit SHA 填入 `EXPECTED_COMMIT`。候選 branch 使用經 readback 的完整 branch SHA；local source 必須是乾淨候選 clone，且 HEAD 和 branch tip 都等於同一預期 SHA。
 
-先把每個值替換成自己的內容；保留引號。`SOURCE_MODE` 使用 `release`（一般採用）、`candidate-branch` 或 `local`。候選 branch 模式須使用 PR head／GitHub branch readback 的實際名稱和完整 SHA，並核對相應 Actions run；本地模式另填乾淨 clone 的 branch 名稱與路徑。`PROJECT_DIR` 必須是尚未存在的新目錄，亦不得是 symlink；命令在可建立該目錄的父目錄執行。執行前須確保 `git`、`sh` 和 Python 3.11+ 可用。整段命令使用 `set -eu` subshell，任何失敗即停止：
+把每個值替換成自己的內容並保留引號。`DESTINATION_MODE` 使用 `new`（不存在的新目錄）或 `existing`（乾淨、未初始化的 Git checkout）；`SOURCE_MODE` 使用 `release`、`candidate-branch` 或 `local`。候選 branch 模式要核對相應 Actions run；它仍是 maintainer rehearsal。`PROJECT_DIR` 填絕對路徑：new 模式從其已存在的父目錄執行，existing 模式直接在已取得的 checkout root 內採用。執行前確保 `git`、`sh` 和 Python 3.11+ 可用。下方區塊會明確啟動 `sh`，貼入 zsh 等 shell 時仍由 `sh` 執行；`set -eu` 令任何失敗即停止：
 
 ~~~sh
-(
+sh <<'WORKFLOW_ADOPTION'
 set -eu
 
+DESTINATION_MODE='new' # new | existing
 SOURCE_MODE='release' # release | candidate-branch | local
 WORKFLOW_REPOSITORY='https://github.com/Alex0158/evidence-gated-agentic-workflow.git'
 RELEASE_TAG='v0.3.0-rc.1'
 CANDIDATE_BRANCH='BRANCH_FROM_PR_HEAD_OR_GITHUB_READBACK'
-EXPECTED_COMMIT='FULL_40_CHARACTER_SHA_FROM_RELEASE_ATTESTATION_OR_BRANCH_READBACK'
+ATTESTED_TAG_OBJECT='FULL_TAG_OBJECT_SHA_FROM_MATCHING_RELEASE_ATTESTATION_SUBJECT' # release only
+EXPECTED_COMMIT='FULL_40_CHARACTER_VERIFIED_PEELED_COMMIT_OR_BRANCH_SHA'
 SOURCE_REPO='LOCAL_REPOSITORY_PATH'
-PROJECT_DIR='new-project'
+PROJECT_DIR='/absolute/path/to/project'
 WORK_BRANCH='adopt/workflow-starter'
 PROJECT_NAME='My Project'
 
 python3 -c 'import sys; print("Python %s.%s" % sys.version_info[:2]); raise SystemExit(sys.version_info < (3, 11))'
-if [ -e "$PROJECT_DIR" ] || [ -L "$PROJECT_DIR" ]; then
-  printf 'PROJECT_DIR must be a new directory: %s\n' "$PROJECT_DIR" >&2
-  exit 1
-fi
+case "$PROJECT_DIR" in
+  /*) ;;
+  *) printf 'PROJECT_DIR must be an absolute path\n' >&2; exit 1 ;;
+esac
+git check-ref-format --branch "$WORK_BRANCH"
+
+is_workflow_url() {
+  case "$1" in
+    "$WORKFLOW_REPOSITORY"|"https://github.com/Alex0158/evidence-gated-agentic-workflow"|"git@github.com:Alex0158/evidence-gated-agentic-workflow.git"|"ssh://git@github.com/Alex0158/evidence-gated-agentic-workflow.git") return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+case "$SOURCE_MODE" in
+  release)
+    git check-ref-format "refs/tags/$RELEASE_TAG"
+    SOURCE_REMOTE="$WORKFLOW_REPOSITORY"
+    SOURCE_REF="refs/tags/$RELEASE_TAG"
+    FETCH_REF="$SOURCE_REF:$SOURCE_REF"
+    NEW_FETCHED_REF="$SOURCE_REF"
+    case "$ATTESTED_TAG_OBJECT" in
+      *[!0-9a-f]*|'') printf 'ATTESTED_TAG_OBJECT must be a full lowercase hexadecimal object SHA\n' >&2; exit 1 ;;
+    esac
+    if [ "${#ATTESTED_TAG_OBJECT}" -ne 40 ]; then
+      printf 'ATTESTED_TAG_OBJECT must contain all 40 characters of the tag object SHA\n' >&2
+      exit 1
+    fi
+    ;;
+  candidate-branch)
+    git check-ref-format --branch "$CANDIDATE_BRANCH"
+    SOURCE_REMOTE="$WORKFLOW_REPOSITORY"
+    SOURCE_REF="refs/heads/$CANDIDATE_BRANCH"
+    FETCH_REF="$SOURCE_REF:refs/remotes/origin/$CANDIDATE_BRANCH"
+    NEW_FETCHED_REF="refs/remotes/origin/$CANDIDATE_BRANCH"
+    ;;
+  local)
+    git check-ref-format --branch "$CANDIDATE_BRANCH"
+    SOURCE_REMOTE=$(git -C "$SOURCE_REPO" rev-parse --show-toplevel)
+    test -z "$(git -C "$SOURCE_REPO" status --porcelain --untracked-files=normal)"
+    test "$(git -C "$SOURCE_REPO" rev-parse HEAD)" = "$EXPECTED_COMMIT"
+    test "$(git -C "$SOURCE_REPO" rev-parse --verify "refs/heads/$CANDIDATE_BRANCH^{commit}")" = "$EXPECTED_COMMIT"
+    SOURCE_REF="refs/heads/$CANDIDATE_BRANCH"
+    FETCH_REF="$SOURCE_REF:refs/remotes/origin/$CANDIDATE_BRANCH"
+    NEW_FETCHED_REF="refs/remotes/origin/$CANDIDATE_BRANCH"
+    ;;
+  *) printf 'SOURCE_MODE must be release, candidate-branch, or local\n' >&2; exit 2 ;;
+esac
 
 case "$EXPECTED_COMMIT" in
-  *[!0-9a-f]*|'')
-    printf 'EXPECTED_COMMIT must be a full lowercase hexadecimal commit SHA\n' >&2
-    exit 1
-    ;;
+  *[!0-9a-f]*|'') printf 'EXPECTED_COMMIT must be a full lowercase hexadecimal commit SHA\n' >&2; exit 1 ;;
 esac
 if [ "${#EXPECTED_COMMIT}" -ne 40 ]; then
   printf 'EXPECTED_COMMIT must contain all 40 characters of the commit SHA\n' >&2
   exit 1
 fi
 
-case "$SOURCE_MODE" in
-  release)
-    SOURCE_REMOTE="$WORKFLOW_REPOSITORY"
-    SOURCE_REF="refs/tags/$RELEASE_TAG"
-    FETCH_REF="$SOURCE_REF:$SOURCE_REF"
+case "$DESTINATION_MODE" in
+  new)
+    if [ -e "$PROJECT_DIR" ] || [ -L "$PROJECT_DIR" ]; then
+      printf 'new PROJECT_DIR must not already exist: %s\n' "$PROJECT_DIR" >&2; exit 1
+    fi
+    PROJECT_PARENT=$(dirname "$PROJECT_DIR")
+    if [ ! -d "$PROJECT_PARENT" ]; then
+      printf 'PROJECT_DIR parent must already exist: %s\n' "$PROJECT_PARENT" >&2; exit 1
+    fi
+    PROJECT_PARENT=$(cd -- "$PROJECT_PARENT" && pwd -P)
+    PROJECT_DIR="$PROJECT_PARENT/$(basename "$PROJECT_DIR")"
+    git init -- "$PROJECT_DIR"
+    git -C "$PROJECT_DIR" remote add origin "$SOURCE_REMOTE"
+    git -C "$PROJECT_DIR" fetch --no-tags origin "$FETCH_REF"
+    FETCHED_REF="$NEW_FETCHED_REF"
     ;;
-  candidate-branch)
-    SOURCE_REMOTE="$WORKFLOW_REPOSITORY"
-    SOURCE_REF="refs/remotes/origin/$CANDIDATE_BRANCH"
-    FETCH_REF="refs/heads/$CANDIDATE_BRANCH:$SOURCE_REF"
+  existing)
+    if [ ! -d "$PROJECT_DIR" ] || [ -L "$PROJECT_DIR" ]; then
+      printf 'existing PROJECT_DIR must be a real directory: %s\n' "$PROJECT_DIR" >&2; exit 1
+    fi
+    PROJECT_DIR=$(cd -- "$PROJECT_DIR" && pwd -P)
+    test "$(git -C "$PROJECT_DIR" rev-parse --show-toplevel)" = "$PROJECT_DIR"
+    test -z "$(git -C "$PROJECT_DIR" status --porcelain --untracked-files=normal)"
+    if [ ! -f "$PROJECT_DIR/.workflow/project.json" ] || [ -L "$PROJECT_DIR/.workflow/project.json" ] || [ -e "$PROJECT_DIR/.workflow/instance.json" ] || [ -L "$PROJECT_DIR/.workflow/instance.json" ]; then
+      printf 'existing checkout is not an uninitialized project template\n' >&2; exit 1
+    fi
+    PROJECT_MODE=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["project"]["mode"])' "$PROJECT_DIR/.workflow/project.json")
+    if [ "$PROJECT_MODE" != 'TEMPLATE' ]; then
+      printf 'existing checkout is initialized; preserve it and use its owner route\n' >&2; exit 1
+    fi
+    for STATE_FILE in "$PROJECT_DIR"/.workflow/init-receipt.json "$PROJECT_DIR"/.workflow/init-config-before.json "$PROJECT_DIR"/.workflow/init-candidate-*.json "$PROJECT_DIR"/.workflow/init-partial-*.json; do
+      if [ -e "$STATE_FILE" ] || [ -L "$STATE_FILE" ]; then
+        printf 'initialization state must be reviewed and preserved: %s\n' "$STATE_FILE" >&2; exit 1
+      fi
+    done
+    if git -C "$PROJECT_DIR" show-ref --verify --quiet "refs/heads/$WORK_BRANCH"; then
+      printf 'WORK_BRANCH already exists; choose a reviewed unused branch name: %s\n' "$WORK_BRANCH" >&2; exit 1
+    fi
+    if git -C "$PROJECT_DIR" remote | grep -Fxq workflow-upstream; then
+      EXISTING_UPSTREAM=$(git -C "$PROJECT_DIR" remote get-url --all workflow-upstream) || { printf 'workflow-upstream has no readable URL; preserve remotes and inspect it before adoption\n' >&2; exit 1; }
+      if ! is_workflow_url "$EXISTING_UPSTREAM" || ! is_workflow_url "$(git -C "$PROJECT_DIR" remote get-url --push --all workflow-upstream)"; then
+        printf 'workflow-upstream URL is unrecognized; preserve remotes and inspect it before adoption\n' >&2; exit 1
+      fi
+    fi
+    ORIGIN_ACTION='preserve'
+    if git -C "$PROJECT_DIR" remote | grep -Fxq origin; then
+      ORIGIN_URL=$(git -C "$PROJECT_DIR" remote get-url --all origin) || { printf 'origin has no readable URL; preserve remotes and inspect it before adoption\n' >&2; exit 1; }
+    else
+      ORIGIN_URL=''
+    fi
+    if is_workflow_url "$ORIGIN_URL"; then
+      ORIGIN_PUSH_URL=$(git -C "$PROJECT_DIR" remote get-url --push --all origin)
+      if ! is_workflow_url "$ORIGIN_PUSH_URL"; then
+        printf 'origin has a different push URL; preserve remotes and inspect it before adoption\n' >&2; exit 1
+      fi
+      if git -C "$PROJECT_DIR" remote get-url workflow-upstream >/dev/null 2>&1; then
+        printf 'both origin and workflow-upstream identify the base; preserve remotes and reconcile before adoption\n' >&2; exit 1
+      fi
+      ORIGIN_ACTION='rename-to-workflow-upstream'
+    fi
+    if [ "$SOURCE_MODE" = 'release' ]; then
+      git -C "$PROJECT_DIR" fetch --no-tags "$SOURCE_REMOTE" "$SOURCE_REF:refs/tags/$RELEASE_TAG"
+      FETCHED_REF="refs/tags/$RELEASE_TAG"
+    else
+      git -C "$PROJECT_DIR" fetch --no-tags "$SOURCE_REMOTE" "$SOURCE_REF"
+      FETCHED_REF='FETCH_HEAD'
+    fi
     ;;
-  local)
-    SOURCE_REMOTE=$(git -C "$SOURCE_REPO" rev-parse --show-toplevel)
-    test -z "$(git -C "$SOURCE_REPO" status --porcelain)"
-    test "$(git -C "$SOURCE_REPO" rev-parse HEAD)" = "$EXPECTED_COMMIT"
-    test "$(git -C "$SOURCE_REPO" rev-parse --verify "refs/heads/$CANDIDATE_BRANCH^{commit}")" = "$EXPECTED_COMMIT"
-    SOURCE_REF="refs/remotes/origin/$CANDIDATE_BRANCH"
-    FETCH_REF="refs/heads/$CANDIDATE_BRANCH:$SOURCE_REF"
-    ;;
-  *)
-    printf 'SOURCE_MODE must be release, candidate-branch, or local\n' >&2
-    exit 2
-    ;;
+  *) printf 'DESTINATION_MODE must be new or existing\n' >&2; exit 2 ;;
 esac
 
-git init -- "$PROJECT_DIR"
-git -C "$PROJECT_DIR" remote add origin "$SOURCE_REMOTE"
-git -C "$PROJECT_DIR" fetch --no-tags origin "$FETCH_REF"
-
-CANDIDATE_COMMIT=$(git -C "$PROJECT_DIR" rev-parse --verify "$SOURCE_REF^{commit}")
+if [ "$SOURCE_MODE" = 'release' ]; then
+  FETCHED_TAG_OBJECT=$(git -C "$PROJECT_DIR" rev-parse --verify "$FETCHED_REF")
+  if [ "$(git -C "$PROJECT_DIR" cat-file -t "$FETCHED_TAG_OBJECT")" != 'tag' ]; then
+    printf 'the selected release ref is not an annotated tag object\n' >&2; exit 1
+  fi
+  test "$FETCHED_TAG_OBJECT" = "$ATTESTED_TAG_OBJECT"
+fi
+CANDIDATE_COMMIT=$(git -C "$PROJECT_DIR" rev-parse --verify "$FETCHED_REF^{commit}")
 test "$CANDIDATE_COMMIT" = "$EXPECTED_COMMIT"
+if [ "$DESTINATION_MODE" = 'existing' ]; then
+  test "$(git -C "$PROJECT_DIR" rev-parse HEAD)" = "$EXPECTED_COMMIT"
+  test -z "$(git -C "$PROJECT_DIR" status --porcelain --untracked-files=normal)"
+fi
 for NATIVE_FILE in AGENTS.md .workflow/project.json scripts/init_project.py scripts/check_docs.py scripts/create_document.py '項目文件/00-協作與執行/README.md'; do
   git -C "$PROJECT_DIR" cat-file -e "$CANDIDATE_COMMIT:$NATIVE_FILE"
 done
 git -C "$PROJECT_DIR" show "$CANDIDATE_COMMIT:.workflow/project.json"
 
-git -C "$PROJECT_DIR" checkout --detach "$CANDIDATE_COMMIT"
-test "$(git -C "$PROJECT_DIR" rev-parse HEAD)" = "$EXPECTED_COMMIT"
-git -C "$PROJECT_DIR" switch -c "$WORK_BRANCH"
-git -C "$PROJECT_DIR" remote rename origin workflow-upstream
-git -C "$PROJECT_DIR" remote set-url workflow-upstream "$WORKFLOW_REPOSITORY"
-git -C "$PROJECT_DIR" config --local push.default nothing
-git -C "$PROJECT_DIR" remote -v
-git -C "$PROJECT_DIR" rev-parse HEAD
-
+git -C "$PROJECT_DIR" switch --create "$WORK_BRANCH" "$CANDIDATE_COMMIT"
 (
   cd -- "$PROJECT_DIR"
   python3 -B scripts/init_project.py --project-name "$PROJECT_NAME"
   python3 -B scripts/check_docs.py
   python3 -B scripts/check_docs.py --project-docs
 )
-)
+if [ "$DESTINATION_MODE" = 'new' ]; then
+  git -C "$PROJECT_DIR" remote rename origin workflow-upstream
+  git -C "$PROJECT_DIR" remote set-url workflow-upstream "$WORKFLOW_REPOSITORY"
+else
+  case "$ORIGIN_ACTION" in
+    rename-to-workflow-upstream) git -C "$PROJECT_DIR" remote rename origin workflow-upstream ;;
+    preserve)
+      if ! git -C "$PROJECT_DIR" remote get-url workflow-upstream >/dev/null 2>&1; then
+        git -C "$PROJECT_DIR" remote add workflow-upstream "$WORKFLOW_REPOSITORY"
+      fi
+      ;;
+  esac
+fi
+git -C "$PROJECT_DIR" config --local push.default nothing
+git -C "$PROJECT_DIR" remote -v
+git -C "$PROJECT_DIR" rev-parse HEAD
+WORKFLOW_ADOPTION
 ~~~
 
-Release 模式只 fetch 精確 tag ref，並核 peeled commit；若同名 branch 存在也不會被解析為 tag。候選 branch 模式只 fetch 指定 branch ref，本地模式先核來源乾淨、HEAD 及 branch tip 均等於預期 SHA。三種來源接著共用 native file 核對、detached checkout、新工作 branch、`workflow-upstream` 設定及初始化／文件檢查。每一步都以前一步成功為前提；失敗時停止並查明原因。初始化只在新 clone 建立缺少的項目入口，不覆寫現有內容。遇到拒絕或 partial result，保留原內容並依工程入口的 recovery 指引處理；不要用 force、reset 或 clean 繞過。
+`existing` 模式要求 Git root、乾淨 working tree、`TEMPLATE` mode、沒有 active instance 或 init receipt／partial receipt；執行前亦須檢查 ignored files 與項目資料。更細的 binding、產品文件與目錄 preflight 由唯一 initializer `scripts/init_project.py` 負責；它拒絕自訂狀態而不覆寫，部分失敗則留下 recovery receipt。若拒絕或部分失敗，保留已建立的 verified work branch、所有原文件及 receipt，依[啟動項目 Runbook](項目文件/00-協作與執行/Runbooks/啟動項目.md) recovery，不 reset／clean／刪檔。Release 來源比對 attested tag object 與 peeled commit；branch/local rehearsal 比對各自完整 commit SHA。已知指向 workflow repository 的 `origin` 會在無名稱衝突時改名為 `workflow-upstream`；項目或身份未確認的 `origin` 原樣保留。現有 `workflow-upstream` URL 不明、兩個 remote 都指向底座或工作 branch 已存在時，不改 remote／branch／文件並停止。
 
-初始化建立三份 draft：產品骨架、近期模組／功能規格、技術設計與契約。它不確認產品需求，也不代表項目已準備完成。先與開發者確認全局目標、價值、scope、使用者群組、主要流程、品質限制與重要架構方向，再深化近期工作的 owner 文件。
+初始化成功後，將 `PROJECT_DIR` 當作實際項目／workspace 根目錄；`.workflow/instance.json` 是 active binding，`.workflow/project.json` 仍是底座 metadata／framework baseline。三個生成 draft 固定落在 `項目文件/01-產品需求/產品骨架.md`、`項目文件/02-業務規格/業務模組/規格草稿.md`、`項目文件/03-系統設計/系統設計草稿.md`；產品／業務／技術語義仍由各自 owner 定義。接著按[啟動項目 Runbook](項目文件/00-協作與執行/Runbooks/啟動項目.md)整理問題、角色、主流程、scope 與假設，再判斷近期 slice readiness；初始化或模板文字不代表需求已確認。Runbook 是 brainstorm 與 handoff 的唯一程序 owner，這裡不複製它的問題清單或規則。
 
-八種模板中有三份作為初始化 draft；另外五種依工作需要建立。五種 template ID 為 business-flow、decision、task、verification、delivery。上段命令在 subshell 內完成，離開後會回到原目錄；執行下例前，將 PROJECT_DIR 填成剛建立的 clone 目錄：
+初始化 draft 以外的五種 template ID 為 business-flow、decision、task、verification、delivery，按需建立：
 
 ~~~sh
 (
   set -eu
-  PROJECT_DIR='PATH_TO_NEW_PROJECT'
+  PROJECT_DIR='/absolute/path/to/project'
   git -C "$PROJECT_DIR" rev-parse --show-toplevel >/dev/null
   cd -- "$PROJECT_DIR"
   python3 -B scripts/create_document.py --template business-flow --filename example-flow
 )
 ~~~
 
-filename 是新 Markdown 檔名，不含路徑。template ID 和目的地以項目工程入口所連到的 active binding 為準。生成文件不等於產品語義已確認。不要預造完整空文件樹，也不要以文件數或百分比宣稱 readiness。
+生成文件不等於產品語義已確認；不要預造完整空文件樹，也不要以文件數或百分比宣稱 readiness。
 
 ### 綁定項目與工具
 
-初始化後，先讀 .workflow/instance.json；它是本項目的 active binding。.workflow/project.json 保留底座 metadata／framework baseline。按實際 owner 填項目名稱、用途及 repo 邊界；核實 repositories 路徑，並只為本項目真實存在的 runner 設定 entry 和 argv。不存在的產品 runner 保持 null，相關 evidence 記為 NOT_RUN。Secrets 只記錄已授權的 secure retrieval reference，不寫入檔案或命令。
+初始化後先讀 `.workflow/instance.json`；它是項目的 active binding。`.workflow/project.json` 保留底座 metadata／framework baseline。按實際 owner 填項目名稱、用途及 repo 邊界；核實 repositories 路徑，並只為本項目真實存在的 runner 設定 entry 和 argv。不存在的產品 runner 保持 null，相關 evidence 記為 NOT_RUN。Secrets 只記錄已授權的 secure retrieval reference，不寫入檔案或命令。
 
-文件檢查的 PASS 只涵蓋該 checker 實際檢查的靜態條件。default check 和 --project-docs 的擴展範圍由工程入口說明；兩者都不是完整的全 repository Markdown 驗證，更不是產品 build、test、runtime、deployment 或 user acceptance。
+文件檢查的 PASS 只涵蓋 checker 實際檢查的靜態條件。default check 和 `--project-docs` 的擴展範圍由工程入口說明；兩者都不是完整的全 repository Markdown 驗證，更不是產品 build、test、runtime、deployment 或 user acceptance。
 
 ## 分開上游與項目 repository
 
-項目開發應在自己的 repository 和 branch 中進行。上面的 clone 先把採用來源設為 workflow-upstream；它是用來識別及比較通用底座的來源。建立並核實自己的新 repository 後，才把它設為項目 origin：
+新目錄模式會把採用來源設為 `workflow-upstream`；既有 checkout 的項目 `origin` 原樣保留。先核實 `git remote -v`：沒有項目 `origin` 時，建立並確認項目自己的 repository 後才新增；已有項目 `origin` 時沿用並確認 URL。身份不明或指向 workflow 上游的 `origin` 不可當作項目 remote。只在確認 `origin` 是項目 repository 後，設定預設 push target：
 
 ~~~sh
 (
 set -eu
-PROJECT_DIR='PATH_TO_NEW_PROJECT'
+PROJECT_DIR='/absolute/path/to/project'
 PROJECT_ORIGIN_URL='PROJECT_REPOSITORY_URL'
 git -C "$PROJECT_DIR" rev-parse --show-toplevel >/dev/null
-git -C "$PROJECT_DIR" remote add origin "$PROJECT_ORIGIN_URL"
+if ! git -C "$PROJECT_DIR" remote get-url origin >/dev/null 2>&1; then
+  git -C "$PROJECT_DIR" remote add origin "$PROJECT_ORIGIN_URL"
+fi
+test "$(git -C "$PROJECT_DIR" remote get-url origin)" = "$PROJECT_ORIGIN_URL"
 git -C "$PROJECT_DIR" config --local remote.pushDefault origin
 git -C "$PROJECT_DIR" config --local push.default nothing
 git -C "$PROJECT_DIR" remote -v
@@ -169,11 +291,9 @@ git -C "$PROJECT_DIR" config --local --get push.default
 )
 ~~~
 
-先確認 origin 指向項目自己的 repository，並按項目資料性質選擇 public 或 private visibility。不要把項目內容推到 workflow-upstream。上述本地設定令沒有明確 refspec 的 git push 失敗；這不是服務端權限或完整防護。明確 refspec、其他設定及外部工具仍可指定目的地，所以每次外部寫入都須先核對 target 和授權。設定 remote 本身不會 push。
+先按項目資料性質選擇 public 或 private visibility。上述設定令沒有明確 refspec 的 `git push` 失敗；這不是服務端權限或完整防護。明確 refspec、其他設定及外部工具仍可指定目的地，所以每次外部寫入都須先核對 target 和授權。設定 remote 本身不會 push。
 
-在第一次 push、開啟 Issues 或邀請 PR 協作之前，逐一檢查 clone 帶入的 .github/、SECURITY.md、CONTRIBUTING.md、GOVERNANCE.md 和 license 說明。它們是上游底座維護用內容；由項目 owner 設定自己的回報入口和協作規則，並保留適用的來源署名。初始化器不會自動搬走或刪除這些檔案。
-
-也要核對 clone 根目錄的 .gitignore。private/、audit/、memory/ 等規則可能影響項目子目錄；以 git check-ignore -v 和 git status --short --ignored 核實真實結果，避免程式碼或需追蹤的項目來源被忽略。按項目 owner 決定精準調整，不要因此刪除資料或移除秘密保護。
+第一次 push、開啟 Issues 或邀請 PR 協作之前，逐一檢查 clone 帶入的 `.github/`、`SECURITY.md`、`CONTRIBUTING.md`、`GOVERNANCE.md` 和 license 說明。它們是上游底座維護用內容；由項目 owner 設定自己的回報入口和協作規則，並保留適用的來源署名。初始化器不會自動搬走或刪除這些檔案。也要核對 `.gitignore`；以 `git check-ignore -v` 和 `git status --short --ignored` 檢查 private／audit／memory 等路徑是否意外略過項目資料，按項目 owner 精準調整，不要刪除資料或移除秘密保護。
 
 ## 本地驗證、GitHub CI 與限制
 

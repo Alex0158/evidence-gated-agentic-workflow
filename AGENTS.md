@@ -12,6 +12,8 @@
 
 先自行確定目標、允許動作、active repo／source、current 與 intended、主要 owner、影響面、完成層及阻塞未知。由[項目文件來源目錄](項目文件/README.md)找正式內容來源，由[工作路由](項目文件/00-協作與執行/README.md)選 Runbook；再按需讀取協作／工程／evidence 標準。不要以模板、generated view、舊紀錄、檔名或較新 timestamp 代替 current contract 或確認事件。
 
+底座採用及新目錄／既有 checkout／已初始化／partial 狀態的入口，統一依[README 採用狀態路由](README.md#採用前先辨認工作狀態)；README 是唯一採用程序 owner。
+
 小而可逆、已有授權的工作可直接推進。Runbook 只教如何執行，不授予產品、風險、發布或外部承諾權。新方向、scope、權限／資料政策、相容性、風險接受或外部承諾超出現有授權時，保留為 proposal，提出具體決策點；不把文件存在或工程 maintainer 身份當成批准。
 
 ## 來源與狀態邊界
