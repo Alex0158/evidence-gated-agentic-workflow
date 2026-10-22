@@ -6,6 +6,26 @@ from pathlib import PurePosixPath
 from workflow_support import bounded_path, document_template_plan, package_root, read_binding, rebase_links
 
 MAX_NAME_LENGTH = 120
+_CAPTURED_FAILURES = (OSError, ValueError, KeyError, TypeError)
+
+
+class PartialDocumentCreationError(Exception):
+    """A new target was exclusively opened, but its contents could not be verified."""
+
+    def __init__(self, path, cause):
+        self.receipt = {
+            'status': 'PARTIAL_RETAINED',
+            'created': True,
+            'path': path,
+            'reason': f'{type(cause).__name__}: {cause}',
+            'recovery': (
+                'Inspect the retained file and compare it with the registered template '
+                'and active binding. Reconcile it explicitly before continuing; do not '
+                'assume it is a complete draft or retry the same filename.'
+            ),
+        }
+        super().__init__(self.receipt['reason'])
+
 
 def create_document(root, template_id, filename):
     binding_path, binding_bytes, data = read_binding(root)
@@ -39,15 +59,20 @@ def create_document(root, template_id, filename):
     if binding_path.read_bytes() != binding_bytes:
         raise ValueError('Active binding changed during preflight; no document written')
     target.parent.mkdir(parents=True, exist_ok=True)
-    with target.open('x', encoding='utf-8') as output:
-        output.write(rendered)
-    saved = target.read_bytes()
-    binding_unchanged = binding_path.read_bytes() == binding_bytes
+    output = target.open('x', encoding='utf-8')
+    try:
+        with output:
+            output.write(rendered)
+        saved = target.read_bytes()
+        binding_unchanged = binding_path.read_bytes() == binding_bytes
+        template_hash = hashlib.sha256(source.read_bytes()).hexdigest()
+    except _CAPTURED_FAILURES as exc:
+        raise PartialDocumentCreationError(target.relative_to(root).as_posix(), exc) from exc
     return {
         'status': 'DRAFT_CREATED' if binding_unchanged else 'DRAFT_CREATED_BINDING_CHANGED_REVIEW',
         'template_id': template_id,
         'path': target.relative_to(root).as_posix(),
-        'template_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
+        'template_sha256': template_hash,
         'document_sha256': hashlib.sha256(saved).hexdigest(),
         'active_binding_unchanged': binding_unchanged,
         'project_readiness': data['project'].get('readiness', 'NOT_DECLARED'),
@@ -68,6 +93,9 @@ def main():
     args = parser.parse_args()
     try:
         result = create_document(root, args.template, args.filename)
+    except PartialDocumentCreationError as exc:
+        print(json.dumps(exc.receipt, ensure_ascii=False))
+        return 2
     except (OSError, ValueError, KeyError, TypeError) as exc:
         print(json.dumps({'status': 'REFUSED', 'reason': str(exc), 'created': False}, ensure_ascii=False))
         return 2
