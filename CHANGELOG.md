@@ -2,13 +2,13 @@
 
 ## Unreleased
 
-### Local integration candidate 0.3.0-rc.1 — not published
+### Integration candidate 0.3.0-rc.1 — not released
 
 - Integrate the revision 15 project starter into the existing repository while retaining its public history and older reference material.
-- Establish one adoption entry with three initialization drafts, five on-demand document types, local candidate source verification, and separate upstream and project remotes.
+- Establish one adoption entry with three initialization drafts, five on-demand document types, candidate source verification, and separate upstream and project remotes.
 - Clarify base-repository maintenance governance, downstream project boundaries, public safety, and the license scope for the new tools.
 - Report retained files truthfully when on-demand document writing or readback fails, with a nonzero exit and explicit reconciliation guidance.
-- This is an untagged local candidate. No public tag or Release is claimed.
+- This is an untagged candidate. No public tag or Release is claimed.
 
 ### Teaching frontend retirement
 

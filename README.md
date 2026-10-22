@@ -2,7 +2,7 @@
 
 這個 repository 提供一套供新軟件與網頁項目採用的文件及協作 starter：通用工作入口、來源路由、三類協作標準、六份 Runbook、八種文件模板，以及只處理本地 Markdown 的工具。它提供工作方法和可填骨架；產品規則、技術棧、服務、runner 與驗收由各項目的 owner 決定。
 
-目前整合版本是本地候選 0.3.0-rc.1，尚未發布，沒有對應的公開 GitHub tag 或 Release。不要從公開 repository URL 假設可取得這個候選版。下文先提供從採用者填入的本地 repository 與候選 commit 開始的路徑；公開 tag 的取得方式只在發布後適用。
+目前整合版本是候選 0.3.0-rc.1；候選分支 `integration/starter-r15` 已可從 GitHub 取得，但尚未合入 `main`、未打 tag、未建立 GitHub Release。採用前請在 [framework-checks workflow runs](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml) 開啟對應 run，確認分支及 head commit 與採用時核對的 SHA 相同；branch 名稱本身不能證明檢查結果。下文提供遠端候選和本地 clone 兩種來源選項；公開 tag 的取得方式只在發布後適用。
 
 Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，不是正式標準、安全認證或 formal assurance case；目前亦沒有以 benchmark 證明其 operational effectiveness。
 
@@ -18,47 +18,69 @@ Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，
 
 ## 版本與來源身份
 
-- 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。這個網址標識上游，不代表目前未發布的本地候選已在 GitHub 上。
-- 本地候選版號為 0.3.0-rc.1；其 Git commit 必須由採用者從本地來源讀取並核對。候選尚無公開 tag、Release receipt 或 GitHub Actions matrix 結果。
+- 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。目前候選分支 `integration/starter-r15` 可由該 repository 取得，尚未合入 `main`，也沒有對應的 tag 或 Release。
+- 候選版號為 0.3.0-rc.1；branch 可能移動，採用者必須從 PR head 或 GitHub branch readback 取得完整 commit SHA，並核對 clone 後的 SHA。GitHub Actions 狀態須按該 branch/head 的 run 核實，未完成或 skipped 的 run 不算成功。
 - 設計基線仍記為 v1.0-rev15。項目 metadata 的 source digest 用來識別設計來源，不是整個底座、下載包或公開 release 的 checksum。
 - 發布後，公開版本身份由實際 tag、該 tag 指向的 Git commit 及 CHANGELOG 共同確定。只改版號或有一個本地 commit，不表示已發布。
 
-## 從本地候選採用
+## 從候選採用
 
-Git 只能 clone 已存在於來源 repository 的 commit。採用前，請確認本地來源包含候選檔案、工作樹乾淨，並提供要採用的實際 commit SHA。若候選內容仍是未提交的工作樹變更，以下核對會停止；不可將來源的舊 HEAD 當作候選。
+Git 只能 clone 已提交的 commit。可從 GitHub 候選分支或本地 clone 取得來源；遠端 branch 可能移動，因此要先從 PR head 或 GitHub branch readback 取得完整 SHA，再確認 clone 出來的 branch tip 正好相同。若來源仍有未提交變更，停止並先提交候選，不可把舊 HEAD 當成候選。
 
 初始化前先讀[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)的 filesystem 前提，包括 exclusive maintenance、hard link 支援及 symlink／越界保護；環境不符合時停止並保留資料。
 
-先把每個值替換成自己的內容；保留引號。SOURCE_REPO 是採用者填入的本地 repository 路徑，不需要使用作者的個人絕對路徑。PROJECT_DIR 必須是尚未存在的新目錄。整段命令在可建立該目錄的父目錄執行，命令置於 subshell，離開後不會更改呼叫者 shell 的目錄或選項：
+先把每個值替換成自己的內容；保留引號。遠端來源使用目前的 `integration/starter-r15`，若 PR 或 branch readback 顯示其他 branch，請改用該名稱及其完整 head SHA。本地來源則填入乾淨的候選 clone 路徑，其 HEAD 必須等於同一個預期 SHA。`PROJECT_DIR` 必須是尚未存在的新目錄；命令在可建立該目錄的父目錄執行。Python 必須是 3.11 或更新版本。整段命令使用 subshell，並在錯誤目錄或 Python 版本不合時停止：
 
 ~~~sh
 (
 set -eu
 
+CANDIDATE_SOURCE='remote' # set to 'local' to use a local clone
+WORKFLOW_REPOSITORY='https://github.com/Alex0158/evidence-gated-agentic-workflow.git'
+CANDIDATE_BRANCH='integration/starter-r15'
+EXPECTED_CANDIDATE_COMMIT='FULL_SHA_FROM_PR_HEAD_OR_GITHUB_BRANCH_READBACK'
 SOURCE_REPO='LOCAL_REPOSITORY_PATH'
-SOURCE_COMMIT='CANDIDATE_COMMIT_SHA'
 PROJECT_DIR='new-project'
 WORK_BRANCH='adopt/workflow-starter'
 PROJECT_NAME='My Project'
-WORKFLOW_UPSTREAM_URL='https://github.com/Alex0158/evidence-gated-agentic-workflow.git'
 
-test -z "$(git -C "$SOURCE_REPO" status --porcelain)"
-SOURCE_COMMIT=$(git -C "$SOURCE_REPO" rev-parse "$SOURCE_COMMIT^{commit}")
-test "$(git -C "$SOURCE_REPO" rev-parse HEAD)" = "$SOURCE_COMMIT"
-git -C "$SOURCE_REPO" cat-file -e "$SOURCE_COMMIT^{commit}"
-git -C "$SOURCE_REPO" cat-file -e "$SOURCE_COMMIT:AGENTS.md"
-git -C "$SOURCE_REPO" cat-file -e "$SOURCE_COMMIT:scripts/init_project.py"
-git -C "$SOURCE_REPO" cat-file -e "$SOURCE_COMMIT:項目文件/00-協作與執行/README.md"
-git -C "$SOURCE_REPO" show "$SOURCE_COMMIT:.workflow/project.json"
+python3 -c 'import sys; print("Python %s.%s" % sys.version_info[:2]); raise SystemExit(sys.version_info < (3, 11))'
+if [ -e "$PROJECT_DIR" ] || [ -L "$PROJECT_DIR" ]; then
+  printf 'PROJECT_DIR must be a new directory: %s\n' "$PROJECT_DIR" >&2
+  exit 1
+fi
 
-git clone --origin origin --no-checkout "$SOURCE_REPO" "$PROJECT_DIR"
-git -C "$PROJECT_DIR" checkout --detach "$SOURCE_COMMIT"
-CLONE_COMMIT=$(git -C "$PROJECT_DIR" rev-parse HEAD)
-test "$CLONE_COMMIT" = "$SOURCE_COMMIT"
+case "$CANDIDATE_SOURCE" in
+  remote)
+    git clone --origin origin --no-checkout --single-branch --branch "$CANDIDATE_BRANCH" "$WORKFLOW_REPOSITORY" "$PROJECT_DIR"
+    CANDIDATE_REF="refs/remotes/origin/$CANDIDATE_BRANCH"
+    ;;
+  local)
+    git -C "$SOURCE_REPO" rev-parse --show-toplevel >/dev/null
+    test -z "$(git -C "$SOURCE_REPO" status --porcelain)"
+    test "$(git -C "$SOURCE_REPO" rev-parse HEAD)" = "$EXPECTED_CANDIDATE_COMMIT"
+    test "$(git -C "$SOURCE_REPO" rev-parse --verify "refs/heads/$CANDIDATE_BRANCH^{commit}")" = "$EXPECTED_CANDIDATE_COMMIT"
+    git clone --origin origin --no-checkout --single-branch --branch "$CANDIDATE_BRANCH" "$SOURCE_REPO" "$PROJECT_DIR"
+    CANDIDATE_REF="refs/remotes/origin/$CANDIDATE_BRANCH"
+    ;;
+  *)
+    printf 'CANDIDATE_SOURCE must be remote or local\n' >&2
+    exit 2
+    ;;
+esac
+
+CANDIDATE_COMMIT=$(git -C "$PROJECT_DIR" rev-parse --verify "$CANDIDATE_REF^{commit}")
+test "$CANDIDATE_COMMIT" = "$EXPECTED_CANDIDATE_COMMIT"
+git -C "$PROJECT_DIR" cat-file -e "$CANDIDATE_COMMIT:AGENTS.md"
+git -C "$PROJECT_DIR" cat-file -e "$CANDIDATE_COMMIT:scripts/init_project.py"
+git -C "$PROJECT_DIR" cat-file -e "$CANDIDATE_COMMIT:項目文件/00-協作與執行/README.md"
+git -C "$PROJECT_DIR" show "$CANDIDATE_COMMIT:.workflow/project.json"
+
+git -C "$PROJECT_DIR" checkout --detach "$CANDIDATE_COMMIT"
+test "$(git -C "$PROJECT_DIR" rev-parse HEAD)" = "$EXPECTED_CANDIDATE_COMMIT"
 git -C "$PROJECT_DIR" switch -c "$WORK_BRANCH"
-
 git -C "$PROJECT_DIR" remote rename origin workflow-upstream
-git -C "$PROJECT_DIR" remote set-url workflow-upstream "$WORKFLOW_UPSTREAM_URL"
+git -C "$PROJECT_DIR" remote set-url workflow-upstream "$WORKFLOW_REPOSITORY"
 git -C "$PROJECT_DIR" config --local push.default nothing
 git -C "$PROJECT_DIR" remote -v
 git -C "$PROJECT_DIR" rev-parse HEAD
@@ -72,16 +94,17 @@ git -C "$PROJECT_DIR" rev-parse HEAD
 )
 ~~~
 
-每一步都以前一步成功為前提；失敗時停止並查明原因。初始化只在新 clone 建立缺少的項目入口，不覆寫現有內容。遇到拒絕或 partial result，保留原內容並依工程入口的 recovery 指引處理；不要用 force、reset 或 clean 繞過。
+遠端模式會核對 GitHub branch tip 與輸入的完整 SHA；本地模式會核對來源工作樹乾淨且 HEAD 相同。兩者都將來源 remote 命名為 `workflow-upstream`，並在新 branch 上執行同一組初始化與文件檢查。每一步都以前一步成功為前提；失敗時停止並查明原因。初始化只在新 clone 建立缺少的項目入口，不覆寫現有內容。遇到拒絕或 partial result，保留原內容並依工程入口的 recovery 指引處理；不要用 force、reset 或 clean 繞過。
 
 初始化建立三份 draft：產品骨架、近期模組／功能規格、技術設計與契約。它不確認產品需求，也不代表項目已準備完成。先與開發者確認全局目標、價值、scope、使用者群組、主要流程、品質限制與重要架構方向，再深化近期工作的 owner 文件。
 
-八種模板中有三份作為初始化 draft；另外五種依工作需要建立。五種 template ID 為 business-flow、decision、task、verification、delivery。第一段命令在 subshell 內完成，離開後會回到原目錄；執行下例前，將 PROJECT_DIR 填成剛建立的 clone 目錄：
+八種模板中有三份作為初始化 draft；另外五種依工作需要建立。五種 template ID 為 business-flow、decision、task、verification、delivery。上段命令在 subshell 內完成，離開後會回到原目錄；執行下例前，將 PROJECT_DIR 填成剛建立的 clone 目錄：
 
 ~~~sh
-PROJECT_DIR='PATH_TO_NEW_PROJECT'
 (
   set -eu
+  PROJECT_DIR='PATH_TO_NEW_PROJECT'
+  git -C "$PROJECT_DIR" rev-parse --show-toplevel >/dev/null
   cd "$PROJECT_DIR"
   python3 -B scripts/create_document.py --template business-flow --filename example-flow
 )
@@ -104,6 +127,7 @@ filename 是新 Markdown 檔名，不含路徑。template ID 和目的地以項�
 set -eu
 PROJECT_DIR='PATH_TO_NEW_PROJECT'
 PROJECT_ORIGIN_URL='PROJECT_REPOSITORY_URL'
+git -C "$PROJECT_DIR" rev-parse --show-toplevel >/dev/null
 git -C "$PROJECT_DIR" remote add origin "$PROJECT_ORIGIN_URL"
 git -C "$PROJECT_DIR" config --local remote.pushDefault origin
 git -C "$PROJECT_DIR" config --local push.default nothing
@@ -123,7 +147,7 @@ git -C "$PROJECT_DIR" config --local --get push.default
 
 整合候選已完成本機工具契約、文件檢查、隔離 clone／初始化、三核心草稿與五類按需文件生成，以及重複建立／錯配核心路徑的拒絕驗證；README 採用與 remote 分工亦以隔離的本地 repositories 演練。實測 Python 組合與 filesystem 限制見[工程入口](項目文件/00-協作與執行/項目工程入口.md#生成與工程前提)。這些只證明本地框架與採用路徑，不代表產品已實作。
 
-GitHub Actions 矩陣、Linux runner、公開 tag／Release 及 GitHub default-branch 協作入口尚未驗證。GitHub workflow 是底座維護用檢查；若在下游 repository 被條件略過，skipped 不是已執行，也不證明下游文件或產品通過。
+GitHub Actions 的 branch/head 結果須在 [framework-checks workflow runs](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml) 按實際候選 SHA 核對，不由 branch 名稱推定 PASS。GitHub workflow 是底座維護用檢查；若在下游 repository 被條件略過，skipped 不是已執行，也不證明下游文件或產品通過。公開 tag／Release 及 GitHub default-branch 協作入口仍未驗證。
 
 若要聲稱整個 repository 的 Markdown links／anchors 已核對，發布前仍須做一次涵蓋全庫 tracked Markdown 的完整 QA。scripts/check_docs.py 及其 --project-docs 模式都不是這項全庫檢查，不可用它們取代。
 
@@ -139,10 +163,18 @@ GitHub Actions 矩陣、Linux runner、公開 tag／Release 及 GitHub default-b
 GitHub tag 路徑只在版本已實際發布後適用。發布前不要使用尚不存在的 v0.3.0-rc.1 tag；公開 release 完成後，採用者才可由對應公開 tag clone，並將 checkout 的 commit 與該版本的 release receipt 核對：
 
 ~~~sh
+(
+set -eu
+PROJECT_DIR='new-project'
+if [ -e "$PROJECT_DIR" ] || [ -L "$PROJECT_DIR" ]; then
+  printf 'PROJECT_DIR must be a new directory: %s\n' "$PROJECT_DIR" >&2
+  exit 1
+fi
 git clone --origin origin --branch 'v0.3.0-rc.1' --single-branch \
   'https://github.com/Alex0158/evidence-gated-agentic-workflow.git' \
-  'new-project'
-git -C 'new-project' rev-parse HEAD
+  "$PROJECT_DIR"
+git -C "$PROJECT_DIR" rev-parse HEAD
+)
 ~~~
 
 ## License
