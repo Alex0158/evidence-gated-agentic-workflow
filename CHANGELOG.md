@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Integration candidate 0.3.0-rc.1 — not released
+
+- Integrate the revision 15 project starter into the existing repository while retaining its public history and older reference material.
+- Establish one adoption entry with three initialization drafts, five on-demand document types, candidate source verification, and separate upstream and project remotes.
+- Clarify base-repository maintenance governance, downstream project boundaries, public safety, and the license scope for the new tools.
+- Report retained files truthfully when on-demand document writing or readback fails, with a nonzero exit and explicit reconciliation guidance.
+- This is an untagged candidate. No public tag or Release is claimed.
+
 ### Teaching frontend retirement
 
 - 撤除教學前端及 assets、Astro／TypeScript／npm 設定、網站專用 validation／routing scripts、Pages deployment workflow 與前端專用授權／dependency notices。

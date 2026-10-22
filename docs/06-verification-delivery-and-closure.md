@@ -1,5 +1,9 @@
 # 06 — 驗證、交付與 Closure
 
+> **內容身份：** Reference — 保留原 evidence ladder、案例及 closure 說明。
+> **適用範圍：** 舊 closure labels 不升格為本 starter 的 active enum；本次程序與結果由現行 Runbooks／records 承接。
+> **現行 owner：** [工作規則與標準](../項目文件/00-協作與執行/規則與標準/工作規則與標準.md) · [驗證 Runbook](../項目文件/00-協作與執行/Runbooks/驗證功能.md) · [交付 Runbook](../項目文件/00-協作與執行/Runbooks/版本交付.md) · [VR 範本](../文件模板/驗證紀錄範本.md) · [REL 範本](../文件模板/交付紀錄範本.md)
+
 ## 1. Progressive verification ladder
 
 驗證不是單一 `tests passed`。按風險與 claim 逐層上升：

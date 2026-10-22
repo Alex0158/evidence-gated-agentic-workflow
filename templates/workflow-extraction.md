@@ -1,5 +1,9 @@
 # Workflow Extraction
 
+> **內容身份：** Reference — 僅供底座維護者診斷既有指引及候選修正。
+> **適用範圍：** 不是下游項目的執行程序或永久 extraction ledger；promotion 依現行治理與 Agent 邊界。
+> **現行 owner：** [Governance](../GOVERNANCE.md) · [Agent 工作入口](../AGENTS.md) · [00 工作路由](../項目文件/00-協作與執行/README.md)
+
 ## Problem / observed pattern
 
 - Trigger/context: `<when it appears>`

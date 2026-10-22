@@ -1,5 +1,9 @@
 # 04 — 方法論定位
 
+> **內容身份：** Reference — 保留方法論概念與定位分析。
+> **適用範圍：** 按需閱讀；不作驗收門檻、正式標準認證或項目必走方法。
+> **現行 owner：** [工作規則與標準](../項目文件/00-協作與執行/規則與標準/工作規則與標準.md) · [啟動項目 Runbook](../項目文件/00-協作與執行/Runbooks/啟動項目.md)
+
 ## 1. Prompt、Context、Harness、Loop 不是線性世代
 
 把它們說成「Prompt Engineering → Harness Engineering → Loop Engineering」的正式發展階段會過度簡化。較準確的是四個相互重疊的 control surfaces／分析視角；下表只隔離各自主要回答的問題，不代表它們有乾淨、互斥的邊界：

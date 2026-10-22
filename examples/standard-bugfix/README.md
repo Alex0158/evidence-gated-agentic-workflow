@@ -1,5 +1,9 @@
 # Example — Standard bugfix
 
+> **內容身份：** Example — fictional bugfix case; no real product evidence。
+> **適用範圍：** 只示範此案例的 targeted test／TDD-shaped loop；Standard profile 不成為預設，亦不要求所有修復採 strict TDD。
+> **現行 owner：** [修復缺陷 Runbook](../../項目文件/00-協作與執行/Runbooks/修復缺陷.md) · [驗證功能 Runbook](../../項目文件/00-協作與執行/Runbooks/驗證功能.md)
+
 ## Task
 
 Sample API 對空白 display name 回傳成功，但 contract 要求 validation error。

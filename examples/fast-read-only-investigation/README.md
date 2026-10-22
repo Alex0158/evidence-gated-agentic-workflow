@@ -1,5 +1,9 @@
 # Example — Fast read-only investigation
 
+> **內容身份：** Example — fictional read-only case; no real connector or product evidence。
+> **適用範圍：** 只示範能力判讀；Fast profile 與 closure target 不成為普遍要求。
+> **現行 owner：** [工具能力與身份](../../項目文件/00-協作與執行/規則與標準/工作規則與標準.md#工具能力與身份) · [調查 Runbook](../../項目文件/00-協作與執行/Runbooks/調查與分析.md)
+
 ## Task
 
 「確認 sample knowledge connector 現在能否讀到 `Demo Handbook`。」

@@ -1,5 +1,9 @@
 # Implementation
 
+> **內容身份：** Reference — 舊 implementation 欄位格式，不另建 progress record。
+> **適用範圍：** 按授權的變更路由執行；Task 擁有工作計劃，VR 擁有本次驗證結果。
+> **現行 owner：** [開發與變更 Runbook](../項目文件/00-協作與執行/Runbooks/開發與變更.md) · [工作任務範本](../文件模板/工作任務範本.md) · [驗證紀錄範本](../文件模板/驗證紀錄範本.md)
+
 ## Intended behavior
 
 `<observable contract after the change>`

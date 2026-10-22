@@ -1,24 +1,26 @@
 # Security and privacy
 
-這是一個 documentation repository，但內容仍可能出現 credentials、個人資料、內部路徑或客戶識別資訊。
+本 repository 是一個公開的通用工作方法與工具底座。提交內容、issue、PR、example、log 或 screenshot 時，都必須避免公開 secrets、個人資料、客戶資料及私人工作 evidence。
 
 ## 不要提交
 
-- API keys、tokens、cookies、passwords、private keys；
-- `.env`、credential store、browser/session exports；
-- 個人 email、電話、地址、account/workspace/page IDs；
+- API keys、tokens、cookies、passwords、private keys 或 credential store；
+- .env、browser/session exports 或其他可用憑據；
+- 個人 email、電話、地址、account、workspace 或 page IDs；
 - customer、supplier、employee、order、payment 或 private business data；
-- local absolute paths、private URLs、logs、screenshots 或 raw conversation history；
+- 個人絕對路徑、private URLs、logs、screenshots 或 raw conversation；
 - Memory、rollout/session/thread IDs 或私人審計底稿。
 
-## 回報方式
+## 回報安全問題
 
-若發現敏感內容，請不要建立含原文的 public issue。請使用 GitHub repository 的 private vulnerability reporting 功能聯絡 maintainer，並只提供定位所需的最少資料。
+不要在 public issue 或 PR 貼入漏洞細節、credentials、個人資料或 private evidence。本文件不代表此 repository 已啟用 GitHub private vulnerability reporting，也不承諾任何未明示的私人回報功能已可用。提交前請在目前 repository 的 GitHub 安全設定中核實維護者明確提供的私下回報途徑；若沒有已確認的私人途徑，不要把敏感內容送到公開表單或底座作者的其他帳戶。
 
-若疑似 credential 已進 Git history，應先 revoke/rotate，再處理 history。只從最新 commit 刪除並不足夠。
+若你採用本底座，需由自己的 repository owner 設定並核實自己的安全回報途徑。複製來的文件不會把下游問題私下送到此 repository；不要沿用原上游的回報目的地。
+
+若疑似 credential 已進入 Git history，先依該系統的程序 revoke／rotate，再由有權管理者處理 history。只從最新檔案移除內容並不足以消除已暴露的憑據。
 
 ## Scope
 
-本 project 提供 workflow guidance，不保證使用者系統的 security、safety 或 regulatory compliance。實際 deployment 仍需相應專業審查與技術控制。
+本 repository 提供 workflow guidance 和本地文件工具，不保證使用者系統的 security、safety 或 regulatory compliance。實際產品與 deployment 仍需由相應 owner 做專業審查及技術控制。
 
-本 repository 目前只提供文件與模板，已移除互動網站及 Workbench source。使用模板時仍不得寫入 secrets 或未經去識別的敏感資料。
+不要把本底座作為提交私有產品設計、工作底稿、客戶資料或原始對話的地方。

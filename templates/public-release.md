@@ -1,5 +1,9 @@
 # Public Release Gate
 
+> **內容身份：** Reference — 僅供公開發布任務使用的 release checklist。
+> **適用範圍：** 其適用檢查由 CONTRIBUTING 承接；不套用到一般項目工作或每個產品 PR。
+> **現行 owner：** [Contributing](../CONTRIBUTING.md)
+
 ## Release mode
 
 選擇本次模式；只填適用分支及共用 checks，其他項目標明 N/A 及原因。

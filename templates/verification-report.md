@@ -1,5 +1,9 @@
 # Verification Report
 
+> **內容身份：** Reference — 舊 verification-report 欄位格式，不新增 run result owner。
+> **適用範圍：** 本次驗證程序由 Runbook 承接，結果由 VR／native run 記錄；舊 closure labels 不作 active enum。
+> **現行 owner：** [驗證功能 Runbook](../項目文件/00-協作與執行/Runbooks/驗證功能.md) · [驗證紀錄範本](../文件模板/驗證紀錄範本.md) · [交付紀錄範本](../文件模板/交付紀錄範本.md)
+
 ## Conclusion
 
 `<one sentence with exact closure level>`

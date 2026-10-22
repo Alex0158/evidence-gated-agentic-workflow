@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "version": "0.3.0-rc.1",
+    "design_baseline": "v1.0-rev15",
+    "source_sha256": "c18715f44f1996896512643bf46ea8d39e6f3fe66e5ab605261dc5ad1c365352"
+  },
+  "project": {
+    "name": null,
+    "id": null,
+    "mode": "TEMPLATE",
+    "readiness": "NOT_DECLARED"
+  },
+  "repositories": [
+    {
+      "role": "active",
+      "path": "."
+    }
+  ],
+  "commands": {
+    "framework_init": {
+      "entry": "scripts/init_project.py",
+      "argv": [
+        "python3",
+        "-B",
+        "scripts/init_project.py",
+        "--project-name",
+        "NAME"
+      ]
+    },
+    "framework_check": {
+      "entry": "scripts/check_docs.py",
+      "argv": [
+        "python3",
+        "-B",
+        "scripts/check_docs.py"
+      ]
+    },
+    "product_build": null,
+    "product_test": null,
+    "product_run": null
+  },
+  "generated_documents": [
+    {
+      "role": "product",
+      "template": "文件模板/產品骨架範本.md",
+      "target": "項目文件/01-產品需求/產品骨架.md"
+    },
+    {
+      "role": "business",
+      "template": "文件模板/模組與功能規格範本.md",
+      "target": "項目文件/02-業務規格/業務模組/規格草稿.md"
+    },
+    {
+      "role": "technical",
+      "template": "文件模板/技術設計與契約範本.md",
+      "target": "項目文件/03-系統設計/系統設計草稿.md"
+    }
+  ],
+  "document_templates": [
+    {
+      "id": "business-flow",
+      "template": "文件模板/業務流程範本.md",
+      "target_directory": "項目文件/02-業務規格/業務流程"
+    },
+    {
+      "id": "decision",
+      "template": "文件模板/決策範本.md",
+      "target_directory": "項目文件/04-決策紀錄"
+    },
+    {
+      "id": "task",
+      "template": "文件模板/工作任務範本.md",
+      "target_directory": "項目文件/05-工作與交付紀錄"
+    },
+    {
+      "id": "verification",
+      "template": "文件模板/驗證紀錄範本.md",
+      "target_directory": "項目文件/05-工作與交付紀錄"
+    },
+    {
+      "id": "delivery",
+      "template": "文件模板/交付紀錄範本.md",
+      "target_directory": "項目文件/05-工作與交付紀錄"
+    }
+  ],
+  "environments": [
+    {
+      "id": "local-doc-check",
+      "purpose": "Framework static checks only; product runtime is unbound"
+    }
+  ],
+  "data": {
+    "kind": "NONE",
+    "root": null,
+    "reset_authorized": false
+  },
+  "secrets": {
+    "values_in_files": false,
+    "retrieval_reference": null
+  }
+}

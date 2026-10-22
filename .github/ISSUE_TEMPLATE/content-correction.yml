@@ -1,20 +1,20 @@
-name: Content or evidence correction
-description: Report an incorrect, stale, contradictory, or overclaimed statement.
-title: "[Correction]: "
+name: Base content or evidence correction
+description: 底座維護專用：回報公開底座中錯誤、過時、矛盾或超出 evidence 的內容。
+title: "[Base correction]: "
 labels: [documentation]
 body:
   - type: textarea
     id: problem
     attributes:
       label: Problem
-      description: What statement is incorrect or too broad?
+      description: Identify the base statement that is incorrect, stale, contradictory, or too broad.
     validations:
       required: true
   - type: textarea
     id: evidence
     attributes:
-      label: Evidence or source
-      description: Link to a public source. Do not include private data or credentials.
+      label: Public evidence or source
+      description: Link to a public source. Do not include private data, credentials, or personal paths.
     validations:
       required: true
   - type: textarea
@@ -28,5 +28,5 @@ body:
     attributes:
       label: Public safety
       options:
-        - label: This report contains no credentials, personal data, customer data, or private system details.
+        - label: This report contains no credentials, personal data, customer data, private system details, or private audit material.
           required: true

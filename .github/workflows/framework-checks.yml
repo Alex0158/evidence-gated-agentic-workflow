@@ -1,0 +1,118 @@
+name: Framework checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  framework:
+    # This workflow maintains the upstream base. A downstream project must
+    # deliberately adopt its own checks; a skipped job is not product evidence.
+    if: github.repository == 'Alex0158/evidence-gated-agentic-workflow'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ['3.11', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Existing tool contracts
+        run: python3 -B -m unittest discover -s tests -v
+      - name: Framework documents
+        run: |
+          python3 -B scripts/check_docs.py
+          python3 -B scripts/check_docs.py --project-docs
+      - name: Clone, initialize, generate and refuse overwrites
+        shell: bash
+        run: |
+          python3 -B - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import sys
+          import tempfile
+
+          source = Path.cwd()
+          workspace = Path(tempfile.mkdtemp(prefix='framework-check-', dir=os.environ.get('RUNNER_TEMP')))
+          receipts = []
+
+          def invoke(root, args, expected=0):
+              result = subprocess.run(args, cwd=root, capture_output=True, text=True)
+              receipts.append({'case': root.name, 'argv': args, 'exit_code': result.returncode,
+                               'stdout': result.stdout, 'stderr': result.stderr})
+              if result.returncode != expected:
+                  raise AssertionError('Unexpected exit for ' + repr(args))
+              return json.loads(result.stdout) if result.stdout.startswith('{') else result.stdout
+
+          def clone(name):
+              destination = workspace / name
+              subprocess.run(['git', 'clone', '--quiet', '--no-hardlinks', str(source), str(destination)], check=True)
+              return destination
+
+          def snapshot(root):
+              entries = {}
+              for path in sorted(root.rglob('*')):
+                  relative = path.relative_to(root)
+                  if '.git' in relative.parts:
+                      continue
+                  if path.is_symlink():
+                      entries[str(relative)] = ['symlink', os.readlink(path)]
+                  elif path.is_dir():
+                      entries[str(relative)] = ['directory']
+                  else:
+                      entries[str(relative)] = ['file', hashlib.sha256(path.read_bytes()).hexdigest()]
+              return entries
+
+          try:
+              project = clone('initialized')
+              template_bytes = (project / '.workflow/project.json').read_bytes()
+              result = invoke(project, [sys.executable, '-B', 'scripts/init_project.py', '--project-name', 'Framework CI'])
+              assert result['status'] == 'DRAFT_INITIALIZED'
+              assert (project / '.workflow/project.json').read_bytes() == template_bytes
+              for template_id in ['business-flow', 'decision', 'task', 'verification', 'delivery']:
+                  result = invoke(project, [sys.executable, '-B', 'scripts/create_document.py',
+                                           '--template', template_id, '--filename', 'ci-' + template_id])
+                  assert result['status'] == 'DRAFT_CREATED'
+              result = invoke(project, [sys.executable, '-B', 'scripts/check_docs.py', '--project-docs'])
+              assert result['status'] == 'PASS' and result['project_mode'] == 'PROJECT'
+              assert result['anchors_checked'] and result['product_execution'] == 'NOT_RUN'
+              for args in [
+                  [sys.executable, '-B', 'scripts/init_project.py', '--project-name', 'Framework CI'],
+                  [sys.executable, '-B', 'scripts/create_document.py', '--template', 'verification', '--filename', 'ci-verification'],
+              ]:
+                  before = snapshot(project)
+                  assert invoke(project, args, 2)['status'] == 'REFUSED'
+                  assert snapshot(project) == before
+
+              for role in ['product', 'business', 'technical']:
+                  invalid = clone('invalid-' + role)
+                  binding = invalid / '.workflow/project.json'
+                  config = json.loads(binding.read_text())
+                  spec = next(item for item in config['generated_documents'] if item['role'] == role)
+                  spec['target'] = str(Path(spec['target']).with_name('different-entry.md'))
+                  binding.write_text(json.dumps(config, ensure_ascii=False, indent=2) + '\n')
+                  before = snapshot(invalid)
+                  result = invoke(invalid, [sys.executable, '-B', 'scripts/init_project.py', '--project-name', 'Invalid CI'], 2)
+                  assert result['status'] == 'REFUSED' and 'Core document target is fixed' in result['reason']
+                  assert invoke(invalid, [sys.executable, '-B', 'scripts/check_docs.py'], 1)['status'] == 'FAIL'
+                  assert snapshot(invalid) == before
+              print(json.dumps({'status': 'PASS', 'scope': 'Framework clone and generation only',
+                                'product_execution': 'NOT_RUN', 'receipts': receipts}, ensure_ascii=False))
+          except Exception:
+              print(json.dumps({'status': 'FAIL', 'receipts': receipts}, ensure_ascii=False))
+              raise
+          # Retain fixtures for this runner's lifetime; no destructive cleanup.
+          PY

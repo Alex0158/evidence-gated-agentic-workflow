@@ -1,5 +1,9 @@
 # 01 — 核心原則
 
+> **內容身份：** Reference — 保留原核心原則與解釋。
+> **適用範圍：** 概念按需參考；舊文件中的 profile／closure labels 不構成本 starter 的 active defaults。
+> **現行 owner：** [Agent 工作入口](../AGENTS.md) · [工作規則與標準](../項目文件/00-協作與執行/規則與標準/工作規則與標準.md) · [00 工作路由](../項目文件/00-協作與執行/README.md)
+
 ## 1. Current truth 優先於 memory
 
 Memory、舊文件與歷史會話的主要用途是 routing：告訴你應去哪裡找。它們不能自動裁決「現在是什麼」。

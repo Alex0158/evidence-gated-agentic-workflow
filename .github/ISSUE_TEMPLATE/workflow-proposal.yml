@@ -1,20 +1,20 @@
-name: Workflow proposal
-description: Propose a reusable control, pattern, template, or workflow improvement.
-title: "[Proposal]: "
+name: Base workflow proposal
+description: 底座維護專用：提出可重用的公開控制、模式、模板或工作流程改進。
+title: "[Base proposal]: "
 labels: [enhancement]
 body:
   - type: textarea
     id: problem
     attributes:
       label: Problem and observed cost
-      description: What failure or cost does this address? A proven content error does not need to recur before correction.
+      description: What base-level failure or cost does this address? A proven content error can be corrected without waiting for recurrence.
     validations:
       required: true
   - type: textarea
     id: existing-guidance
     attributes:
       label: Existing guidance and diagnosis
-      description: Identify the owning section, event-time rule and retrieval/execution evidence, and any later correction. Distinguish a rule gap, ambiguity, conflict, over-restriction, routing/execution/tool gap, or new context. Mark missing evidence Unknown; use only public or synthetic sources.
+      description: Identify the owning section and retrieval or execution evidence. Distinguish a rule gap, ambiguity, conflict, over-restriction, routing or tool gap, or new context. Mark missing evidence Unknown; use public or synthetic sources only.
     validations:
       required: true
   - type: textarea
@@ -26,8 +26,8 @@ body:
   - type: textarea
     id: proposal
     attributes:
-      label: Smallest proposed landing point
-      description: Correct existing guidance, improve routing/execution, add an example, retain the case, or propose a new control. Explain why the existing owner can or cannot handle it.
+      label: Smallest proposed base landing point
+      description: Correct the current owner, improve routing or execution, add an example, retain the case, or propose a new control. Explain why the existing owner can or cannot handle it.
     validations:
       required: true
   - type: textarea

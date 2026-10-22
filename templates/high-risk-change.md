@@ -1,5 +1,9 @@
 # High-Risk Change Gate
 
+> **內容身份：** Reference — 舊高風險檢視提示，不是每次變更必填表或額外批准 gate。
+> **適用範圍：** 取捨回決策紀錄、工作計劃回 Task；按實際風險使用相關工作標準。
+> **現行 owner：** [工作規則與標準](../項目文件/00-協作與執行/規則與標準/工作規則與標準.md) · [決策範本](../文件模板/決策範本.md) · [工作任務範本](../文件模板/工作任務範本.md)
+
 ## Problem and user impact
 
 `<what is wrong and why it matters>`
