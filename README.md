@@ -2,7 +2,7 @@
 
 這個 repository 提供一套供新軟件與網頁項目採用的文件及協作 starter：通用工作入口、來源路由、三類協作標準、六份 Runbook、八種文件模板，以及只處理本地 Markdown 的工具。它提供工作方法和可填骨架；產品規則、技術棧、服務、runner 與驗收由各項目的 owner 決定。
 
-目前整合版本是候選 0.3.0-rc.1；候選分支 `integration/starter-r15` 已可從 GitHub 取得，但尚未合入 `main`、未打 tag、未建立 GitHub Release。採用前請在 [framework-checks workflow runs](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml) 開啟對應 run，確認分支及 head commit 與採用時核對的 SHA 相同；branch 名稱本身不能證明檢查結果。下文提供遠端候選和本地 clone 兩種來源選項；公開 tag 的取得方式只在發布後適用。
+目前整合版本是候選 0.3.0-rc.1；候選分支 `integration/starter-r15` 已可從 GitHub 取得。PR、tag 與 Release 的現況見下方[「版本與來源身份」](#版本與來源身份)。採用前請在 [framework-checks workflow runs](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml) 開啟對應 run，確認分支及 head commit 與採用時核對的 SHA 相同；branch 名稱本身不能證明檢查結果。下文提供遠端候選和本地 clone 兩種來源選項。
 
 Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，不是正式標準、安全認證或 formal assurance case；目前亦沒有以 benchmark 證明其 operational effectiveness。
 
@@ -18,7 +18,7 @@ Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，
 
 ## 版本與來源身份
 
-- 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。目前候選分支 `integration/starter-r15` 可由該 repository 取得，尚未合入 `main`，也沒有對應的 tag 或 Release。
+- 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。合併狀態以 [PR #1](https://github.com/Alex0158/evidence-gated-agentic-workflow/pull/1) 核對；tag 與 Release 狀態分別以 [Tags](https://github.com/Alex0158/evidence-gated-agentic-workflow/tags) 及 [Releases](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases) 核實。
 - 候選版號為 0.3.0-rc.1；branch 可能移動，採用者必須從 PR head 或 GitHub branch readback 取得完整 commit SHA，並核對 clone 後的 SHA。GitHub Actions 狀態須按該 branch/head 的 run 核實，未完成或 skipped 的 run 不算成功。
 - 設計基線仍記為 v1.0-rev15。項目 metadata 的 source digest 用來識別設計來源，不是整個底座、下載包或公開 release 的 checksum。
 - 發布後，公開版本身份由實際 tag、該 tag 指向的 Git commit 及 CHANGELOG 共同確定。只改版號或有一個本地 commit，不表示已發布。
@@ -147,7 +147,7 @@ git -C "$PROJECT_DIR" config --local --get push.default
 
 整合候選已完成本機工具契約、文件檢查、隔離 clone／初始化、三核心草稿與五類按需文件生成，以及重複建立／錯配核心路徑的拒絕驗證；README 採用與 remote 分工亦以隔離的本地 repositories 演練。實測 Python 組合與 filesystem 限制見[工程入口](項目文件/00-協作與執行/項目工程入口.md#生成與工程前提)。這些只證明本地框架與採用路徑，不代表產品已實作。
 
-GitHub Actions 的 branch/head 結果須在 [framework-checks workflow runs](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml) 按實際候選 SHA 核對，不由 branch 名稱推定 PASS。GitHub workflow 是底座維護用檢查；若在下游 repository 被條件略過，skipped 不是已執行，也不證明下游文件或產品通過。公開 tag／Release 及 GitHub default-branch 協作入口仍未驗證。
+GitHub Actions 的 branch/head 結果須在 [framework-checks workflow runs](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml) 按實際候選 SHA 核對，不由 branch 名稱推定 PASS。GitHub workflow 是底座維護用檢查；若在下游 repository 被條件略過，skipped 不是已執行，也不證明下游文件或產品通過。候選 CI 不代替發布時對 default branch、tag 與 Release 的查證。
 
 若要聲稱整個 repository 的 Markdown links／anchors 已核對，發布前仍須做一次涵蓋全庫 tracked Markdown 的完整 QA。scripts/check_docs.py 及其 --project-docs 模式都不是這項全庫檢查，不可用它們取代。
 
@@ -160,7 +160,7 @@ GitHub Actions 的 branch/head 結果須在 [framework-checks workflow runs](htt
 3. 逐項採納並核相容性及受影響檢查；不要 pull／merge 整個上游，也不要自動覆寫產品文件、active instance 或項目本地調整。
 4. 只在確實採納並驗證 framework 變更後，更新項目記錄的版本。該次選擇與結果留在既有 Task、DEC、VR 或 PR，不另建長期 upgrade ledger。
 
-GitHub tag 路徑只在版本已實際發布後適用。發布前不要使用尚不存在的 v0.3.0-rc.1 tag；公開 release 完成後，採用者才可由對應公開 tag clone，並將 checkout 的 commit 與該版本的 release receipt 核對：
+執行以下 tag clone 命令前，須核實該版本已有公開 Release，且對應 tag 指向預期的 commit；採用者再由該 tag clone，並將 checkout 的 commit 與該版本的 release receipt 核對：
 
 ~~~sh
 (
