@@ -2,13 +2,16 @@
 
 ## Unreleased
 
-### Integration candidate 0.3.0-rc.1 — not released
+## 0.3.0-rc.1 — Pre-release
+
+此版本的公開狀態及發布時間以對應 GitHub Release 的實際狀態、`published_at` 與可回查 receipt 核實。
+
+### Integration candidate
 
 - Integrate the revision 15 project starter into the existing repository while retaining its public history and older reference material.
 - Establish one adoption entry with three initialization drafts, five on-demand document types, candidate source verification, and separate upstream and project remotes.
 - Clarify base-repository maintenance governance, downstream project boundaries, public safety, and the license scope for the new tools.
 - Report retained files truthfully when on-demand document writing or readback fails, with a nonzero exit and explicit reconciliation guidance.
-- This is an untagged candidate. No public tag or Release is claimed.
 
 ### Teaching frontend retirement
 
