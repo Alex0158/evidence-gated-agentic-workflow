@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## 0.3.0-rc.2 — Pre-release
+
+此版本的公開狀態及發布時間以對應 GitHub Release 的實際狀態、`published_at` 與可回查 receipt 核實。
+
+### 啟動與採用
+
+- 新 Agent 可先從 README 辨認新目錄、既有未初始化 checkout、已初始化項目、partial 狀態或底座維護工作，再沿唯一採用程序前進。
+- 既有 checkout 可在原根目錄初始化；保留項目 origin，只調整可確認的上游 remote，遇來源、branch 或初始化狀態衝突時停止並保留資料。
+- 採用程序明確以 sh 執行，修正從 zsh 貼入時初始化狀態 glob 無匹配的問題。
+- 初始化後明示 workspace 根目錄、active binding、三份核心草稿及啟動 Runbook；AGENTS 只引用 README 的採用路由。
+- 固定版本指引以 RC2 為預設，明確核對 Release attestation、annotated tag object 及其指向的 commit，不依賴先前對話或其他版本的 SHA。
+
+### 相容性與保留範圍
+
+- 核心文件架構、Runbooks、模板、native 工具、schema、授權邊界及 licenses 不變；設計基線仍為 v1.0-rev15，設計 digest 不變。
+- RC1 tag 與 Release 保持原樣。既有 RC1 項目毋須重新初始化；文件指引更新須按項目 owner 比較採納，不覆寫產品內容或 active binding。
+- 維持既有環境與 evidence 限制；文件檢查不代表產品 build、runtime、deployment 或 acceptance。
+
 ## 0.3.0-rc.1 — Pre-release
 
 此版本的公開狀態及發布時間以對應 GitHub Release 的實際狀態、`published_at` 與可回查 receipt 核實。
