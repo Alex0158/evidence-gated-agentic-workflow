@@ -2,7 +2,7 @@
 
 這個 repository 提供一套供新軟件與網頁項目採用的文件及協作 starter：通用工作入口、來源路由、三類協作標準、六份 Runbook、八種文件模板，以及只處理本地 Markdown 的工具。它提供工作方法和可填骨架；產品規則、技術棧、服務、runner 與驗收由各項目的 owner 決定。
 
-一般採用的固定版本為 `v0.3.0-rc.1`；公開 Release 的核對條件與來源身份見下方[版本與來源身份](#版本與來源身份)。候選 branch 與本地 clone 只供 maintainer 以已核實的 commit 預演，不能代替公開版本驗收。
+一般採用的固定版本為 `v0.3.0-rc.2`；公開 Release 的核對條件與來源身份見下方[版本與來源身份](#版本與來源身份)。候選 branch 與本地 clone 只供 maintainer 以已核實的 commit 預演，不能代替公開版本驗收。
 
 Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，不是正式標準、安全認證或 formal assurance case；目前亦沒有以 benchmark 證明其 operational effectiveness。
 
@@ -30,19 +30,26 @@ README 是採用流程的唯一 owner；先按目前目錄狀態選入口，再�
 | 有 partial receipt、非空核心文件、自訂／不確定 binding、未追蹤或 ignored 項目資料，或來源／branch 衝突 | 停止初始化並保留現況。依[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)及[啟動項目 Runbook](項目文件/00-協作與執行/Runbooks/啟動項目.md)的 recovery 分支核對 owner；需要時改在新目的地明確採納。不要用 reset、clean、force 或刪檔重試。 |
 | 維護底座模板 | 按底座 maintainer scope 工作。`.workflow/project.json` 的 `TEMPLATE` 狀態本身不會觸發產品初始化，也不代表要把底座 repository 轉成某個產品項目。 |
 
-本次新增的採用入口屬於目前未發布的 README source revision；已發布的 `v0.3.0-rc.1` 來源保持原樣。指引版本與要採用的來源分別核對：可依這份候選指引操作已驗證的 RC1 checkout，但 RC1 attestation 不涵蓋本次指引改動。候選來源本身的驗證使用下方 candidate-branch／local 模式，結果只作 maintainer 預演。
+`v0.3.0-rc.2` 的來源包含本節起點分流及初始化後交接指引；已發布的 `v0.3.0-rc.1` 來源保持原樣，其 attestation 不涵蓋 RC2 改動。版本是否已公開仍須按下節核對，README 或 metadata 的版號不代表發布已完成。既有 RC1 項目毋須重新初始化；若採納新指引，先比較與項目現有 owner 的差異，不覆寫 active binding 或產品內容。
 
 ## 版本與來源身份
 
-- 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。合併狀態以 [PR #1](https://github.com/Alex0158/evidence-gated-agentic-workflow/pull/1) 核對；tag 與 Release 狀態分別以 [Tags](https://github.com/Alex0158/evidence-gated-agentic-workflow/tags) 及 [Releases](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases) 核實。
-- 固定採用版本為 `v0.3.0-rc.1`。一般採用者須先在[精確 Release 頁面](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases/tag/v0.3.0-rc.1)確認 Release 已公開、`draft=false`、`prerelease=true`、`latest=false`；不要使用 `/releases/latest`。公開狀態和發布時間以 GitHub Release 的實際狀態、`published_at` 及可回查 receipt 為準。本 README 的準備或合併本身不代表 Release 已公開。
+- 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。變更歷史以 [Commits](https://github.com/Alex0158/evidence-gated-agentic-workflow/commits/main) 核對；tag 與 Release 狀態分別以 [Tags](https://github.com/Alex0158/evidence-gated-agentic-workflow/tags) 及 [Releases](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases) 核實。
+- 固定採用版本為 `v0.3.0-rc.2`。一般採用者須先在[精確 Release 頁面](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases/tag/v0.3.0-rc.2)確認 Release 已公開、`draft=false`、`prerelease=true`、`latest=false`、`immutable=true`；不要使用 `/releases/latest`。公開狀態和發布時間以 GitHub Release 的實際狀態、`published_at` 及可回查 receipt 為準。本 README 的準備或合併本身不代表 Release 已公開。
 - 透過 GitHub CLI 驗證時，先確認目前安裝版本支援 `gh release verify`，且目前登入／存取狀態能讀取該 Release；不要假設任一 CLI 版本或未登入環境都支援此命令。執行：
 
 ~~~sh
-gh release verify v0.3.0-rc.1 --repo Alex0158/evidence-gated-agentic-workflow --format json
+gh release verify v0.3.0-rc.2 --repo Alex0158/evidence-gated-agentic-workflow --format json
 ~~~
 
-對 `v0.3.0-rc.1`，已觀察到驗證成功的 attestation subject URI 是 `pkg:github/Alex0158/evidence-gated-agentic-workflow@v0.3.0-rc.1`，其 `digest.sha1` 是 annotated tag object `8ed9198af71441b2742e0ece3ff7066f4af8acc5`，不是 commit SHA。GitHub 該 tag object 的 `object` target 為 `type=commit`、`sha=daae81d6d535e0e7b3b751f6759741bed45791f6`。因此要核的是 **attestation subject → tag object → peeled commit**：以 matching subject 確認 attested tag object SHA，fetch 精確 tag ref 後比對 tag object SHA，再比對 `refs/tags/$RELEASE_TAG^{commit}` 與 `EXPECTED_COMMIT`。其他 annotated tag 依同一鏈路實際查證，不把 subject digest 當 commit SHA。Release 不可讀、驗證命令不可用或任一 SHA 不一致時，停止一般採用；可編輯 Release notes 只提供發布描述，不能代替 cryptographic identity。
+在成功驗證的輸出中，找到 `verificationResult.statement.subject` 內 URI 精確符合 `pkg:github/Alex0158/evidence-gated-agentic-workflow@v0.3.0-rc.2` 的記錄。本底座使用 annotated tag；該 subject 的 `digest.sha1` 是 tag object SHA，不是其指向的 commit SHA。將這個完整值填入下方 `ATTESTED_TAG_OBJECT`，查詢該物件的 target：
+
+~~~sh
+ATTESTED_TAG_OBJECT='FULL_TAG_OBJECT_SHA_FROM_MATCHING_RELEASE_ATTESTATION_SUBJECT'
+gh api "repos/Alex0158/evidence-gated-agentic-workflow/git/tags/$ATTESTED_TAG_OBJECT" --jq '.object | {type, sha}'
+~~~
+
+回傳須為 `type=commit`；將其完整 `sha` 填入採用程序的 `EXPECTED_COMMIT`，並沿用同一 `ATTESTED_TAG_OBJECT`。核對鏈路為 **attestation subject → tag object → peeled commit**：fetch 精確 tag ref 後比對 tag object SHA，再比對 `refs/tags/$RELEASE_TAG^{commit}` 與 `EXPECTED_COMMIT`。不要把 subject digest 當 commit SHA，也不要沿用其他版本的值。Release notes 記錄本版完整 commit／tag SHA 供對照，但不能以可編輯 notes 代替 cryptographic identity。Release 不可讀、驗證命令不可用、沒有 matching subject、target 不是 commit 或任一 SHA 不一致時，停止一般採用。RC1 的歷史身份可在其[原 Release](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases/tag/v0.3.0-rc.1)核對。
 - Maintainer 預演可從 PR head／GitHub branch readback 取得候選 branch 的完整 commit SHA，並按該 branch/head 核對 [framework-checks workflow run](https://github.com/Alex0158/evidence-gated-agentic-workflow/actions/workflows/framework-checks.yml)。Branch 名稱本身不能證明檢查結果；未完成或 skipped 的 run 不算成功，預演也不代表 Release 已公開。
 - 設計基線仍記為 v1.0-rev15。項目 metadata 的 source digest 用來識別設計來源，不是整個底座、下載包或公開 release 的 checksum。
 - 公開版本身份以 GitHub 實際 Release、tag peeled commit、attestation 與 CHANGELOG 共同核實。只改版號、有本地 commit 或找到同名 tag，不表示公開版本已驗證。
@@ -64,7 +71,7 @@ set -eu
 DESTINATION_MODE='new' # new | existing
 SOURCE_MODE='release' # release | candidate-branch | local
 WORKFLOW_REPOSITORY='https://github.com/Alex0158/evidence-gated-agentic-workflow.git'
-RELEASE_TAG='v0.3.0-rc.1'
+RELEASE_TAG='v0.3.0-rc.2'
 CANDIDATE_BRANCH='BRANCH_FROM_PR_HEAD_OR_GITHUB_READBACK'
 ATTESTED_TAG_OBJECT='FULL_TAG_OBJECT_SHA_FROM_MATCHING_RELEASE_ATTESTATION_SUBJECT' # release only
 EXPECTED_COMMIT='FULL_40_CHARACTER_VERIFIED_PEELED_COMMIT_OR_BRANCH_SHA'
