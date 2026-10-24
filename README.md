@@ -6,6 +6,59 @@
 
 Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，不是正式標準、安全認證或 formal assurance case；目前亦沒有以 benchmark 證明其 operational effectiveness。
 
+## 第一次使用
+
+從這裡完成三步：下載固定版本、開啟項目資料夾、把開場提示交給 AI。完整的來源驗證與初始化仍沿用下方[採用狀態路由](#採用前先辨認工作狀態)及[採用程序](#從固定版本採用)。
+
+**版本提醒：** 本節是尚未發布的 README 補充，以下指令仍取得已發布的 `v0.3.0-rc.2`。RC2 的 README 不會自動包含本節；請保留目前閱讀的 README，從這裡複製開場提示。下載後依該版本的 README／AGENTS 採用，不把這份候選 README 複製覆蓋進 clone。
+
+### 1. 下載固定版本
+
+以下使用 macOS／Linux 的 sh 相容終端機，先確保 Git 可用。把 `PROJECT_DIR` 改成自己的項目絕對路徑；目的地須尚未存在，父目錄須已存在。若已有 checkout，直接前往下一步，讓 AI 按實際狀態處理。
+
+~~~sh
+(
+  set -eu
+  PROJECT_DIR="$HOME/my-new-project"
+  if [ -e "$PROJECT_DIR" ] || [ -L "$PROJECT_DIR" ]; then
+    printf '目標已存在，請保留原資料並選擇新的 PROJECT_DIR。\n' >&2
+    exit 1
+  fi
+  git clone --branch v0.3.0-rc.2 --single-branch \
+    https://github.com/Alex0158/evidence-gated-agentic-workflow.git \
+    "$PROJECT_DIR"
+  printf '已下載，請在 AI 工具開啟：%s\n' "$PROJECT_DIR"
+)
+~~~
+
+這一步只下載來源，尚未完成 Release 身份驗證或初始化。保持下載的檔案原樣，讓 AI 按[版本與來源身份](#版本與來源身份)核實後再執行初始化。
+
+### 2. 開啟項目資料夾
+
+在 AI 開發工具中，開啟剛才的 `PROJECT_DIR` 作為工作目錄／workspace：選擇同時包含 `README.md`、`AGENTS.md` 和 `.git` 的那一層。若 clone 顯示 `detached HEAD`，這是選定固定 tag 的正常狀態；後續採用程序會建立項目工作 branch，不需為消除提示而切換到 main。
+
+初始化還需要 Python 3.11+，以及支援 Release 驗證且有相應登入／存取能力的 GitHub CLI。讓 AI 沿[版本與來源身份](#版本與來源身份)及[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)檢查前提；工具或登入不可用時，先處理該缺口。
+
+### 3. 複製開場提示給新 AI
+
+填寫項目名稱與一兩句初步想法，再把整段貼給已開啟項目資料夾的 AI。這段是本次任務的交接文字；協作規則與程序仍由 Repo 中既有的 owner 承接。
+
+~~~text
+我要使用這份通用底座開始一個新的軟件開發項目。
+
+項目名稱：［填寫名稱］
+初步想法：［描述想做甚麼、給誰使用］
+
+目前工作目錄是剛從已發布固定版本取得、尚未初始化的 checkout；請先實際核對。
+請先閱讀根目錄 README.md 和 AGENTS.md，再沿引用按需閱讀。不要依賴先前對話，也不要把本次工作當成維護通用底座。
+
+請依 README 核對工具、Release 與來源身份，使用既有 checkout 的採用路徑，在目前目錄建立工作分支、初始化並完成文件檢查，不要再巢狀 clone。若實際狀態不同，依 README 的狀態路由處理。
+完成後簡短說明已建立哪些文件，再按「啟動項目 Runbook」與我討論產品骨架。先提出會影響下一步的關鍵問題；確認方向前先不要寫產品程式碼。
+
+本次可以進行上述本地檢查、初始化及整理草稿。暫時不要 push、建立遠端 Repo、部署或發布。
+若缺少工具、需要登入或核對不一致，指出具體問題並保留現況，不跳過核對。
+~~~
+
 ## 先從哪裡開始
 
 - 人類或新 session：本 README 是唯一的底座採用入口。
