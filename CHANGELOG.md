@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.3.0-rc.3 — Pre-release
+
+此版本的公開狀態及發布時間以對應 GitHub Release 的實際狀態、`published_at` 與可回查 receipt 核實。
+
+### 首次使用與相容性
+
+- README 將首次使用入口、RC3 同版開場提示及完整採用程序連在一起，按下載版本的文件即可開始。
+- 新採用者不需切到 `main` 或依賴私人對話；既有 RC1／RC2 項目毋須重新初始化，採納新指引仍由項目 owner 決定。
+- 核心文件架構、AGENTS／Runbooks、模板、native 工具、schema、授權邊界及 licenses 不變；metadata 僅更新底座版本，設計基線及設計 digest 保留。
+
+### 發布界線
+
+- 版號或 merge 不代表 Release 已公開；公開狀態仍須按實際 GitHub Release 驗證。RC1／RC2 的歷史 tag、Release 與記錄保留。
+- 沿用既有工具／環境前提及驗證限制；文件檢查不代表產品 build、runtime、deployment 或 acceptance。
+
 ## 0.3.0-rc.2 — Pre-release
 
 此版本的公開狀態及發布時間以對應 GitHub Release 的實際狀態、`published_at` 與可回查 receipt 核實。

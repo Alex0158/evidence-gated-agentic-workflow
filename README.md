@@ -2,15 +2,15 @@
 
 這個 repository 提供一套供新軟件與網頁項目採用的文件及協作 starter：通用工作入口、來源路由、三類協作標準、六份 Runbook、八種文件模板，以及只處理本地 Markdown 的工具。它提供工作方法和可填骨架；產品規則、技術棧、服務、runner 與驗收由各項目的 owner 決定。
 
-一般採用的固定版本為 `v0.3.0-rc.2`；公開 Release 的核對條件與來源身份見下方[版本與來源身份](#版本與來源身份)。候選 branch 與本地 clone 只供 maintainer 以已核實的 commit 預演，不能代替公開版本驗收。
+一般採用的固定版本為 `v0.3.0-rc.3`；公開 Release 的核對條件與來源身份見下方[版本與來源身份](#版本與來源身份)。候選 branch 與本地 clone 只供 maintainer 以已核實的 commit 預演，不能代替公開版本驗收。
 
 Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，不是正式標準、安全認證或 formal assurance case；目前亦沒有以 benchmark 證明其 operational effectiveness。
 
 ## 第一次使用
 
-從這裡完成三步：下載固定版本、開啟項目資料夾、把開場提示交給 AI。完整的來源驗證與初始化仍沿用下方[採用狀態路由](#採用前先辨認工作狀態)及[採用程序](#從固定版本採用)。
+從這裡完成三步：下載固定版本、開啟項目資料夾、把開場提示交給 AI。完整的來源驗證與初始化沿用下方[採用狀態路由](#採用前先辨認工作狀態)及[採用程序](#從固定版本採用)。
 
-**版本提醒：** 本節是尚未發布的 README 補充，以下指令仍取得已發布的 `v0.3.0-rc.2`。RC2 的 README 不會自動包含本節；請保留目前閱讀的 README，從這裡複製開場提示。下載後依該版本的 README／AGENTS 採用，不把這份候選 README 複製覆蓋進 clone。
+**版本說明：** RC3 將本首次使用入口、同版開場提示與完整採用程序一併提供；從固定版本取得後沿該 checkout 內的 README／AGENTS 開始。
 
 ### 1. 下載固定版本
 
@@ -24,7 +24,7 @@ Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，
     printf '目標已存在，請保留原資料並選擇新的 PROJECT_DIR。\n' >&2
     exit 1
   fi
-  git clone --branch v0.3.0-rc.2 --single-branch \
+  git clone --branch v0.3.0-rc.3 --single-branch \
     https://github.com/Alex0158/evidence-gated-agentic-workflow.git \
     "$PROJECT_DIR"
   printf '已下載，請在 AI 工具開啟：%s\n' "$PROJECT_DIR"
@@ -83,19 +83,19 @@ README 是採用流程的唯一 owner；先按目前目錄狀態選入口，再�
 | 有 partial receipt、非空核心文件、自訂／不確定 binding、未追蹤或 ignored 項目資料，或來源／branch 衝突 | 停止初始化並保留現況。依[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)及[啟動項目 Runbook](項目文件/00-協作與執行/Runbooks/啟動項目.md)的 recovery 分支核對 owner；需要時改在新目的地明確採納。不要用 reset、clean、force 或刪檔重試。 |
 | 維護底座模板 | 按底座 maintainer scope 工作。`.workflow/project.json` 的 `TEMPLATE` 狀態本身不會觸發產品初始化，也不代表要把底座 repository 轉成某個產品項目。 |
 
-`v0.3.0-rc.2` 的來源包含本節起點分流及初始化後交接指引；已發布的 `v0.3.0-rc.1` 來源保持原樣，其 attestation 不涵蓋 RC2 改動。版本是否已公開仍須按下節核對，README 或 metadata 的版號不代表發布已完成。既有 RC1 項目毋須重新初始化；若採納新指引，先比較與項目現有 owner 的差異，不覆寫 active binding 或產品內容。
+`v0.3.0-rc.2` 的來源包含本節起點分流及初始化後交接指引；已發布的 `v0.3.0-rc.1` tag 與 Release 保持原樣，其 attestation 不涵蓋 RC2 改動。RC3 將完整首次使用入口、同版開場提示及採用程序放在同一固定版本；新採用者依該 checkout 內的文件即可開始，不必切到 `main` 或依賴另一個私人對話。版本是否已公開仍須按下節核對，README 或 metadata 的版號或 merge 不代表公開 Release 已完成。既有 RC1 或 RC2 項目毋須重新初始化；若採納新指引，先比較與項目現有 owner 的差異，不覆寫 active binding 或產品內容。
 
 ## 版本與來源身份
 
 - 公開上游 repository 的身份網址是 [Alex0158/evidence-gated-agentic-workflow](https://github.com/Alex0158/evidence-gated-agentic-workflow)。變更歷史以 [Commits](https://github.com/Alex0158/evidence-gated-agentic-workflow/commits/main) 核對；tag 與 Release 狀態分別以 [Tags](https://github.com/Alex0158/evidence-gated-agentic-workflow/tags) 及 [Releases](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases) 核實。
-- 固定採用版本為 `v0.3.0-rc.2`。一般採用者須先在[精確 Release 頁面](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases/tag/v0.3.0-rc.2)確認 Release 已公開、`draft=false`、`prerelease=true`、`latest=false`、`immutable=true`；不要使用 `/releases/latest`。公開狀態和發布時間以 GitHub Release 的實際狀態、`published_at` 及可回查 receipt 為準。本 README 的準備或合併本身不代表 Release 已公開。
+- 固定採用版本為 `v0.3.0-rc.3`。一般採用者須先在[精確 Release 頁面](https://github.com/Alex0158/evidence-gated-agentic-workflow/releases/tag/v0.3.0-rc.3)確認 Release 已公開、`draft=false`、`prerelease=true`、`latest=false`、`immutable=true`；不要使用 `/releases/latest`。公開狀態和發布時間以 GitHub Release 的實際狀態、`published_at` 及可回查 receipt 為準。本 README 的準備或合併本身不代表 Release 已公開。
 - 透過 GitHub CLI 驗證時，先確認目前安裝版本支援 `gh release verify`，且目前登入／存取狀態能讀取該 Release；不要假設任一 CLI 版本或未登入環境都支援此命令。執行：
 
 ~~~sh
-gh release verify v0.3.0-rc.2 --repo Alex0158/evidence-gated-agentic-workflow --format json
+gh release verify v0.3.0-rc.3 --repo Alex0158/evidence-gated-agentic-workflow --format json
 ~~~
 
-在成功驗證的輸出中，找到 `verificationResult.statement.subject` 內 URI 精確符合 `pkg:github/Alex0158/evidence-gated-agentic-workflow@v0.3.0-rc.2` 的記錄。本底座使用 annotated tag；該 subject 的 `digest.sha1` 是 tag object SHA，不是其指向的 commit SHA。將這個完整值填入下方 `ATTESTED_TAG_OBJECT`，查詢該物件的 target：
+在成功驗證的輸出中，找到 `verificationResult.statement.subject` 內 URI 精確符合 `pkg:github/Alex0158/evidence-gated-agentic-workflow@v0.3.0-rc.3` 的記錄。本底座使用 annotated tag；該 subject 的 `digest.sha1` 是 tag object SHA，不是其指向的 commit SHA。將這個完整值填入下方 `ATTESTED_TAG_OBJECT`，查詢該物件的 target：
 
 ~~~sh
 ATTESTED_TAG_OBJECT='FULL_TAG_OBJECT_SHA_FROM_MATCHING_RELEASE_ATTESTATION_SUBJECT'
@@ -124,7 +124,7 @@ set -eu
 DESTINATION_MODE='new' # new | existing
 SOURCE_MODE='release' # release | candidate-branch | local
 WORKFLOW_REPOSITORY='https://github.com/Alex0158/evidence-gated-agentic-workflow.git'
-RELEASE_TAG='v0.3.0-rc.2'
+RELEASE_TAG='v0.3.0-rc.3'
 CANDIDATE_BRANCH='BRANCH_FROM_PR_HEAD_OR_GITHUB_READBACK'
 ATTESTED_TAG_OBJECT='FULL_TAG_OBJECT_SHA_FROM_MATCHING_RELEASE_ATTESTATION_SUBJECT' # release only
 EXPECTED_COMMIT='FULL_40_CHARACTER_VERIFIED_PEELED_COMMIT_OR_BRANCH_SHA'
