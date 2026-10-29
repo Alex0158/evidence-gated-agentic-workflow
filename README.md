@@ -1,8 +1,10 @@
 # Evidence-Gated Agentic Workflow
 
-這個 repository 提供一套供新軟件與網頁項目採用的文件及協作 starter：通用工作入口、來源路由、三類協作標準、六份 Runbook、八種文件模板，以及只處理本地 Markdown 的工具。它提供工作方法和可填骨架；產品規則、技術棧、服務、runner 與驗收由各項目的 owner 決定。
+這個 repository 提供一套供新軟件與網頁項目採用的文件及協作 starter：通用工作入口、來源路由、三類協作標準、九份 Runbook、八種文件模板，以及只處理本地 Markdown 的工具。它提供工作方法和可填骨架；產品規則、技術棧、服務、runner 與驗收由各項目的 owner 決定。
 
 一般採用的固定版本為 `v0.3.0-rc.3`；公開 Release 的核對條件與來源身份見下方[版本與來源身份](#版本與來源身份)。候選 branch 與本地 clone 只供 maintainer 以已核實的 commit 預演，不能代替公開版本驗收。
+
+本次 `main` 新增的任務登記、SDD／TDD Runbooks 及完整開發 Loop 屬於 [CHANGELOG 的 Unreleased](CHANGELOG.md#unreleased)，未包含在 `v0.3.0-rc.3` tag。依固定版本採用時，以該 tag 內的文件與程序為準；`main` 更新不代表已建立新的固定版本。
 
 Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，不是正式標準、安全認證或 formal assurance case；目前亦沒有以 benchmark 證明其 operational effectiveness。
 
@@ -67,7 +69,7 @@ Evidence-Gated Agentic Workflow 是本 repository 自定義的描述性名稱，
 - 選擇本次工作的程序：[00 工作路由](項目文件/00-協作與執行/README.md)。
 - Repo、工具、命令、環境及 runner：[項目工程入口](項目文件/00-協作與執行/項目工程入口.md)。
 
-六份 Runbook 和八種模板由上述路由及工程入口定位。舊方法文章、案例、探索及 Codex adapter 保留為參考，採用者不需要先讀完整個 repository。
+九份 Runbook（含任務登記與分流、規格驅動開發及測試驅動開發共用子程序）和八種模板由上述路由及工程入口定位；開發主 Loop 串接規格、實作、驗證與回跳，重要發現可先最小登記再補齊。舊方法文章、案例、探索及 Codex adapter 保留為參考，採用者不需要先讀完整個 repository。
 
 <a id="採用前先辨認工作狀態"></a>
 
