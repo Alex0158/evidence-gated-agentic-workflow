@@ -10,7 +10,7 @@
 
 ## 開始工作
 
-先自行確定目標、允許動作、active repo／source、current 與 intended、主要 owner、影響面、完成層及阻塞未知。由[項目文件來源目錄](項目文件/README.md)找正式內容來源，由[工作路由](項目文件/00-協作與執行/README.md)選 Runbook；再按需讀取協作／工程／evidence 標準。不要以模板、generated view、舊紀錄、檔名或較新 timestamp 代替 current contract 或確認事件。
+先自行確定目標、允許動作、active repo／source、current 與 intended、主要 owner、影響面、完成層及阻塞未知。由[項目文件來源目錄](項目文件/README.md)找正式內容來源，由[工作路由](項目文件/00-協作與執行/README.md)選 Runbook；依任務觸發條件查閱並遵守適用的[工作規則與標準](項目文件/00-協作與執行/規則與標準/工作規則與標準.md)及程序，按需閱讀不免除適用要求。不要以模板、generated view、舊紀錄、檔名或較新 timestamp 代替 current contract 或確認事件。
 
 底座採用及新目錄／既有 checkout／已初始化／partial 狀態的入口，統一依[README 採用狀態路由](README.md#採用前先辨認工作狀態)；README 是唯一採用程序 owner。
 
@@ -21,7 +21,7 @@
 - 正式產品及業務語義由項目文件中的 designated owner 定義；技術 representation 由明確的 MD 或 native owner 承接。
 - 單次分析、工作進度、驗證與交付結果留在日期化紀錄，不回寫成永久標準。
 - 文件的 draft／current／superseded 是內容生命週期；不是已批准、已實作、已部署或用戶已接受。
-- Native runner 未設定時填 NOT_RUN 並說明原因；不能發明命令或把靜態文件檢查稱為產品驗證。
+- 需要 native runner 的該項檢查，必要 runner 未設定或不可用時記 NOT_RUN 並說明原因；其他已實際完成且有 evidence 的核查，依[結果與狀態](項目文件/00-協作與執行/規則與標準/工作規則與標準.md#結果與狀態)按實際方法及 claim 各自判定。不能發明命令或把靜態文件檢查稱為產品驗證。
 - Source、build、test execution、runtime、deployment、user-visible behavior 與 acceptance 是不同 evidence 層；只報告實際證明的層次。
 
 ## 保護範圍
