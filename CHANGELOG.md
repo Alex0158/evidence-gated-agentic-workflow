@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.3.0-rc.4 — Pre-release
+
+此版本的公開狀態及發布時間以對應 GitHub Release 的實際狀態、`published_at` 與可回查 receipt 核實。
+
+### 固定版本與新項目採用
+
+- 固定採用版本、首次 clone、Release／attestation 核對及共用採用腳本同步為 RC4，包含本輪 AGENTS、工作標準、九份 Runbook 及模板更新。
+- Framework metadata 更新為 `0.3.0-rc.4`；初始化後 active instance 沿用這個版本，設計基線及設計來源 digest 保持原義及原值。
+- 新項目保留同版 AGENTS／工作標準／九份 Runbook，初始化只生成三份核心 draft、active binding 及 receipts；文件存在不代表規格已確認或產品已實作。
+- 舊版本 tag、Release 及歷史紀錄保留；既有項目由 owner 比較採納，不重新初始化或覆寫 instance／產品內容。
+
 ### 入口、Loop 與交付例外交叉核對
 
 - 根 AGENTS 明示按需閱讀仍須遵守適用標準與程序；缺 native runner 的 NOT_RUN 限於需要它的該項檢查，其他已完成核查依實際方法及 claim 判定。
